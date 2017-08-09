@@ -1,0 +1,98 @@
+#! /bin/bash
+#
+# Flywheel 2017
+#
+#
+
+
+################################################################################
+# DEFINE VARIABLES
+
+FLYWHEEL_BASE=/flywheel/v0
+MANIFEST_FILE=$FLYWHEEL_BASE/manifest.json
+CONFIG_FILE=$FLYWHEEL_BASE/config.json
+INPUT_DIR=$FLYWHEEL_BASE/input/bids_dataset
+GEAR_OUTPUT_DIR=$FLYWHEEL_BASE/output
+OUTPUT_DIR=$GEAR_OUTPUT_DIR/out
+WORKING_DIR=$GEAR_OUTPUT_DIR/work
+CONTAINER='[flywheel/fmriprep]'
+
+
+################################################################################
+# CONFIGURE ENV
+
+# source ${FLYWHEEL_BASE}/docker-env.sh
+# source /etc/fsl/fsl.sh
+# source /etc/afni/afni.sh
+#
+# # Configure bashrc to source FreeSurferEnv.sh
+# source $FREESURFER_HOME/FreeSurferEnv.sh &>/dev/null
+
+################################################################################
+# VALIDATE INPUT DATA
+
+# Check if the input directory is not empty
+if [[ "$(ls -A $INPUT_DIR)" ]] ; then
+    echo "$CONTAINER  Starting..."
+else
+    echo "Input directory is empty: $INPUT_DIR"
+    exit 1
+fi
+
+# Find input file in input directory with the extension .nii, .nii.gz
+input_file=`find $INPUT_DIR -iname '*.zip' -o -iname '*.tgz' -o -iname '*.tar'`
+bni=`basename "$input_file"`
+filename="${bni%%.*}"
+inextension="${bni#*.}"
+
+# If input file not found, raise error
+if [[ ! -e $input_file ]]; then
+    echo "No valid files were found within input directory $INPUT_DIR"
+    exit 1
+fi
+
+
+################################################################################
+# CREATE A BIDS FORMATTED DIRECTORY
+
+if [[ "$input_file" == *.zip ]] ; then
+  echo "$CONTAINER  Unzipping $input_file"
+  unzip -q "$input_file" -d "$INPUT_DIR"
+elif [[ "$input_file" == *.tar ]] || [[ "$input_file" == *.tgz ]]
+  echo "$CONTAINER  Extracting $input_file"
+  tar -xf "$input_file" -C $INPUT_DIR
+else
+  echo "Unsupported filetype ["$input_file"]! Exiting."
+  exit 1
+fi
+
+BIDS_DIR=$(find $INPUT_DIR/* -maxdepth 0 -type d)
+
+
+################################################################################
+# RUN FMRIPREP
+
+/usr/local/miniconda/bin/fmriprep $BIDS_DIR $OUTPUT_DIR -w $WORKING_DIR
+
+################################################################################
+# CLEANUP OUTPUTS & GENERATE METADATA
+
+zip -r "$GEAR_OUTPUT_DIR"/$(basename "$BIDS_DIR") "$BIDS_DIR"
+
+# Remove the working directory
+rm -r $WORKING_DIR
+rm -r $OUTPUT_DIR
+
+# Get a list of the files in the output directory
+outputs=`find $GEAR_OUTPUT_DIR -type f -name "*"`
+
+# If outputs exist, then go on...
+if [[ -z $outputs ]]; then
+    echo "No results found in output directory... Exiting"
+    exit 1
+  else
+    chmod -R 777 $GEAR_OUTPUT_DIR
+    echo -e "Wrote: `ls $GEAR_OUTPUT_DIR`"
+fi
+
+exit 0
