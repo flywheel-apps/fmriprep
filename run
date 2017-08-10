@@ -58,7 +58,7 @@ fi
 if [[ "$input_file" == *.zip ]] ; then
   echo "$CONTAINER  Unzipping $input_file"
   unzip -q "$input_file" -d "$INPUT_DIR"
-elif [[ "$input_file" == *.tar ]] || [[ "$input_file" == *.tgz ]]
+elif [[ "$input_file" == *.tar ]] || [[ "$input_file" == *.tgz ]] ; then
   echo "$CONTAINER  Extracting $input_file"
   tar -xf "$input_file" -C $INPUT_DIR
 else
@@ -72,7 +72,7 @@ BIDS_DIR=$(find $INPUT_DIR/* -maxdepth 0 -type d)
 ################################################################################
 # RUN FMRIPREP
 
-/usr/local/miniconda/bin/fmriprep $BIDS_DIR $OUTPUT_DIR -w $WORKING_DIR
+time /usr/local/miniconda/bin/fmriprep $BIDS_DIR $OUTPUT_DIR participant -w $WORKING_DIR
 
 ################################################################################
 # CLEANUP OUTPUTS & GENERATE METADATA
