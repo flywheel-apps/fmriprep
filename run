@@ -13,7 +13,7 @@ MANIFEST_FILE=$FLYWHEEL_BASE/manifest.json
 CONFIG_FILE=$FLYWHEEL_BASE/config.json
 INPUT_DIR=$FLYWHEEL_BASE/input/bids_dataset
 GEAR_OUTPUT_DIR=$FLYWHEEL_BASE/output
-OUTPUT_DIR=$GEAR_OUTPUT_DIR/out
+FMRIPREP_OUTPUT_DIR=$GEAR_OUTPUT_DIR/fmriprep_output
 WORKING_DIR=$GEAR_OUTPUT_DIR/work
 CONTAINER='[flywheel/fmriprep]'
 
@@ -41,9 +41,6 @@ fi
 
 # Find input file in input directory with the extension .nii, .nii.gz
 input_file=`find $INPUT_DIR -iname '*.zip' -o -iname '*.tgz' -o -iname '*.tar'`
-bni=`basename "$input_file"`
-filename="${bni%%.*}"
-inextension="${bni#*.}"
 
 # If input file not found, raise error
 if [[ ! -e $input_file ]]; then
@@ -55,6 +52,7 @@ fi
 ################################################################################
 # CREATE A BIDS FORMATTED DIRECTORY
 
+# Unpack the archive
 if [[ "$input_file" == *.zip ]] ; then
   echo "$CONTAINER  Unzipping $input_file"
   unzip -q "$input_file" -d "$INPUT_DIR"
@@ -72,27 +70,27 @@ BIDS_DIR=$(find $INPUT_DIR/* -maxdepth 0 -type d)
 ################################################################################
 # RUN FMRIPREP
 
-time /usr/local/miniconda/bin/fmriprep $BIDS_DIR $OUTPUT_DIR participant -w $WORKING_DIR
+time /usr/local/miniconda/bin/fmriprep $BIDS_DIR $FMRIPREP_OUTPUT_DIR participant -w $WORKING_DIR
+FMRIPREP_EXITSTATUS=$?
+
 
 ################################################################################
 # CLEANUP OUTPUTS & GENERATE METADATA
 
-zip -r "$GEAR_OUTPUT_DIR"/$(basename "$BIDS_DIR") "$BIDS_DIR"
+if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
+  # Copy reports to top level of output directory
+  cp -a "$FMRIPREP_OUTPUT_DIR"/fmriprep/*.html $GEAR_OUTPUT_DIR
 
-# Remove the working directory
-rm -r $WORKING_DIR
-rm -r $OUTPUT_DIR
-
-# Get a list of the files in the output directory
-outputs=`find $GEAR_OUTPUT_DIR -type f -name "*"`
-
-# If outputs exist, then go on...
-if [[ -z $outputs ]]; then
-    echo "No results found in output directory... Exiting"
-    exit 1
-  else
-    chmod -R 777 $GEAR_OUTPUT_DIR
-    echo -e "Wrote: `ls $GEAR_OUTPUT_DIR`"
+  # Generate zipped output of fmriprep
+  zip -r "$GEAR_OUTPUT_DIR"/fmriprep_output_$(basename "$BIDS_DIR") "$FMRIPREP_OUTPUT_DIR"
+  chmod -R 777 $GEAR_OUTPUT_DIR
+  echo -e "Wrote: `ls $GEAR_OUTPUT_DIR`"
+else
+  echo "$CONTAINER Errors encountered during execution. Cleaning up and exiting."
 fi
 
-exit 0
+# Clean up
+rm -rf $WORKING_DIR
+rm -rf $FMRIPREP_OUTPUT_DIR
+
+exit $FMRIPREP_EXITSTATUS
