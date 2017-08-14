@@ -1,7 +1,7 @@
 #flywheel/fmriprep
 
 # Get the MRIQC algorithm from DockerHub
-FROM poldracklab/fmriprep:0.6.1
+FROM poldracklab/fmriprep:1.0.0-rc1
 # FROM bids/fmriprep:0.4.5
 MAINTAINER Flywheel <support@flywheel.io>
 
