@@ -21,12 +21,8 @@ CONTAINER='[flywheel/fmriprep]'
 ################################################################################
 # CONFIGURE ENV
 
-# source ${FLYWHEEL_BASE}/docker-env.sh
-# source /etc/fsl/fsl.sh
-# source /etc/afni/afni.sh
-#
-# # Configure bashrc to source FreeSurferEnv.sh
-# source $FREESURFER_HOME/FreeSurferEnv.sh &>/dev/null
+source ${FLYWHEEL_BASE}/docker-env.sh
+
 
 ################################################################################
 # VALIDATE INPUT DATA
