@@ -5,5 +5,8 @@ fMRIprep is a functional magnetic resonance image pre-processing pipeline that i
 This Gear is built to take a BIDS dataset archive (.tar or zip) and execute fMRIPrep. Outputs are provided as an archive in the output directory.
 
 ```
-docker run -ti --rm -v $(pwd)/input:/flywheel/v0/input -v $(pwd)/output:/flywheel/v0/output scitran/fmriprep
+docker run -ti --rm \
+    -v $(pwd)/input:/flywheel/v0/input \
+    -v $(pwd)/output:/flywheel/v0/output \
+    flywheel/fmriprep
 ```
