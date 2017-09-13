@@ -12,12 +12,81 @@
   },
   "license": "BSD-3-Clause",
   "inputs": {
-    "bids_dataset": {
-      "description": "Archive (.zip, .tgz, .tar) containing a BIDS Dataset.",
+    "T1w_NIfTI": {
+      "description": "T1w anatomical NIfTI file",
       "base": "file",
       "type": {
         "enum": [
-          "archive"
+          "nifti"
+        ]
+      }
+    },
+    "T2_NIfTI": {
+      "description": "T2 inplane NIfTI file",
+      "base": "file",
+      "optional": true,
+      "type": {
+        "enum": [
+          "nifti"
+        ]
+      }
+    },
+    "Functional_NIfTI_run-01": {
+      "description": "Functional NIfTI file",
+      "base": "file",
+      "type": {
+        "enum": [
+          "nifti"
+        ]
+      }
+    },
+    "Functional_NIfTI_run-02": {
+      "description": "Functional NIfTI file",
+      "base": "file",
+      "optional": true,
+      "type": {
+        "enum": [
+          "nifti"
+        ]
+      }
+    },
+    "Functional_NIfTI_run-03": {
+      "description": "Functional NIfTI file",
+      "base": "file",
+      "optional": true,
+      "type": {
+        "enum": [
+          "nifti"
+        ]
+      }
+    },
+    "Functional_NIfTI_run-04": {
+      "description": "Functional NIfTI file",
+      "base": "file",
+      "optional": true,
+      "type": {
+        "enum": [
+          "nifti"
+        ]
+      }
+    },
+    "Functional_NIfTI_run-05": {
+      "description": "Functional NIfTI file",
+      "base": "file",
+      "optional": true,
+      "type": {
+        "enum": [
+          "nifti"
+        ]
+      }
+    },
+    "Functional_NIfTI_run-06": {
+      "description": "Functional NIfTI file",
+      "base": "file",
+      "optional": true,
+      "type": {
+        "enum": [
+          "nifti"
         ]
       }
     }
@@ -27,6 +96,11 @@
       "description": "Use FreeSurfer to reconstruct surfaces from T1w/T2w structural images. If enabled, several steps in the fmriprep pipeline are added or replaced. [default=true]",
       "type": "boolean",
       "default": true
+    },
+    "Subject_ID": {
+      "description": "Subject identifier [default=01]",
+      "type": "string",
+      "default": "01"
     }
   }
 }
