@@ -24,6 +24,23 @@ CONTAINER='[flywheel/fmriprep]'
 source ${FLYWHEEL_BASE}/docker-env.sh
 
 
+###############################################################################
+# Parse config options from CONFIG file or MANIFEST
+
+if [[ -f $CONFIG_FILE ]]; then
+  eval $(jq -r '.config | to_entries[] | "config_\(.key)=\(.value)"' $CONFIG_FILE)
+else
+  CONFIG_FILE=$MANIFEST_FILE
+  eval $(jq -r '.config | to_entries[] | "config_\(.key)=\(.value.default)"' $CONFIG_FILE)
+fi
+
+# Boolean parsing of freesurfer config option
+if [[ $config_freesurfer == 'true' ]]; then
+  FREESURFER_FLAG=''
+else
+  FREESURFER_FLAG='--no-freesurfer'
+fi
+
 ################################################################################
 # VALIDATE INPUT DATA
 
@@ -66,7 +83,7 @@ BIDS_DIR=$(find $INPUT_DIR/* -maxdepth 0 -type d)
 ################################################################################
 # RUN FMRIPREP
 
-time /usr/local/miniconda/bin/fmriprep $BIDS_DIR $FMRIPREP_OUTPUT_DIR participant -w $WORKING_DIR
+time /usr/local/miniconda/bin/fmriprep $BIDS_DIR $FMRIPREP_OUTPUT_DIR participant -w $WORKING_DIR $FREESURFER_FLAG
 FMRIPREP_EXITSTATUS=$?
 
 
@@ -78,7 +95,8 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
   cp -a "$FMRIPREP_OUTPUT_DIR"/fmriprep/*.html $GEAR_OUTPUT_DIR
 
   # Generate zipped output of fmriprep
-  zip -r "$GEAR_OUTPUT_DIR"/fmriprep_output_$(basename "$BIDS_DIR") "$FMRIPREP_OUTPUT_DIR"
+  cd "$FMRIPREP_OUTPUT_DIR"
+  zip -r "$GEAR_OUTPUT_DIR"/fmriprep_output_$(basename "$BIDS_DIR") *
   chmod -R 777 $GEAR_OUTPUT_DIR
   echo -e "Wrote: `ls $GEAR_OUTPUT_DIR`"
 else
@@ -86,7 +104,7 @@ else
 fi
 
 # Clean up
-rm -rf $WORKING_DIR
-rm -rf $FMRIPREP_OUTPUT_DIR
+rm -rf "$WORKING_DIR"
+rm -rf "$FMRIPREP_OUTPUT_DIR"
 
 exit $FMRIPREP_EXITSTATUS
