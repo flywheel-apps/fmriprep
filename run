@@ -43,9 +43,8 @@ else
 fi
 
 
-
 ################################################################################
-# VALIDATE INPUT DATA and ORGANIZE
+# ORGANIZE
 
 # Make basic BIDS DIR structure
 BIDS_DIR=/bids/ds01
@@ -56,6 +55,38 @@ BIDS_FUNC=${BIDS_DIR_SUB}/func
 mkdir -p ${BIDS_DIR_SUB}
 mkdir -p ${BIDS_ANAT}
 mkdir -p ${BIDS_FUNC}
+
+
+################################################################################
+# Read JSON data from config
+
+# Run 1
+TR[1]=${config_Functional_NIfTI_run_01_TR}
+TASK[1]=${config_Functional_NIfTI_run_01_TASK}
+
+# Run 2
+TR[2]=${config_Functional_NIfTI_run_02_TR}
+TASK[2]=${config_Functional_NIfTI_run_02_TASK}
+
+# Run 3
+TR[3]=${config_Functional_NIfTI_run_03_TR}
+TASK[3]=${config_Functional_NIfTI_run_03_TASK}
+
+# Run 4
+TR[4]=${config_Functional_NIfTI_run_04_TR}
+TASK[4]=${config_Functional_NIfTI_run_04_TASK}
+
+# Run 5
+TR[5]=${config_Functional_NIfTI_run_05_TR}
+TASK[5]=${config_Functional_NIfTI_run_05_TASK}
+
+# Run 6
+TR[6]=${config_Functional_NIfTI_run_06_TR}
+TASK[6]=${config_Functional_NIfTI_run_06_TASK}
+
+
+################################################################################
+# VALIDATE INPUT DATA
 
 # T1w NIfTI directory
 T1FILE=$(find $INPUT_DIR/T1w_NIfTI -type f -name "*.nii.gz")
@@ -78,10 +109,19 @@ if [[ -z "${FUNC_DIRS}" ]]; then
   echo "${CONTAINER}  Minimum of 1 functional file required but 0 found!"
   exit 1
 else
-  for FD in $FUNC_DIRS; do
-    FUNCFILE=$(find $FD/* -type f -name "*.nii.gz")
-    RUN=$(echo -n $FD | tail -c 6)
-    cp "${FUNCFILE}" ${BIDS_FUNC}/${SUB_ID}_task-undefinedtask_${RUN}_bold.nii.gz
+  for i in $(seq 6); do
+    FD=$INPUT_DIR/Functional_NIfTI_run-0$i
+    if [[ -d $FD ]]; then
+
+      # Generate the JSON File for this run
+      JF=${BIDS_DIR_SUB}/task-${TASK[$i]}_bold.json
+      echo "{\"RepetitionTime\": ${TR[$i]}, \"TaskName\": \"${TASK[$i]}\"}" > ${JF}
+
+      # Copy functional file to bids dataset
+      FUNCFILE=$(find $FD/* -type f -name "*.nii.gz")
+      RUN=$(echo -n $FD | tail -c 6)
+      cp "${FUNCFILE}" ${BIDS_FUNC}/${SUB_ID}_task-${TASK[$i]//[[:blank:]]/}_${RUN}_bold.nii.gz
+    fi
   done
 fi
 
@@ -110,7 +150,7 @@ else
 fi
 
 # Clean up
-rm -rf "$WORKING_DIR"
-rm -rf "$FMRIPREP_OUTPUT_DIR"
+#rm -rf "$WORKING_DIR"
+#rm -rf "$FMRIPREP_OUTPUT_DIR"
 
 exit $FMRIPREP_EXITSTATUS

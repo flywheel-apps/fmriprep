@@ -101,6 +101,66 @@
       "description": "Subject identifier [default=01]",
       "type": "string",
       "default": "01"
+    },
+    "Functional_NIfTI_run_01_TR": {
+      "description": "Repetition_Time in seconds",
+      "type": "number",
+      "default": 2
+    },
+    "Functional_NIfTI_run_01_TASK": {
+      "description": "Task for Run01",
+      "type": "string",
+      "default": "firstrun"
+    },
+    "Functional_NIfTI_run_02_TR": {
+      "description": "Repetition_Time in seconds",
+      "type": "number",
+      "default": 2
+    },
+    "Functional_NIfTI_run_02_TASK": {
+      "description": "Task for Run02",
+      "type": "string",
+      "default": "secondrun"
+    },
+    "Functional_NIfTI_run_03_TR": {
+      "description": "Repetition_Time in seconds",
+      "type": "number",
+      "default": 2
+    },
+    "Functional_NIfTI_run_03_TASK": {
+      "description": "Task for Run03",
+      "type": "string",
+      "default": "thirdrun"
+    },
+    "Functional_NIfTI_run_04_TR": {
+      "description": "Repetition_Time in seconds",
+      "type": "number",
+      "default": 2
+    },
+    "Functional_NIfTI_run_04_TASK": {
+      "description": "Task for Run04",
+      "type": "string",
+      "default": "fourthrun"
+    },
+    "Functional_NIfTI_run_05_TR": {
+      "description": "Repetition_Time in seconds",
+      "type": "number",
+      "default": 2
+    },
+    "Functional_NIfTI_run_05_TASK": {
+      "description": "Task for Run05",
+      "type": "string",
+      "default": "fifthrun"
+    },
+    "Functional_NIfTI_run_06_TR": {
+      "description": "Repetition_Time in seconds",
+      "type": "number",
+      "default": 2
+    },
+    "Functional_NIfTI_run_06_TASK": {
+      "description": "Task for Run06",
+      "type": "string",
+      "default": "sixthrun"
     }
   }
 }
