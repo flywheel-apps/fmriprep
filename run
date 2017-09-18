@@ -134,7 +134,7 @@ FMRIPREP_EXITSTATUS=$?
 
 
 ################################################################################
-# CLEANUP OUTPUTS & GENERATE METADATA
+# CLEANUP OUTPUTS
 
 if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
   # Copy reports to top level of output directory
@@ -150,7 +150,7 @@ else
 fi
 
 # Clean up
-#rm -rf "$WORKING_DIR"
-#rm -rf "$FMRIPREP_OUTPUT_DIR"
+rm -rf "$WORKING_DIR"
+rm -rf "$FMRIPREP_OUTPUT_DIR"
 
 exit $FMRIPREP_EXITSTATUS
