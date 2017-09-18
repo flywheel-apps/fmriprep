@@ -11,10 +11,11 @@
 FLYWHEEL_BASE=/flywheel/v0
 MANIFEST_FILE=$FLYWHEEL_BASE/manifest.json
 CONFIG_FILE=$FLYWHEEL_BASE/config.json
-INPUT_DIR=$FLYWHEEL_BASE/input/bids_dataset
+INPUT_DIR=$FLYWHEEL_BASE/input
 GEAR_OUTPUT_DIR=$FLYWHEEL_BASE/output
 FMRIPREP_OUTPUT_DIR=$GEAR_OUTPUT_DIR/fmriprep_output
 WORKING_DIR=$GEAR_OUTPUT_DIR/work
+
 CONTAINER='[flywheel/fmriprep]'
 
 
@@ -41,43 +42,88 @@ else
   FREESURFER_FLAG='--no-freesurfer'
 fi
 
+
+################################################################################
+# ORGANIZE
+
+# Make basic BIDS DIR structure
+BIDS_DIR=/bids/ds01
+SUB_ID=sub-${config_Subject_ID}
+BIDS_DIR_SUB=${BIDS_DIR}/${SUB_ID}
+BIDS_ANAT=${BIDS_DIR_SUB}/anat
+BIDS_FUNC=${BIDS_DIR_SUB}/func
+mkdir -p ${BIDS_DIR_SUB}
+mkdir -p ${BIDS_ANAT}
+mkdir -p ${BIDS_FUNC}
+
+
+################################################################################
+# Read JSON data from config
+
+# Run 1
+TR[1]=${config_Functional_NIfTI_run_01_TR}
+TASK[1]=${config_Functional_NIfTI_run_01_TASK}
+
+# Run 2
+TR[2]=${config_Functional_NIfTI_run_02_TR}
+TASK[2]=${config_Functional_NIfTI_run_02_TASK}
+
+# Run 3
+TR[3]=${config_Functional_NIfTI_run_03_TR}
+TASK[3]=${config_Functional_NIfTI_run_03_TASK}
+
+# Run 4
+TR[4]=${config_Functional_NIfTI_run_04_TR}
+TASK[4]=${config_Functional_NIfTI_run_04_TASK}
+
+# Run 5
+TR[5]=${config_Functional_NIfTI_run_05_TR}
+TASK[5]=${config_Functional_NIfTI_run_05_TASK}
+
+# Run 6
+TR[6]=${config_Functional_NIfTI_run_06_TR}
+TASK[6]=${config_Functional_NIfTI_run_06_TASK}
+
+
 ################################################################################
 # VALIDATE INPUT DATA
 
-# Check if the input directory is not empty
-if [[ "$(ls -A $INPUT_DIR)" ]] ; then
-    echo "$CONTAINER  Starting..."
-else
-    echo "Input directory is empty: $INPUT_DIR"
-    exit 1
-fi
-
-# Find input file in input directory with the extension .nii, .nii.gz
-input_file=`find $INPUT_DIR -iname '*.zip' -o -iname '*.tgz' -o -iname '*.tar'`
-
-# If input file not found, raise error
-if [[ ! -e $input_file ]]; then
-    echo "No valid files were found within input directory $INPUT_DIR"
-    exit 1
-fi
-
-
-################################################################################
-# CREATE A BIDS FORMATTED DIRECTORY
-
-# Unpack the archive
-if [[ "$input_file" == *.zip ]] ; then
-  echo "$CONTAINER  Unzipping $input_file"
-  unzip -q "$input_file" -d "$INPUT_DIR"
-elif [[ "$input_file" == *.tar ]] || [[ "$input_file" == *.tgz ]] ; then
-  echo "$CONTAINER  Extracting $input_file"
-  tar -xf "$input_file" -C $INPUT_DIR
-else
-  echo "Unsupported filetype ["$input_file"]! Exiting."
+# T1w NIfTI directory
+T1FILE=$(find $INPUT_DIR/T1w_NIfTI -type f -name "*.nii.gz")
+if [[ -z "${T1FILE}" ]]; then
+  echo "${CONTAINER}  T1 file required but not found!"
   exit 1
+else
+  cp "${T1FILE}" ${BIDS_ANAT}/${SUB_ID}_T1w.nii.gz
 fi
 
-BIDS_DIR=$(find $INPUT_DIR/* -maxdepth 0 -type d)
+# T2w (optional)
+if [[ -d $INPUT_DIR/T2_NIfTI ]]; then
+  T2FILE=$(find $INPUT_DIR/T2_NIfTI -type f -name "*.nii.gz")
+  cp "${T2FILE}" ${BIDS_ANAT}/${SUB_ID}_inplaneT2.nii.gz
+fi
+
+# FUNCTIONALS (must have at least one)
+FUNC_DIRS=$(find $INPUT_DIR -type d -name "Functional*")
+if [[ -z "${FUNC_DIRS}" ]]; then
+  echo "${CONTAINER}  Minimum of 1 functional file required but 0 found!"
+  exit 1
+else
+  for i in $(seq 6); do
+    FD=$INPUT_DIR/Functional_NIfTI_run-0$i
+    if [[ -d $FD ]]; then
+
+      # Generate the JSON File for this run
+      JF=${BIDS_DIR_SUB}/task-${TASK[$i]}_bold.json
+      echo "{\"RepetitionTime\": ${TR[$i]}, \"TaskName\": \"${TASK[$i]}\"}" > ${JF}
+
+      # Copy functional file to bids dataset
+      FUNCFILE=$(find $FD/* -type f -name "*.nii.gz")
+      RUN=$(echo -n $FD | tail -c 6)
+      cp "${FUNCFILE}" ${BIDS_FUNC}/${SUB_ID}_task-${TASK[$i]//[[:blank:]]/}_${RUN}_bold.nii.gz
+    fi
+  done
+fi
 
 
 ################################################################################
@@ -88,7 +134,7 @@ FMRIPREP_EXITSTATUS=$?
 
 
 ################################################################################
-# CLEANUP OUTPUTS & GENERATE METADATA
+# CLEANUP OUTPUTS
 
 if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
   # Copy reports to top level of output directory
