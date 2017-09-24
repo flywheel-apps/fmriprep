@@ -35,33 +35,14 @@ else
     exit 1
 fi
 
-# Find input file in input directory with the extension .nii, .nii.gz
-input_file=`find $INPUT_DIR -iname '*.zip' -o -iname '*.tgz' -o -iname '*.tar'`
-
-# If input file not found, raise error
-if [[ ! -e $input_file ]]; then
-    echo "No valid files were found within input directory $INPUT_DIR"
-    exit 1
-fi
 
 
 ################################################################################
 # CREATE A BIDS FORMATTED DIRECTORY
-
-# Unpack the archive
-if [[ "$input_file" == *.zip ]] ; then
-  echo "$CONTAINER  Unzipping $input_file"
-  unzip -q "$input_file" -d "$INPUT_DIR"
-elif [[ "$input_file" == *.tar ]] || [[ "$input_file" == *.tgz ]] ; then
-  echo "$CONTAINER  Extracting $input_file"
-  tar -xf "$input_file" -C $INPUT_DIR
-else
-  echo "Unsupported filetype ["$input_file"]! Exiting."
-  exit 1
-fi
-
-BIDS_DIR=$(find $INPUT_DIR/* -maxdepth 0 -type d)
-
+#   Use Python SDK to accomplish this task
+python ${FLYWHEEL_BASE}/create_archive.py
+#BIDS_DIR=$(find $INPUT_DIR/* -maxdepth 0 -type d)
+BIDS_DIR=$INPUT_DIR
 
 ################################################################################
 # RUN FMRIPREP
