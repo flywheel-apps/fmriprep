@@ -23,7 +23,7 @@ config_contents = json.loads(fp.read())
 fp.close()
 # Get apikey and session ID number from config file
 api_key = str(config_contents['config']['api_key'])
-container_id = str(config_contents['config']['session_id'])
+container_id = str(config_contents['config']['container_id'])
 
 ## Create SDK client
 print("Create SDK client")

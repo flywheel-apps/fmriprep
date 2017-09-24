@@ -6,21 +6,22 @@
   "maintainer": "Flywheel <support@flywheel.io>",
   "source": "https://github.com/flywheel-apps/fmriprep",
   "url": "https://github.com/poldracklab/fmriprep",
-  "version": "0.1",
+  "version": "0.1.1rc1",
   "custom": {
-    "docker-image": "flywheel/fmriprep:v0.1"
+    "docker-image": "flywheel/fmriprep:v0.1.1rc1"
   },
   "license": "BSD-3-Clause",
-  "inputs": {
-    "bids_dataset": {
-      "description": "Archive (.zip, .tgz, .tar) containing a BIDS Dataset.",
-      "base": "file",
-      "type": {
-        "enum": [
-          "archive"
-        ]
-      }
-    }
-  },
-  "config": {}
+  "inputs": {},
+  "config": {
+	"api_key": {
+		"description": "Users API key",
+      		"default": "",
+      		"type": "string"
+		},
+	"container_id": {
+		"description": "Project or Session ID",
+      		"default": "",
+      		"type": "string"
+		}
+	}
 }
