@@ -29,7 +29,7 @@ source ${FLYWHEEL_BASE}/docker-env.sh
 ################################################################################
 # CREATE A BIDS FORMATTED DIRECTORY
 #   Use Python SDK to accomplish this task
-python ${FLYWHEEL_BASE}/create_archive.py
+/usr/local/miniconda/bin/python ${FLYWHEEL_BASE}/create_archive.py
 #BIDS_DIR=$(find $INPUT_DIR/* -maxdepth 0 -type d)
 BIDS_DIR=$INPUT_DIR
 

@@ -3,9 +3,12 @@ import re
 
 #### Define functions
 
-def get_flywheel_hierarchy(fw, container_id):
+def get_flywheel_hierarchy(fw, container_id, container_type):
     """
-        Takes fw client and a container id as input
+        Takes fw client, a container id and container_type as input
+
+        container_id: the ID of the session or project
+        container_type: the type of the ID, either 'session' or 'project'
 
         Returns the flywheel tree
 
@@ -40,24 +43,19 @@ def get_flywheel_hierarchy(fw, container_id):
     """
 
     # Determine if ID is a project or a session ID
-    try:
-        # Try and get a project using the container ID
-        #    If container_id is a session ID, this will raise an error
-        #       and will execute the except block
-        project = fw.get_project(container_id)
+    if container_type == 'project':
         # Get list of sessions within project
         project_sessions = fw.get_project_sessions(container_id)
         project_id = container_id
-    except:
-        try:
-            # If container ID is actually a session, get the specific session
-            session = fw.get_session(container_id)
-            # Place the single session within a list to iterate over (mirrors project_sessions above)
-            project_sessions = [session]
-            project_id = session['project']
-        except:
-            print("Container ID %s is not associated with a project or a session" % container_id)
-            raise Exception
+    elif container_type == 'session':
+        # If container ID is actually a session, get the specific session
+        session = fw.get_session(container_id)
+        # Place the single session within a list to iterate over (mirrors project_sessions above)
+        project_sessions = [session]
+        project_id = session['project']
+    else:
+        print("Container ID %s is not associated with a project or a session" % container_id)
+        raise Exception
 
     # Create dictionary to place flywheel hierarchy info
     flywheel_hierarchy = {project_id: {}}
@@ -90,13 +88,17 @@ def get_flywheel_hierarchy(fw, container_id):
                 ## Sometimes measurement is not present - if not, assign measurement value to be None
                 if 'measurements' in f.keys():
                     # my BIDS code is assuming that there is a one-to-one relationship between files and measurements
-                    # Probably a bad assumption and this should be improved... 
+                    # Probably a bad assumption and this should be improved...
                     measurement = f['measurements'][0]
                 else:
                     measurement = None
                 # Get type - we are only concerned with dicom and nifti files
-                #   NIfTI becuase that's what BIDS requires
-                #   DICOM because 
+                #   NIfTI because that's what BIDS requires
+                #   DICOM because it provides the meta information
+                # If type not in keys, continue
+                if 'type' not in f.keys():
+                    continue
+                # Determine file type
                 ftype = f['type']
                 if ftype in ['dicom', 'nifti']:
                     flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['files'].append(filename)

@@ -12,7 +12,7 @@ from create_archive_funcs import get_flywheel_hierarchy, create_bids_hierarchy
 flywheel_basedir = os.environ['FLYWHEEL']
 rootdir = os.path.join(flywheel_basedir, 'input', 'bids_dataset')
 if not os.path.exists(rootdir):
-    os.mkdir(rootdir)
+    os.makedirs(rootdir)
 
 # Read in config file
 config_file = os.path.join(flywheel_basedir, 'config.json')
@@ -22,8 +22,10 @@ fp = open(config_file, 'r')
 config_contents = json.loads(fp.read())
 fp.close()
 # Get apikey and session ID number from config file
-api_key = str(config_contents['config']['api_key'])
-container_id = str(config_contents['config']['container_id'])
+api_key = str(config_contents['inputs']['api_key']['key'])
+container_id = str(config_contents['destination']['id'])
+container_type = str(config_contents['destination']['type'])
+
 
 ## Create SDK client
 print("Create SDK client")
@@ -31,7 +33,8 @@ fw = flywheel.Flywheel(api_key)
 
 ## Create flywheel hierarchy
 print("Create Flywheel Hierarchy")
-flywheel_hierarchy = get_flywheel_hierarchy(fw, container_id)
+flywheel_hierarchy = get_flywheel_hierarchy(fw, container_id, container_type)
+pprint.pprint(flywheel_hierarchy)
 
 ### Create bids hierarchy
 print("Create BIDS Hierarchy")
