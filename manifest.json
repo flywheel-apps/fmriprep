@@ -16,5 +16,11 @@
       "base": "api-key"
     }
   },
-  "config": {}
+  "config": {
+    "freesurfer": {
+      "description": "Use FreeSurfer to reconstruct surfaces from T1w/T2w structural images. If enabled, several steps in the fmriprep pipeline are added or replaced. [default=true]",
+      "type": "boolean",
+      "default": true
+    }
+  }
 }

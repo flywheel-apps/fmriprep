@@ -24,6 +24,22 @@ CONTAINER='[flywheel/fmriprep]'
 source ${FLYWHEEL_BASE}/docker-env.sh
 
 
+###############################################################################
+# Parse config options from CONFIG file or MANIFEST
+
+if [[ -f $CONFIG_FILE ]]; then
+  eval $(jq -r '.config | to_entries[] | "config_\(.key)=\(.value)"' $CONFIG_FILE)
+else
+  CONFIG_FILE=$MANIFEST_FILE
+  eval $(jq -r '.config | to_entries[] | "config_\(.key)=\(.value.default)"' $CONFIG_FILE)
+fi
+
+# Boolean parsing of freesurfer config option
+if [[ $config_freesurfer == 'true' ]]; then
+  FREESURFER_FLAG=''
+else
+  FREESURFER_FLAG='--no-freesurfer'
+fi
 
 
 ################################################################################
@@ -48,7 +64,7 @@ fi
 ################################################################################
 # RUN FMRIPREP
 
-time /usr/local/miniconda/bin/fmriprep $BIDS_DIR $FMRIPREP_OUTPUT_DIR participant -w $WORKING_DIR
+time /usr/local/miniconda/bin/fmriprep $BIDS_DIR $FMRIPREP_OUTPUT_DIR participant -w $WORKING_DIR $FREESURFER_FLAG
 FMRIPREP_EXITSTATUS=$?
 
 
