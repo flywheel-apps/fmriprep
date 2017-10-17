@@ -52,7 +52,7 @@ def get_flywheel_hierarchy(fw, container_id, container_type):
         session = fw.get_session(container_id)
         # Place the single session within a list to iterate over (mirrors project_sessions above)
         project_sessions = [session]
-        project_id = session['project']
+        project_id = session.get('project')
     else:
         print("Container ID %s is not associated with a project or a session" % container_id)
         raise Exception
@@ -62,11 +62,11 @@ def get_flywheel_hierarchy(fw, container_id, container_type):
     # Iterate over every session within project
     for p_ses in project_sessions:
         # Get session ID, session label and subject code to place in dictionary
-        session_id = p_ses['_id']
-        # If no subject code present, continue... 
+        session_id = p_ses.get('_id')
+        # If no subject code present, continue...
         if not ('code' in p_ses['subject'].keys()):
             continue
-        flywheel_hierarchy[project_id][session_id] = {'label': p_ses['label'],
+        flywheel_hierarchy[project_id][session_id] = {'label': p_ses.get('label'),
                                                      'subject_code': p_ses['subject']['code'],
                                                      'acquisitions': {}
                                                      }
@@ -75,9 +75,9 @@ def get_flywheel_hierarchy(fw, container_id, container_type):
         # Iterate over all acquisitions within session
         for s_acq in session_acqs:
             # Get acquistiion ID and place in dictionary
-            acq_id = s_acq['_id']
-            flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id] = {'label': s_acq['label'],
-                                                                                  'created': s_acq['created'],
+            acq_id = s_acq.get('_id')
+            flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id] = {'label': s_acq.get('label'),
+                                                                                  'created': s_acq.get('created'),
                                                                                   'files': [],
                                                                                   'measurements': [],
                                                                                   'type': []
@@ -92,15 +92,12 @@ def get_flywheel_hierarchy(fw, container_id, container_type):
                     measurement = f['measurements'][0]
                 else:
                     measurement = None
-                # Get type - we are only concerned with dicom and nifti files
+                # Get type - we are only concerned with nifti and source code files
                 #   NIfTI because that's what BIDS requires
-                #   DICOM because it provides the meta information
-                # If type not in keys, continue
-                if 'type' not in f.keys():
-                    continue
+                #   source code because we need sidecar JSON files
                 # Determine file type
-                ftype = f['type']
-                if ftype in ['dicom', 'nifti']:
+                ftype = f.get('type')
+                if ftype in ['nifti', 'source code']:
                     flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['files'].append(filename)
                     flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['measurements'].append(measurement)
                     flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['type'].append(ftype)
@@ -204,39 +201,51 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
                 # Get nifti file
                 # NOTE! If there are multiple nifti files within the one acquisition, this will take the last one in
                 #         the list, under the assumption that it is the most recent
-                nifti_idx = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['type'].index('nifti', -1)
-                nifti_filename = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['files'][nifti_idx]
-                # Define the extension
-                extension = nifti_filename.split('.', 1)[-1]
+                reversed_typelist = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['type'][::-1]
+                nifti_idx = reversed_typelist.index('nifti')
+                reversed_filelist = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['files'][::-1]
+                nifti_filename = reversed_filelist[nifti_idx]
+                # Define the extension (.nii or .nii.gz)
+                if '.nii.gz' in nifti_filename:
+                    extension = '.nii.gz'
+                if '.nii' in nifti_filename:
+                    extension = '.nii'
+                else:
+                    print(nifti_filename)
+                    print('we here')
+                    extension = 'NONONONO'
 
                 # Define the path of the desired nifti file within the flywheel hierarchy
                 flywheel_filepath = os.path.join(project, session_id, acq_id, nifti_filename)
 
-                ### HANDLE T1w images
-                if 'Anatomy_t1w' in measurements or 'anatomy_t1w' in measurements:
+                ### Making BIDS
+                # Generate the participant information (i.e. sub-001)
+                participant_bids = make_bids_spec('sub-', subject_code, 'label')
+                # Generate the session information (i.e. ses-1234)
+                session_bids = make_bids_spec('ses-', session_label, 'label')
+                # Get acquistion label
+                acquisition_label = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['label']
+
+                ### HANDLE T1w/T2w images
+                if ('anatomy_t1w' in measurements) or ('anatomy_t2w' in measurements):
+                    # Define dirname
+                    bids_dirname = 'anat'
 
                     #### Making BIDS
-                    # Generate the participant information (i.e. sub-001)
-                    participant_bids = make_bids_spec('sub-', subject_code, 'label')
-                    # Generate the session information (i.e. ses-1234)
-                    session_bids = make_bids_spec('ses-', session_label, 'label')
-                    # Create the new name of the file that conforms to bids hierarchy
-                    bids_filename = '%s_%s_T1w.%s' % (participant_bids, session_bids, extension)
-                    # Define the path of the new nifti file within the bids hierarchy
-                    bids_filepath = os.path.join(participant_bids, session_bids, 'anat', bids_filename)
-
-                    # Append to file lookup
-                    files_lookup.append([flywheel_filepath, bids_filepath])
-
-                    # Populate bids hierarchy
-                    populate_bids_hierarchy(bids_filepath, bids_hierarchy_tmp)
+                    # Create the new name of the file that conforms to bids spec
+                    if 'anatomy_t1w' in measurements:
+                        desc = 'T1w'
+                    if 'anatomy_t2w' in measurements:
+                        desc = 'T2w'
+                    bids_filename = '%s_%s_%s%s' % (participant_bids, session_bids, desc, extension)
 
                 ### HANDLE Functional images
-                if 'Functional' in measurements or 'functional' in measurements:
+                elif 'functional' in measurements:
+                    # Define dirname
+                    bids_dirname = 'func'
 
                     #### Making BIDS
                     # Use the acquistion label as the task name (i.e. task-balloontask or task-rest)
-                    acquisition_label = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['label']
                     # If rest is in the acquisition label, will classify as resting state
                     if 'rest' in acquisition_label.lower():
                         taskname = 'task-rest'
@@ -253,20 +262,62 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
                     else:
                         bids_func_desc = 'bold'
 
-                    # Generate the participant information (i.e. sub-001)
-                    participant_bids = make_bids_spec('sub-', subject_code, 'label')
-                    # Generate the session information (i.e. ses-1234)
-                    session_bids = make_bids_spec('ses-', session_label, 'label')
-                    # Create the new name of the file that conforms to bids hierarchy
-                    bids_filename = '%s_%s_%s_%s.%s' % (participant_bids, session_bids, taskname, bids_func_desc, extension)
-                    # Define the path of the new nifti file within the bids hierarchy
-                    bids_filepath = os.path.join(participant_bids, session_bids, 'func', bids_filename)     
+                    # Create the new name of the file that conforms to bids spec
+                    bids_filename = '%s_%s_%s_%s%s' % (participant_bids, session_bids, taskname, bids_func_desc, extension)
 
-                    # Append to file lookup
-                    files_lookup.append([flywheel_filepath, bids_filepath])
+                ### HANDLE Fieldmap images
+                elif 'field_map' in measurements:
+                    # Define dirname
+                    bids_dirname = 'fmap'
 
-                    # Populate bids hierarchy
-                    populate_bids_hierarchy(bids_filepath, bids_hierarchy_tmp)
+                    #### Making BIDS
+                    # determine type of fieldmap from acquisition label
+                    #
+                    # Possible field maps
+                    # (1)  phasediff & magnitude (2 images)
+                    #   _phasediff & _magnitude1/_magnitude2
+                    # (2) 2 phase images & 2 magnitude images
+                    #  _phase1/_phase2 & _magnitude1/_magnitude2
+                    # (3) single real fieldmap NOTE!!! NOT HANDLING THIS CASE - not sure how!!
+                    #  _magnitude & _fieldmap
+                    # (4) multiple phase encoded directions
+                    #  _dir-<dirlabel>_epi where dirlabel is AP/PA/LR/RL etc...
+                    # NOTE: all files above need a sidecar json except for magnitude images
+                    acquisition_label_lower = acquisition_label.lower()
+                    # (1) If phasediff
+                    if 'phasediff' in acquisition_label_lower:
+                        bids_field_desc = 'phasediff'
+                    # (2) if magnitude
+                    elif 'mag' in acquisition_label_lower:
+                        bids_field_desc = 'magnitude'
+                    # (4) If spin echo
+                    if 'spinecho' in acquisition_label_lower:
+                        ## Determine dir_label
+                        re_match = re.search('AP|PA|LR|RL', acquisition_label)
+                        if re_match:
+                            dir_label = acquisition_label[re_match.start():re_match.end()]
+                        else:
+                            dir_label = 'unknown'
+                        bids_field_desc = 'dir-%s_epi' % dir_label
+                    # Create the new name of the file that conforms to bids spec
+                    bids_filename = '%s_%s_%s%s' % (participant_bids, session_bids, bids_field_desc, extension)
+
+                else:
+                    continue
+
+                ### TODO: If 'run%d' at the end of the acquisition label -- honor that number and change to BIDS format
+                # 'task-foorun1' -> 'task-foo_run-1'
+                bids_filename = re.sub(r'(run)(\d)', r'_\1-\2', bids_filename)
+
+                # Now append directory
+                # Define the path of the new nifti file within the bids hierarchy
+                bids_filepath = os.path.join(participant_bids, session_bids, bids_dirname, bids_filename)
+                # Append to file lookup
+                files_lookup.append([flywheel_filepath, bids_filepath])
+                # Populate bids hierarchy
+                populate_bids_hierarchy(bids_filepath, bids_hierarchy_tmp)
+
+
 
     ### Iterate over files looking for duplicates and add run numbers if necessary
     for sub_dir in bids_hierarchy_tmp.keys():
@@ -299,12 +350,12 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
                             break
                     # Now rename bids filename (variable name: 'bbb')
                     #    sub-<label>_ses-<label>_T1w.nii.gz
-                    #               => 
-                    #        sub-<label>_ses-<label>_run-<index>_T1w.nii.gz 
+                    #               =>
+                    #        sub-<label>_ses-<label>_run-<index>_T1w.nii.gz
                     #
                     #    sub-<label>_ses-<label>_task-<label>_bold.nii.gz
                     #               =>
-                    #        sub-<label>_ses-<label>_task-<label>_run-<index>_bold.nii.gz 
+                    #        sub-<label>_ses-<label>_task-<label>_run-<index>_bold.nii.gz
                     bbb_new = re.sub(r'(_T1w|_bold|_sbref)', r'_run-%d\1' % (idx+1), bbb)
                     # Update the files_lookup information
                     files_lookup[idxx][1] = bbb_new
@@ -340,7 +391,7 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
             #       it seems like there is a distinction between task NAME and task LABEL where
             #       task LABEL has restrictions but task NAME does not...
             # To be safe, I'll make it the TASK LABEL
-            #meta_info['TaskName'] = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['label']
+            #NOT THIS:meta_info['TaskName'] = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['label']
             # Pull task label out of bids filename
             find_taskname = re.search('task-[a-zA-Z0-9]+', b)
             meta_info['TaskName'] = b[find_taskname.start()+5:find_taskname.end()]

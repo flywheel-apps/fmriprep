@@ -28,14 +28,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "623765726354fsd72348573476fjh": {
                         "label": "fMRI task ",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}}}}
 run_print_test(description, flywheel_hierarchy)
@@ -52,14 +52,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "623765726354fsd7263476s876fjh": {
                         "label": "fMRI task ",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}},
         "48375jdfkjdsf983498234": {
@@ -70,14 +70,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "623765726354fsd7263476s876fjh": {
                         "label": "fMRI task ",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}},
                     }}
@@ -97,14 +97,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "623765726354fsd7263476s876fjh": {
                         "label": "fMRI task ",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}},
         "48375jdfkjdsf983498234": {
@@ -115,14 +115,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "623765726354fsd7263476s876fjh": {
                         "label": "fMRI task ",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}}
                     }}
@@ -142,14 +142,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "623765726354fsd7263476s876fjh": {
                         "label": "fMRI task ",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}},
         "123445345435": {
@@ -160,14 +160,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "62y6667777jh": {
                         "label": "fMRI task ",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}},
         "483222234": {
@@ -178,14 +178,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "62377sdkjfhaiueyr666764jh": {
                         "label": "fMRI task ",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}},
         "222880234": {
@@ -196,14 +196,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "623765726354fsd7263476s876fjh": {
                         "label": "fMRI task ",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}}}}
 run_print_test(description, flywheel_hierarchy)
@@ -220,14 +220,14 @@ flywheel_hierarchy = {
                         "label": "T1w",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "6237610s877763": {
                         "label": "task-balloontask",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}},
         "123445345435": {
@@ -238,14 +238,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "62y8767777jh": {
                         "label": "task-taskballoon",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}},
         "483222234": {
@@ -256,14 +256,14 @@ flywheel_hierarchy = {
                         "label": "T1w",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "62377sdkxxjfhaiuex": {
                         "label": "task-taskballoon",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}},
         "222880234": {
@@ -274,14 +274,14 @@ flywheel_hierarchy = {
                         "label": "T1w",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "6237italjsd843727": {
                         "label": "task-taskballoon",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }},
                     }}}
@@ -299,34 +299,34 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE 1",
                         "created": "2017-09-19T10:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "62asdfsafdh": {
                         "label": "T1 MPRAGE 2",
                         "created": "2017-09-19T14:10:09.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "62skldfjuh": {
                         "label": "T1 MPRAGE 3",
                         "created": "2017-09-20T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "982734adsdf": {
                         "label": "fMRI task ",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}}}}
 
 run_print_test(description, flywheel_hierarchy, print_files_lookup=True)
 ## Test #7
-description = "multiple Functional images"
+description = "multiple functional images"
 flywheel_hierarchy = {
     "8aa3d4574587asj": {
         "48375938745s76f6ds767sd6": {
@@ -337,28 +337,28 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE 1",
                         "created": "2017-09-19T10:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "62asdfsafdh": {
                         "label": "fMRI task",
                         "created": "2017-09-19T13:10:09.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         },
                     "62skldfjuh": {
                         "label": "fMRI task",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         },
                     "982734adsdf": {
                         "label": "fMRI task",
                         "created": "2017-09-25T08:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}}}}
 run_print_test(description, flywheel_hierarchy, print_files_lookup=True)
@@ -375,14 +375,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "623765726354fsd7263476s876fjh": {
                         "label": "fMRI task ",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}}}}
 run_print_test(description, flywheel_hierarchy)
@@ -398,14 +398,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom']
                         },
                     "623765726354fsd7263476s876fjh": {
                         "label": "fMRI task ",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom']
                         }}}}}
 run_print_test(description, flywheel_hierarchy)
@@ -444,14 +444,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "6563765726354fsd7263476s876fjh": {
                         "label": "fMRI_task",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}},
         "48375jdfkjdsf983498234": {
@@ -462,14 +462,14 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-20T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "343765726354fsd7263476s876fjh": {
                         "label": "fMRI_task",
                         "created": "2017-09-20T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }}},
                     }}
@@ -543,14 +543,14 @@ flywheel_hierarchy = {
                         "label": "T1_MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "623765726354fsd72348573476fjh": {
                         "label": "fMRI_task_thisisthetask_check_test",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }
                     }}}}
@@ -569,21 +569,21 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "623765726354fsd72348573476fjh": {
                         "label": "fMRI task ",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         },
                     "12654sadflkje87we87weradsf": {
                         "label": "rest fMRI task",
                         "created": "2017-09-19T10:39:58.721Z",
                         "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         },
                     }}}}
@@ -602,35 +602,35 @@ flywheel_hierarchy = {
                         "label": "T1 MPRAGE",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                        'measurements': ['Anatomy_t1w', None],
+                        'measurements': ['anatomy_t1w', None],
                         'type': ['dicom', 'nifti']
                         },
                     "234526354fsd723485734fsrt": {
                         "label": "fMRI_REST_AP",
                         "created": "2017-09-19T14:39:58.721Z",
                         "files": ['rfMRI_REST_AP.zip', 'rfMRI_REST_AP.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         },
                     "345sadflkje87we87weradsf": {
                         "label": "fMRi_REST_SBRef",
                         "created": "2017-09-19T10:39:58.721Z",
                         "files": ['sbref_dicom.zip', 'sbref.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         },
                     "456756756756623432klj": {
                         "label": "fMRI_task_AP",
                         "created": "2017-09-19T15:39:58.721Z",
                         "files": ['rfMRI_task_AP.zip', 'rfMRI_task_AP.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         },
                     "5676663441265dsf": {
                         "label": "fMRi_task_AP_SBRef",
                         "created": "2017-09-19T15:39:58.721Z",
                         "files": ['task_sbref_dicom.zip', 'task_sbref.nii.gz'],
-                        'measurements': ['Functional', None],
+                        'measurements': ['functional', None],
                         'type': ['dicom', 'nifti']
                         }
                     }}}}
@@ -638,7 +638,193 @@ run_print_test(description, flywheel_hierarchy)
 
 ### Berkeley example
 description = "Berkeley example"
-#run_print_test(description, flywheel_hierarchy)
+flywheel_hierarchy = {
+    "59c275f0f5187a001d725b84": {
+        "59c1ba4bf5187a001d725b6f": {
+                "label": "2017-09-19 14:35",
+                "subject_code": "HERO_gka1",
+                "acquisitions": {
+                    "1": {
+                        "label": "SpinEchoFieldMap_AP",
+                        "created": "2017-09-19T14:39:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091919393376149693793.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919393376149693793.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919393376149693793.0.0.0.json'
+                            ],
+                        'measurements': ['field_map', None, None],
+                        'type': ['dicom', 'nifti', 'source code']
+                        },
+                    "2": {
+                        "label": "SpinEchoFieldMap_PA",
+                        "created": "2017-09-19T14:40:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091919401467612294451.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919401467612294451.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919401467612294451.0.0.0.json'
+                            ],
+                        'measurements': ['field_map', None, None],
+                        'type': ['dicom', 'nifti', 'source code']
+                        },
+                    "3": {
+                        "label": "tfMRI_LFContrast_PA_run1_SBRef",
+                        "created": "2017-09-19T14:42:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091919421021234395122.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919421021234395122.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919421021234395122.0.0.0.json'
+                            ],
+                        'measurements': ['functional', None, None],
+                        'type': ['dicom', 'nifti', 'source code']
+                        },
+                    "4": {
+                        "label": "tfMRI_LFContrast_PA_run1",
+                        "created": "2017-09-19T14:42:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091919421231599295123.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919421231599295123.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919421231599295123.0.0.0.json',
+                            '1_qa_report.png',
+                            '1_mriqc.qa.html'
+                            ],
+                        'measurements': ['functional', None, None, None, 'functional'],
+                        'type': ['dicom', 'nifti', 'source code', 'qa', 'qa']
+                        },
+                    "5": {
+                        "label": "tfMRI_LFContrast_AP_run1_SBRef",
+                        "created": "2017-09-19T14:50:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091919493668688474262.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919493668688474262.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919493668688474262.0.0.0.json'
+                            ],
+                        'measurements': ['functional', None, None],
+                        'type': ['dicom', 'nifti', 'source code']
+                        },
+                    "6": {
+                        "label": "tfMRI_LFContrast_AP_run1",
+                        "created": "2017-09-19T14:50:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091919493882400374263.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919493882400374263.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919493882400374263.0.0.0.json',
+                            '1_qa_report.png'],
+                        'measurements': ['functional', None, None, None],
+                        'type': ['dicom', 'nifti', 'source code', 'qa']
+                        },
+                    "7": {
+                        "label": "tfMRI_LFContrast_PA_run2_SBRef",
+                        "created": "2017-09-19T14:56:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091919545114956153402.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919545114956153402.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919545114956153402.0.0.0.json'],
+                        'measurements': ['functional', None, None],
+                        'type': ['dicom', 'nifti', 'source code']
+                        },
+                    "8": {
+                        "label": "tfMRI_LFContrast_PA_run2",
+                        "created": "2017-09-19T14:56:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091919545332144453403.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919545332144453403.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091919545332144453403.0.0.0.json',
+                            '1_qa_report.png'],
+                        'measurements': ['functional', None, None, None],
+                        'type': ['dicom', 'nifti', 'source code', 'qa']
+                        },
+                    "9": {
+                        "label": "tfMRI_LFContrast_AP_run2_SBRef",
+                        "created": "2017-09-19T15:01:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091920004535912132542.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920004535912132542.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920004535912132542.0.0.0.json'
+                            ],
+                        'measurements': ['functional', None, None],
+                        'type': ['dicom', 'nifti', 'source code']
+                        },
+                    "10": {
+                        "label": "tfMRI_LFContrast_AP_run2",
+                        "created": "2017-09-19T15:01:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091920004747015432543.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920004747015432543.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920004747015432543.0.0.0.json',
+                            '1_qa_report.png'
+                            ],
+                        'measurements': ['functional', None, None, None],
+                        'type': ['dicom', 'nifti', 'source code', 'qa']
+                        },
+                    "11": {
+                        "label": "tfMRI_LFContrast_PA_run3_SBRef",
+                        "created": "2017-09-19T15:09:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091920083225750111682.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920083225750111682.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920083225750111682.0.0.0.json'	
+                            ],
+                        'measurements': ['functional', None, None],
+                        'type': ['dicom', 'nifti', 'source code']
+                        },
+                    "12": {
+                        "label": "tfMRI_LFContrast_PA_run3",
+                        "created": "2017-09-19T15:09:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091920083444350411683.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920083444350411683.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920083444350411683.0.0.0.json',
+                            '1_qa_report.png'
+                            ],
+                        'measurements': ['functional', None, None, None],
+                        'type': ['dicom', 'nifti', 'source code', 'qa']
+                        },
+                    "13": {
+                        "label": "tfMRI_LFContrast_AP_run3_SBRef",
+                        "created": "2017-09-19T15:14:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091920134318597290822.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920134318597290822.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920134318597290822.0.0.0.json'
+                            ],
+                        'measurements': ['functional', None, None],
+                        'type': ['dicom', 'nifti', 'source code']
+                        },
+                    "14": {
+                        "label": "tfMRI_LFContrast_AP_run3",
+                        "created": "2017-09-19T15:14:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091920134531766790823.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920134531766790823.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920134531766790823.0.0.0.json',
+                            '1_qa_report.png'],
+                        'measurements': ['functional', None, None, None],
+                        'type': ['dicom', 'nifti', 'source code', 'qa']
+                        },
+                    "15": {
+                        "label": "T1w_MPR",
+                        "created": "2017-09-19T15:26:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091920200439073969961.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920200439073969961.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920200439073969961.0.0.0.json'
+                            ],
+                        'measurements': ['anatomy_t1w', None, None],
+                        'type': ['dicom', 'nifti', 'source code']
+                        },
+                    "16": {
+                        "label": "T2w_SPC",
+                        "created": "2017-09-19T15:32:00.000Z",
+                        "files": [
+                            '1.3.12.2.1107.5.2.43.66044.2017091920324580650270941.0.0.0.dicom.zip',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920324580650270941.0.0.0.nii.gz',
+                            '1.3.12.2.1107.5.2.43.66044.2017091920324580650270941.0.0.0.json'
+                            ],
+                        'measurements': ['anatomy_t2w', None, None],
+                        'type': ['dicom', 'nifti', 'source code']
+                        }
+                    }}}}
+run_print_test(description, flywheel_hierarchy)
 ### UPenn example
 description = "UPenn example"
 #run_print_test(description, flywheel_hierarchy)
