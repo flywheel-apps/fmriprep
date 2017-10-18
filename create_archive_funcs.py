@@ -1,8 +1,10 @@
 import os
 import re
+import sys
+
+#from jsonschema import validate
 
 #### Define functions
-
 def get_flywheel_hierarchy(fw, container_id, container_type):
     """
         Takes fw client, a container id and container_type as input
@@ -23,16 +25,16 @@ def get_flywheel_hierarchy(fw, container_id, container_type):
                         "<acquisition_id1>": {
                             "label": "T1 MPRAGE",
                             "created": "2017-09-19T14:39:58.721Z",
-                            "files": ['T1_dicom.zip', 'T1.nii.gz'],
-                            'measurements': ['Anatomy_t1w', None],
-                            'type': ['dicom', 'nifti'],
+                            "files": ['T1.nii.gz',]
+                            "measurements": ['anatomy_t1w'],
+                            "infos": [{}]
                     },
                         "<acquisition_id2>": {
                             "label": "task123123",
                             "created": "2017-09-19T12:39:58.721Z",
-                            "files": ['fmri_dicom.zip', 'fmri.nii.gz'],
-                            'measurements': ['Functional', None],
-                            'type': ['dicom', 'nifti'],
+                            "files": ['fmri.nii.gz'],
+                            "measurements": ['functional'],
+                            "infos": [{'RepetitionTime': 2.3}]
                     }
                 }
             }
@@ -65,6 +67,8 @@ def get_flywheel_hierarchy(fw, container_id, container_type):
         session_id = p_ses.get('_id')
         # If no subject code present, continue...
         if not ('code' in p_ses['subject'].keys()):
+            print('Subject code is not present for session: %s' % session_id)
+            print('Moving on')
             continue
         flywheel_hierarchy[project_id][session_id] = {'label': p_ses.get('label'),
                                                      'subject_code': p_ses['subject']['code'],
@@ -76,31 +80,33 @@ def get_flywheel_hierarchy(fw, container_id, container_type):
         for s_acq in session_acqs:
             # Get acquistiion ID and place in dictionary
             acq_id = s_acq.get('_id')
-            flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id] = {'label': s_acq.get('label'),
-                                                                                  'created': s_acq.get('created'),
-                                                                                  'files': [],
-                                                                                  'measurements': [],
-                                                                                  'type': []
-            }
+            # Get true acquisition in order to get meta information
+            acq = fw.get_acquisition(acq_id)
+            # Initiate acquisition information
+            flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id] = {
+                    'label': acq.get('label'),
+                    'created': acq.get('created'),
+                    'files': [],
+                    'measurements': [],
+                    'infos': []
+                    }
             # Iterate over all files within acquisition
-            for f in s_acq['files']:
+            for f in acq['files']:
                 filename = f['name']
                 ## Sometimes measurement is not present - if not, assign measurement value to be None
-                if 'measurements' in f.keys():
-                    # my BIDS code is assuming that there is a one-to-one relationship between files and measurements
-                    # Probably a bad assumption and this should be improved...
-                    measurement = f['measurements'][0]
-                else:
-                    measurement = None
-                # Get type - we are only concerned with nifti and source code files
-                #   NIfTI because that's what BIDS requires
-                #   source code because we need sidecar JSON files
-                # Determine file type
+                measurements = f.get('measurements')
+                # Get type - we are only concerned with nifti files that contain the BIDS side car meta information
                 ftype = f.get('type')
-                if ftype in ['nifti', 'source code']:
+                # Get info from file
+                info = f.get('info')
+                if ftype == 'nifti' and measurements:
                     flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['files'].append(filename)
-                    flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['measurements'].append(measurement)
-                    flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['type'].append(ftype)
+                    flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['measurements'].append(measurements[0])
+                    flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['infos'].append(info)
+
+            # If no nifti files found for an acquisition, remove it
+            if not flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['files']:
+                del flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]
 
     return flywheel_hierarchy
 
@@ -121,6 +127,7 @@ def populate_bids_hierarchy(bids_filepath, bids_hierarchy):
     bids_hierarchy[participant][session][subdir].append(filename)
 
     return bids_hierarchy
+
 
 def make_bids_spec(desc, flywheel_val, label_type):
     """ Asserts if label already conforms to the BIDS spec, if not
@@ -170,7 +177,53 @@ def make_bids_spec(desc, flywheel_val, label_type):
     return label_bids
 
 
-def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
+def check_meta_info(f, b, info):
+    """ Asserts all required
+
+        f: Flywheel filename of nifti file (used for print errors/warnings)
+        b: BIDS filename of nifti file
+        info: meta info attached to nifti file in Flywheel system
+
+    """
+    # Dictionary of required meta information
+    #   keys: character to search for in filename
+    #   values: list of required values in info field
+    json_reqs = {
+        'T1w.nii': [], # No required info, but there are 'recommended' values
+        'T2w.nii': [], # No required info, but there are 'recommended' values
+        'bold.nii': ['RepetitionTime','TaskName'],
+        'sbref.nii': [], # No required info
+        'phasediff.nii': ['EchoTime1', 'EchoTime2'],
+        'phase1.nii': ['EchoTime'],
+        'phase2.nii': ['EchoTime'],
+        'fieldmap.nii': ['Units'],
+        'epi.nii':  ['PhaseEncodingDirection','TotalReadoutTime'],
+        'magnitude.nii': [], # No required info
+        'magnitude1.nii': [], # No required info
+        'magnitude2.nii': [], # No required info
+        }
+    # Initiate variable
+    reqvals_notpresent = False
+
+    # Deterine the type of file by looking for string in BIDS filename
+    found = [key for key in json_reqs.keys() if key in b]
+    # If the type of file was found
+    if found:
+        # Get required values for JSON based on the filetype
+        required_vals = json_reqs.get(found[0])
+        # Iterate over the required_vals
+        for req_val in required_vals:
+            # If req_val not in the meta info
+            if not (req_val in info):
+                print("Required meta information (%s) not present for file: %s" % (req_val,f))
+                reqvals_notpresent = True
+    # Else print, I didn't recognize the file type...
+    else:
+        print("I DO NOT RECOGNIZE THE FILETYPE")
+
+    return reqvals_notpresent
+
+def create_bids_hierarchy(flywheel_hierarchy):
     """
     """
 
@@ -183,15 +236,8 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
     for project in flywheel_hierarchy.keys():
         # Session Directory
         for session_id in flywheel_hierarchy[project].keys():
-            # Check for acquisitions
-            if not ('acquisitions' in flywheel_hierarchy[project][session_id].keys()):
-                continue
             # Iterate over acquisitions
             for acq_id in flywheel_hierarchy[project][session_id]['acquisitions'].keys():
-                # If there isn't a nifti file in the acquisition, move on!!
-                if not ('nifti' in flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['type']):
-                    print ("No nifti files within acquisition, moving on...")
-                    continue
 
                 # Get meta info for BIDS
                 subject_code = flywheel_hierarchy[project][session_id]['subject_code']
@@ -199,22 +245,14 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
                 measurements = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['measurements']
 
                 # Get nifti file
-                # NOTE! If there are multiple nifti files within the one acquisition, this will take the last one in
-                #         the list, under the assumption that it is the most recent
-                reversed_typelist = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['type'][::-1]
-                nifti_idx = reversed_typelist.index('nifti')
-                reversed_filelist = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['files'][::-1]
-                nifti_filename = reversed_filelist[nifti_idx]
+                # NOTE! If there are multiple nifti files within the one acquisition,
+                #   take the last file in the list, under the assumption that it is the most recent
+                nifti_filename = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['files'][-1]
                 # Define the extension (.nii or .nii.gz)
                 if '.nii.gz' in nifti_filename:
                     extension = '.nii.gz'
-                if '.nii' in nifti_filename:
-                    extension = '.nii'
                 else:
-                    print(nifti_filename)
-                    print('we here')
-                    extension = 'NONONONO'
-
+                    extension = '.nii'
                 # Define the path of the desired nifti file within the flywheel hierarchy
                 flywheel_filepath = os.path.join(project, session_id, acq_id, nifti_filename)
 
@@ -230,8 +268,6 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
                 if ('anatomy_t1w' in measurements) or ('anatomy_t2w' in measurements):
                     # Define dirname
                     bids_dirname = 'anat'
-
-                    #### Making BIDS
                     # Create the new name of the file that conforms to bids spec
                     if 'anatomy_t1w' in measurements:
                         desc = 'T1w'
@@ -243,8 +279,6 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
                 elif 'functional' in measurements:
                     # Define dirname
                     bids_dirname = 'func'
-
-                    #### Making BIDS
                     # Use the acquistion label as the task name (i.e. task-balloontask or task-rest)
                     # If rest is in the acquisition label, will classify as resting state
                     if 'rest' in acquisition_label.lower():
@@ -252,7 +286,6 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
                     # Otherwise, the taskname will take all permitted values from acquisition_label
                     else:
                         taskname = make_bids_spec('task-', acquisition_label, 'label')
-
                     # check if sbref is in the acquistion label, if so, use sbref as filename description
                     if 'sbref' in acquisition_label.lower():
                         bids_func_desc = 'sbref'
@@ -261,7 +294,6 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
                         taskname = re.sub(pattern, '', taskname)
                     else:
                         bids_func_desc = 'bold'
-
                     # Create the new name of the file that conforms to bids spec
                     bids_filename = '%s_%s_%s_%s%s' % (participant_bids, session_bids, taskname, bids_func_desc, extension)
 
@@ -301,23 +333,20 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
                         bids_field_desc = 'dir-%s_epi' % dir_label
                     # Create the new name of the file that conforms to bids spec
                     bids_filename = '%s_%s_%s%s' % (participant_bids, session_bids, bids_field_desc, extension)
-
                 else:
                     continue
 
-                ### TODO: If 'run%d' at the end of the acquisition label -- honor that number and change to BIDS format
+                # NOTE: If 'run%d' at the end of the acquisition label -- honor that number and change to BIDS format
                 # 'task-foorun1' -> 'task-foo_run-1'
                 bids_filename = re.sub(r'(run)(\d)', r'_\1-\2', bids_filename)
 
-                # Now append directory
+                ### Now append directory
                 # Define the path of the new nifti file within the bids hierarchy
                 bids_filepath = os.path.join(participant_bids, session_bids, bids_dirname, bids_filename)
                 # Append to file lookup
                 files_lookup.append([flywheel_filepath, bids_filepath])
                 # Populate bids hierarchy
                 populate_bids_hierarchy(bids_filepath, bids_hierarchy_tmp)
-
-
 
     ### Iterate over files looking for duplicates and add run numbers if necessary
     for sub_dir in bids_hierarchy_tmp.keys():
@@ -356,7 +385,7 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
                     #    sub-<label>_ses-<label>_task-<label>_bold.nii.gz
                     #               =>
                     #        sub-<label>_ses-<label>_task-<label>_run-<index>_bold.nii.gz
-                    bbb_new = re.sub(r'(_T1w|_bold|_sbref)', r'_run-%d\1' % (idx+1), bbb)
+                    bbb_new = re.sub(r'(_\W.nii)', r'_run-%d\1' % (idx+1), bbb)
                     # Update the files_lookup information
                     files_lookup[idxx][1] = bbb_new
 
@@ -365,27 +394,19 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
     for f,b  in files_lookup:
         populate_bids_hierarchy(b, bids_hierarchy)
 
+    # Use the "info" field to create JSON file
+    reqvals_notpresent = 0
+    json_files = []
     ### Create JSON files
-    #   FUNCTIONAL IMAGES REQUIRE
-    #       RepetitionTime
-    #       TaskName
-    #   T1W IMAGES OPTIONAL
     for f,b in files_lookup:
-        if '_bold.nii' in b:
-            # Get meta information to create json file
-            project_id, session_id, acq_id, filename = f.split('/')
-            if test_bool: meta_info = {'info': {'RepetitionTime': 123}} ## to help with writing test use cases
-            else:
-                # Need Repetition Time information
-                acq_info = fw.get_acquisition(acq_id)
-                for f in acq_info['files']:
-                    if 'info' in f.keys():
-                        if 'RepetitionTime' in f['info'].keys():
-                            meta_info = {'RepetitionTime': f['info']['RepetitionTime']}
-                            break
-                        else:
-                            print("Warning: Repetition Time missing for acquisition: %s" % acquisition_id)
+        # Get meta information to create json file
+        project_id, session_id, acq_id, filename = f.split('/')
 
+        # Get meta info
+        info = flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['infos'][-1]
+
+        # If bold file, need to get taskname from filename, taskname is not in 'info'
+        if '_bold.nii' in b:
             # Place TaskName into the file -- just using Acquisition Label
             #    NOTE: it is not clear within the bids spec if the Task Name can have any character
             #       it seems like there is a distinction between task NAME and task LABEL where
@@ -394,12 +415,36 @@ def create_bids_hierarchy(fw, flywheel_hierarchy, test_bool=False):
             #NOT THIS:meta_info['TaskName'] = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['label']
             # Pull task label out of bids filename
             find_taskname = re.search('task-[a-zA-Z0-9]+', b)
-            meta_info['TaskName'] = b[find_taskname.start()+5:find_taskname.end()]
-            # Save meta information to JSON file
-            json_filename = re.sub(r'(.nii.gz|.nii)', r'.json', b)
+            taskname = b[find_taskname.start()+5:find_taskname.end()]
+            info['TaskName'] = taskname
+
+        ## Check required information from file 'info' based on BIDS filetype
+        reqvals_notpresent += check_meta_info(f, b, info)
+        # Save meta information to JSON file
+        json_filename = re.sub(r'(.nii.gz|.nii)', r'.json', b)
+        # If info present, add JSON info
+        if info:
+            # Add JSON blob and JSON filename to json_files
+            json_files.append([info, json_filename])
             # Add json_filename to bids_hierarchy
             populate_bids_hierarchy(json_filename, bids_hierarchy)
-            # Add JSON blob and JSON filename to files_lookup
-            files_lookup.append([meta_info, json_filename])
 
-    return bids_hierarchy, files_lookup
+    # If the required values are not present, can't run fmriprep
+    if reqvals_notpresent:
+        print('Required meta information is not present')
+        print('Run the dcm2niix gear to generate meta info')
+        sys.exit(1)
+
+    # Append json_files to files_lookup
+    return bids_hierarchy, files_lookup + json_files
+
+
+def validate_flywheel_hierarchy(flywheel_hierarchy):
+
+    # TODO! Check if acquisitions were found -- this needs to be checked for every session...
+    if not ('acquisitions' in flywheel_hierarchy[project][session_id]):
+        print('No nifti files were found in session' % session_id)
+        print('Nothing to do')
+        sys.exit(0)
+
+

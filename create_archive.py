@@ -38,7 +38,7 @@ pprint.pprint(flywheel_hierarchy)
 
 ### Create bids hierarchy
 print("Create BIDS Hierarchy")
-bids_hierarchy, files_lookup = create_bids_hierarchy(fw, flywheel_hierarchy)
+bids_hierarchy, files_lookup = create_bids_hierarchy(flywheel_hierarchy)
 # Print out BIDS hierarchy (for logs)
 pprint.pprint(bids_hierarchy)
 
