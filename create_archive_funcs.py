@@ -5,12 +5,11 @@ import sys
 #from jsonschema import validate
 
 #### Define functions
-def get_flywheel_hierarchy(fw, container_id, container_type):
+def get_flywheel_hierarchy(fw, analysis_id):
     """
         Takes fw client, a container id and container_type as input
 
-        container_id: the ID of the session or project
-        container_type: the type of the ID, either 'session' or 'project'
+        analysis_id: the ID of the analysis
 
         Returns the flywheel tree
 
@@ -43,6 +42,11 @@ def get_flywheel_hierarchy(fw, container_id, container_type):
 
 
     """
+    # Get analysis
+    analysis = fw.get_analysis(analysis_id)
+    # Get container type and id from
+    container_type = analysis['parent']['type']
+    container_id = analysis['parent']['id']
 
     # Determine if ID is a project or a session ID
     if container_type == 'project':
@@ -50,7 +54,7 @@ def get_flywheel_hierarchy(fw, container_id, container_type):
         project_sessions = fw.get_project_sessions(container_id)
         project_id = container_id
     elif container_type == 'session':
-        # If container ID is actually a session, get the specific session
+        # If container type is a session, get the specific session
         session = fw.get_session(container_id)
         # Place the single session within a list to iterate over (mirrors project_sessions above)
         project_sessions = [session]

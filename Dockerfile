@@ -20,8 +20,9 @@ ENTRYPOINT ["/flywheel/v0/run"]
 
 
 ## Install python SDK - wheel not compatible with Ubuntu 16.04
-RUN pip install https://github.com/flywheel-io/sdk/releases/download/0.2.0/flywheel-0.2.0-py3-none-linux_x86_64.whl
-
+#RUN pip install https://github.com/flywheel-io/sdk/releases/download/0.2.0/flywheel-0.2.0-py3-none-linux_x86_64.whl
+COPY sdk /flywheel/v0/sdk
+ENV PYTHONPATH /flywheel/v0/sdk
 
 # Copy over python scripts that generate the BIDS hierarchy
 COPY create_archive.py /flywheel/v0/create_archive.py

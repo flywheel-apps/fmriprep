@@ -23,9 +23,7 @@ config_contents = json.loads(fp.read())
 fp.close()
 # Get apikey and session ID number from config file
 api_key = str(config_contents['inputs']['api_key']['key'])
-container_id = str(config_contents['destination']['id'])
-container_type = str(config_contents['destination']['type'])
-
+analysis_id = str(config_contents['destination']['id'])
 
 ## Create SDK client
 print("Create SDK client")
@@ -33,7 +31,7 @@ fw = flywheel.Flywheel(api_key)
 
 ## Create flywheel hierarchy
 print("Create Flywheel Hierarchy")
-flywheel_hierarchy = get_flywheel_hierarchy(fw, container_id, container_type)
+flywheel_hierarchy = get_flywheel_hierarchy(fw, analysis_id)
 pprint.pprint(flywheel_hierarchy)
 
 ### Create bids hierarchy
