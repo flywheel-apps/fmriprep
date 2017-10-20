@@ -323,11 +323,14 @@ def create_bids_hierarchy(flywheel_hierarchy):
                     # (1) If phasediff
                     if 'phasediff' in acquisition_label_lower:
                         bids_field_desc = 'phasediff'
-                    # (2) if magnitude
+                    # (2) if phase
+                    elif 'phase' in acquisition_label_lower:
+                        bids_field_desc = 'phase'
+                    # (1&2) if magnitude
                     elif 'mag' in acquisition_label_lower:
                         bids_field_desc = 'magnitude'
                     # (4) If spin echo
-                    if 'spinecho' in acquisition_label_lower:
+                    elif 'spinecho' in acquisition_label_lower:
                         ## Determine dir_label
                         re_match = re.search('AP|PA|LR|RL', acquisition_label)
                         if re_match:
@@ -335,6 +338,10 @@ def create_bids_hierarchy(flywheel_hierarchy):
                         else:
                             dir_label = 'unknown'
                         bids_field_desc = 'dir-%s_epi' % dir_label
+                    else:
+                        print('WARNING: Cannot determine fieldmap type for file: %s' % flywheel_filepath)
+                        print('Moving on...')
+                        continue
                     # Create the new name of the file that conforms to bids spec
                     bids_filename = '%s_%s_%s%s' % (participant_bids, session_bids, bids_field_desc, extension)
                 else:
@@ -342,7 +349,7 @@ def create_bids_hierarchy(flywheel_hierarchy):
 
                 # NOTE: If 'run%d' at the end of the acquisition label -- honor that number and change to BIDS format
                 # 'task-foorun1' -> 'task-foo_run-1'
-                bids_filename = re.sub(r'(run)(\d)', r'_\1-\2', bids_filename)
+                bids_filename = re.sub(r'(run)(\d)(_)', r'_\1-\2\3', bids_filename)
 
                 ### Now append directory
                 # Define the path of the new nifti file within the bids hierarchy
@@ -359,39 +366,41 @@ def create_bids_hierarchy(flywheel_hierarchy):
                 bids_files = bids_hierarchy_tmp[sub_dir][ses_dir][desc_dir]
                 # Get a list of duplicate filenames that need to be renamed
                 duplicates = [x for x in set(bids_files) if bids_files.count(x) > 1]
-                # Identify the corresponding flywheel files that have bids duplicates
-                flywheel_files = [item[0] for item in files_lookup \
-                                  if os.path.basename(item[1]) in duplicates]
-                # Get timing information about the duplicate files in order to assign run-<index>
-                created = []
-                for ff in flywheel_files:
-                    project_id, session_id, acq_id, filename = ff.split('/')
-                    # list of tuples [(timestamp, flywheel_filename), ...]
-                    created.append(
-                                (flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['created'], ff)
-                                  )
-                # Sort list of files based on timestamp which is first item in tuple
-                created.sort(key=lambda x: x[0])
-                # Go through the created list and assign the run counts
-                for idx in range(len(created)):
-                    # Get flywheel filename
-                    fff = created[idx][1]
-                    # Get corresponding bids filename
-                    for idxx in range(len(files_lookup)):
-                        if files_lookup[idxx][0] == fff:
-                            bbb = files_lookup[idxx][1]
-                            break
-                    # Now rename bids filename (variable name: 'bbb')
-                    #    sub-<label>_ses-<label>_T1w.nii.gz
-                    #               =>
-                    #        sub-<label>_ses-<label>_run-<index>_T1w.nii.gz
-                    #
-                    #    sub-<label>_ses-<label>_task-<label>_bold.nii.gz
-                    #               =>
-                    #        sub-<label>_ses-<label>_task-<label>_run-<index>_bold.nii.gz
-                    bbb_new = re.sub(r'(_\W.nii)', r'_run-%d\1' % (idx+1), bbb)
-                    # Update the files_lookup information
-                    files_lookup[idxx][1] = bbb_new
+                #### Go through each duplicate, find the flywheel file and rename
+                for duplicate in duplicates:
+                    # Identify the corresponding flywheel files that have bids duplicates
+                    flywheel_files = [item[0] for item in files_lookup \
+                                  if os.path.basename(item[1]) == duplicate]
+                    # Get timing information about the duplicate files in order to assign run-<index>
+                    created = []
+                    for ff in flywheel_files:
+                        project_id, session_id, acq_id, filename = ff.split('/')
+                        # list of tuples [(timestamp, flywheel_filename), ...]
+                        created.append(
+                                    (flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['created'], ff)
+                                    )
+                    # Sort list of files based on timestamp which is first item in tuple
+                    created.sort(key=lambda x: x[0])
+                    # Go through the created list and assign the run counts
+                    for idx in range(len(created)):
+                        # Get flywheel filename
+                        fff = created[idx][1]
+                        # Get corresponding bids filename
+                        for idxx in range(len(files_lookup)):
+                            if files_lookup[idxx][0] == fff:
+                                bbb = files_lookup[idxx][1]
+                                break
+                        # Now rename bids filename (variable name: 'bbb')
+                        # If duplicate _magnitude or _phase - add a number after description
+                        #   _magnitude.nii.gz => _magnitude1.nii.gz
+                        bbb_new = re.sub(r'(_)(magnitude|phase)(.nii)', r'\g<1>\g<2>%d\g<3>' % (idx+1), bbb)
+                        # If duplicate T1w, T2w, bold, sbref, - add run number
+                        #    sub-<label>_ses-<label>_T1w.nii.gz
+                        #               =>
+                        #        sub-<label>_ses-<label>_run-<index>_T1w.nii.gz
+                        bbb_new = re.sub(r'(_)(bold|T1w|T2w)(.nii)', r'_run-%d\g<1>\g<2>\g<3>' % (idx+1), bbb_new)
+                        # Update the files_lookup information
+                        files_lookup[idxx][1] = bbb_new
 
     ### Create new bids_hierarchy with all unique filenames
     bids_hierarchy = {}
