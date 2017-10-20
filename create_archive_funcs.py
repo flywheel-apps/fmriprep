@@ -105,7 +105,7 @@ def get_flywheel_hierarchy(fw, analysis_id):
                 info = f.get('info')
                 if ftype == 'nifti' and measurements:
                     flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['files'].append(filename)
-                    flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['measurements'].append(measurements[0])
+                    flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['measurements'].append(measurements[0].lower())
                     flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['infos'].append(info)
 
             # If no nifti files found for an acquisition, remove it
