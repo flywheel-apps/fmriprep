@@ -26,6 +26,7 @@ def get_flywheel_hierarchy(fw, analysis_id):
                             "created": "2017-09-19T14:39:58.721Z",
                             "files": ['T1.nii.gz',]
                             "measurements": ['anatomy_t1w'],
+                            "type": ['nifti'],
                             "infos": [{}]
                     },
                         "<acquisition_id2>": {
@@ -33,6 +34,7 @@ def get_flywheel_hierarchy(fw, analysis_id):
                             "created": "2017-09-19T12:39:58.721Z",
                             "files": ['fmri.nii.gz'],
                             "measurements": ['functional'],
+                            "type": ['nifti'],
                             "infos": [{'RepetitionTime': 2.3}]
                     }
                 }

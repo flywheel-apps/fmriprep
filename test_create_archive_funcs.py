@@ -519,7 +519,7 @@ class bidsTestCases(unittest.TestCase):
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "6237610s877763": {
-                                "label": "task-balloontask",
+                                "label": "task-taskballoon",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['fmri.nii.gz'],
                                 'measurements': ['functional'],
@@ -583,9 +583,34 @@ class bidsTestCases(unittest.TestCase):
 
         ## Call function
         bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
-        
-
-
+        # Assert files_lookup is as expected...
+        files_exp = [
+                ['projID/sesID1/623765476s/T1.nii.gz',
+                    'sub-001/ses-001/anat/sub-001_ses-001_T1w.nii.gz'],
+                ['projID/sesID1/6237610s877763/fmri.nii.gz',
+                    'sub-001/ses-001/func/sub-001_ses-001_task-taskballoon_bold.nii.gz'],
+                ['projID/sesID2/623769990ds/T1.nii.gz',
+                    'sub-001/ses-002/anat/sub-001_ses-002_T1w.nii.gz'],
+                ['projID/sesID2/62y8767777jh/fmri.nii.gz',
+                    'sub-001/ses-002/func/sub-001_ses-002_task-taskballoon_bold.nii.gz'],
+                ['projID/sesID3/61231xx39485sjs23jh/T1.nii.gz',
+                    'sub-002/ses-001/anat/sub-002_ses-001_T1w.nii.gz'],
+                ['projID/sesID3/62377sdkxxjfhaiuex/fmri.nii.gz',
+                    'sub-002/ses-001/func/sub-002_ses-001_task-taskballoon_bold.nii.gz'],
+                ['projID/sesID4/6238743587fjh/T1.nii.gz',
+                    'sub-002/ses-002/anat/sub-002_ses-002_T1w.nii.gz'],
+                ['projID/sesID4/6237italjsd843727/fmri.nii.gz',
+                    'sub-002/ses-002/func/sub-002_ses-002_task-taskballoon_bold.nii.gz'],
+                [{'RepetitionTime': 'val', 'TaskName': 'taskballoon'},
+                    'sub-001/ses-001/func/sub-001_ses-001_task-taskballoon_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'taskballoon'},
+                    'sub-001/ses-002/func/sub-001_ses-002_task-taskballoon_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'taskballoon'},
+                    'sub-002/ses-001/func/sub-002_ses-001_task-taskballoon_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'taskballoon'},
+                    'sub-002/ses-002/func/sub-002_ses-002_task-taskballoon_bold.json']]
+        # Compare files
+        self._compare_file_lookup(files_lookup, files_exp)
 
     def test_create_bids_hierarchy_multiple_T1w(self):
         #multiple T1w images
@@ -600,21 +625,21 @@ class bidsTestCases(unittest.TestCase):
                                 "created": "2017-09-19T10:39:58.721Z",
                                 "files": ['T1.nii.gz'],
                                 'measurements': ['anatomy_t1w'],
-                                'type': ['nifti'], 'infos': [{}]
+                                'type': ['nifti'], 'infos': [{'Test': 1}]
                                 },
                             "62asdfsafdh": {
                                 "label": "T1 MPRAGE 2",
                                 "created": "2017-09-19T14:10:09.721Z",
                                 "files": ['T1.nii.gz'],
                                 'measurements': ['anatomy_t1w'],
-                                'type': ['nifti'], 'infos': [{}]
+                                'type': ['nifti'], 'infos': [{'Test': 1}]
                                 },
                             "62skldfjuh": {
                                 "label": "T1 MPRAGE 3",
                                 "created": "2017-09-20T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
                                 'measurements': ['anatomy_t1w'],
-                                'type': ['nifti'], 'infos': [{}]
+                                'type': ['nifti'], 'infos': [{'Test': 1}]
                                 },
                             "982734adsdf": {
                                 "label": "fMRI task ",
@@ -625,7 +650,26 @@ class bidsTestCases(unittest.TestCase):
                                 }}}}}
         ## Call function
         bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
-
+        # Assert files_lookup is as expected...
+        files_exp = [
+                ['projID/sesID1/alksdfiuer932/T1.nii.gz',
+                    'sub-876/ses-123/anat/sub-876_ses-123_run-1_T1w.nii.gz'],
+                ['projID/sesID1/62asdfsafdh/T1.nii.gz',
+                    'sub-876/ses-123/anat/sub-876_ses-123_run-2_T1w.nii.gz'],
+                ['projID/sesID1/62skldfjuh/T1.nii.gz',
+                    'sub-876/ses-123/anat/sub-876_ses-123_run-3_T1w.nii.gz'],
+                ['projID/sesID1/982734adsdf/fmri.nii.gz',
+                    'sub-876/ses-123/func/sub-876_ses-123_task-fMRItask_bold.nii.gz'],
+                [{'Test': 1},
+                    'sub-876/ses-123/anat/sub-876_ses-123_run-1_T1w.json'],
+                [{'Test': 1},
+                    'sub-876/ses-123/anat/sub-876_ses-123_run-2_T1w.json'],
+                [{'Test': 1},
+                    'sub-876/ses-123/anat/sub-876_ses-123_run-3_T1w.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'fMRItask'},
+                    'sub-876/ses-123/func/sub-876_ses-123_task-fMRItask_bold.json']]
+        # Compare files
+        self._compare_file_lookup(files_lookup, files_exp)
 
     def test_create_bids_hierarchy_multiple_func_images(self):
         # Multiple functional images
@@ -665,6 +709,24 @@ class bidsTestCases(unittest.TestCase):
                                 }}}}}
         ## Call function
         bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        # Assert files_lookup is as expected...
+        files_exp = [
+                ['projID/sesID1/alksdfiuer932/T1.nii.gz',
+                    'sub-876/ses-123/anat/sub-876_ses-123_T1w.nii.gz'],
+                ['projID/sesID1/62asdfsafdh/fmri.nii.gz',
+                    'sub-876/ses-123/func/sub-876_ses-123_task-fMRItask_run-1_bold.nii.gz'],
+                ['projID/sesID1/62skldfjuh/fmri.nii.gz',
+                    'sub-876/ses-123/func/sub-876_ses-123_task-fMRItask_run-2_bold.nii.gz'],
+                ['projID/sesID1/982734adsdf/fmri.nii.gz',
+                    'sub-876/ses-123/func/sub-876_ses-123_task-fMRItask_run-3_bold.nii.gz'],
+                [{'RepetitionTime': 'val', 'TaskName': 'fMRItask'},
+                    'sub-876/ses-123/func/sub-876_ses-123_task-fMRItask_run-1_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'fMRItask'},
+                    'sub-876/ses-123/func/sub-876_ses-123_task-fMRItask_run-2_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'fMRItask'},
+                    'sub-876/ses-123/func/sub-876_ses-123_task-fMRItask_run-3_bold.json']]
+        # Compare files
+        self._compare_file_lookup(files_lookup, files_exp)
 
     def test_create_bids_hierarchy_extension_nii(self):
         # files with extension .nii
@@ -674,14 +736,14 @@ class bidsTestCases(unittest.TestCase):
                         "label": "1^53",
                         "subject_code": "98001",
                         "acquisitions": {
-                            "623765726354fsd7263476s876fjh": {
+                            "1": {
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
-                                "files": ['T1.nii.gz'],
+                                "files": ['T1.nii'],
                                 'measurements': ['anatomy_t1w'],
-                                'type': ['nifti'], 'infos': [{}]
+                                'type': ['nifti'], 'infos': [{'Test': 1}]
                                 },
-                            "623765726354fsd7263476s876fjh": {
+                            "2": {
                                 "label": "fMRI task ",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['fmri.nii'],
@@ -690,32 +752,18 @@ class bidsTestCases(unittest.TestCase):
                                 }}}}}
         ## Call function
         bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
-        
-
-    def test_create_bids_hierarchy_no_nifti_files(self):
-        #"no nifti files"
-        flywheel_hierarchy = {
-            "projID": {
-                "sesID1": {
-                        "label": "1^53",
-                        "subject_code": "98001",
-                        "acquisitions": {
-                            "623765726354fsd7263476s876fjh": {
-                                "label": "T1 MPRAGE",
-                                "created": "2017-09-19T14:39:58.721Z",
-                                "files": ['T1_dicom.zip'],
-                                'measurements': ['anatomy_t1w'],
-                                'type': ['dicom'], 'infos': [{'RepetitionTime':'val'}]
-                                },
-                            "623765726354fsd7263476s876fjh": {
-                                "label": "fMRI task ",
-                                "created": "2017-09-19T14:39:58.721Z",
-                                "files": ['fmri_dicom.zip'],
-                                'measurements': ['functional'],
-                                'type': ['dicom'], 'infos': [{'RepetitionTime':'val'}]
-                                }}}}}
-        ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        # Assert files_lookup is as expected...
+        files_exp = [
+                ['projID/sesID1/1/T1.nii',
+                    'sub-98001/ses-153/anat/sub-98001_ses-153_T1w.nii'],
+                ['projID/sesID1/2/fmri.nii',
+                    'sub-98001/ses-153/func/sub-98001_ses-153_task-fMRItask_bold.nii'],
+                [{'Test': 1},
+                    'sub-98001/ses-153/anat/sub-98001_ses-153_T1w.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'fMRItask'},
+                    'sub-98001/ses-153/func/sub-98001_ses-153_task-fMRItask_bold.json']]
+        # Compare files
+        self._compare_file_lookup(files_lookup, files_exp)
 
     def test_create_bids_hierarchy_no_measurements(self):
         # "no 'measurements'"
@@ -741,6 +789,8 @@ class bidsTestCases(unittest.TestCase):
                                 }}}}}
         ## Call function
         bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        # Assert files_lookup is an empty list - nothing to do.
+        self.assertEqual(files_lookup, [])
 
     def test_create_bids_hierarchy_diff_ids_same_label(self):
         #'Different session ids but same session label'
@@ -785,65 +835,79 @@ class bidsTestCases(unittest.TestCase):
                             }}
         ## Call function
         bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
-
-    def test_create_bids_hierarchy_uppercase_measurements(self):
-        #'uppercase measurements'
-        flywheel_hierarchy = {
-            "projID": {
-                "sesID1": {
-                        "label": "1^53",
-                        "subject_code": "98001",
-                        "acquisitions": {
-                            "623765726354fsd7263476s876fjh": {
-                                "label": "T1 MPRAGE",
-                                "created": "2017-09-19T14:39:58.721Z",
-                                "files": ['T1.nii.gz'],
-                                'measurements': ['Anatomy_t1w'],
-                                'type': ['nifti'], 'infos': [{}]
-                                },
-                            "623765726354fsd7263476s876fjh": {
-                                "label": "fMRI task",
-                                "created": "2017-09-19T14:39:58.721Z",
-                                "files": ['fmri.nii.gz'],
-                                'measurements': ['Functional'],
-                                'type': ['nifti'], 'infos': [{'RepetitionTime':'val'}]
-                                }}}}}
-        ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        # Assert files_lookup is as expected...
+        files_exp = [
+                ['projID/sesID1/7823765726354fsd7263476s/T1.nii.gz',
+                    'sub-JaneDoe/ses-session1/anat/sub-JaneDoe_ses-session1_run-1_T1w.nii.gz'],
+                ['projID/sesID1/6563765726354fsd7263476s876fjh/fmri.nii.gz',
+                    'sub-JaneDoe/ses-session1/func/sub-JaneDoe_ses-session1_task-fMRItask_run-1_bold.nii.gz'],
+                ['projID/sesID2/123112765726354fsdfjh/T1.nii.gz',
+                    'sub-JaneDoe/ses-session1/anat/sub-JaneDoe_ses-session1_run-2_T1w.nii.gz'],
+                ['projID/sesID2/343765726354fsd7263476s876fjh/fmri.nii.gz',
+                    'sub-JaneDoe/ses-session1/func/sub-JaneDoe_ses-session1_task-fMRItask_run-2_bold.nii.gz'],
+                [{'RepetitionTime': 'val', 'TaskName': 'fMRItask'},
+                    'sub-JaneDoe/ses-session1/func/sub-JaneDoe_ses-session1_task-fMRItask_run-1_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'fMRItask'},
+                    'sub-JaneDoe/ses-session1/func/sub-JaneDoe_ses-session1_task-fMRItask_run-2_bold.json']]
+        # Compare files
+        self._compare_file_lookup(files_lookup, files_exp)
 
     def test_create_bids_hierarchy_multiple_niftis(self):
-        #'multiple niftis in an acquisition'
+        """ Multiple niftis in an acquisition
+            Assert last file and meta information in the list is used...
+        """
         flywheel_hierarchy = {
-            u'576be74e59b2b6346719ef83': {
-                u'576be8b259b2b6346719efe4': {
-                    'label': u'amyg_s15_amyg_sess1_pcolA',
-                    'subject_code': u'amyg_s15',
-                    'acquisitions': {u'576d1faaa02c8621973ed0fa': {
-                        'created': u'2016-06-24T11:55:22.726Z',
+            u'projID': {
+                u'sesID': {
+                    'label': u'session1',
+                    'subject_code': u's15',
+                    'acquisitions': {
+                        u'1': {
+                        'created': u'2017-01-01T11:55:22.726Z',
+                            'files': [
+                                      u'T1w.nii.gz',
+                                      u'T1w_20171023.nii.gz'
+                                      ],
+                            'label': u'T1 MRPRAGE',
+                            'measurements': [u'anatomy_t1w', u'anatomy_t1w'],
+                            'types': [u'nifti', u'nifti'],
+                            'infos': [
+                                    {'Test1':'val1'},
+                                    {'Test2':'val2'}
+                                     ],
+                            },
+                        u'2': {
+                        'created': u'2017-01-01T11:00:22.726Z',
                             'files': [
                                       u'fmri.nii.gz',
-                                      u'8613_8_1_fmri_fMRI_Ret_bars_20150107173003_8.nii.gz'
+                                      u'fmri_fMRI_Ret_bars_2017010717300.nii.gz'
                                       ],
                             'label': u'fMRI_Ret_bars',
-                            'measurements': [
-                                             u'functional',
-                                             u'functional'
-                                             ],
-                            'types': [
-                                     u'nifti',
-                                     u'nifti'
-                                     ],
+                            'measurements': [u'functional', u'functional'],
+                            'types': [u'nifti', u'nifti'],
                             'infos': [
-                                    {'RepetitionTime':'val'},
-                                    {'RepetitionTime':'val'}
+                                    {'RepetitionTime':'val1'},
+                                    {'RepetitionTime':'val2'}
                                      ],
                             }}}}}
         ## Call function
         bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        # Assert files_lookup is as expected...
+        files_exp = [
+                ['projID/sesID/1/T1w_20171023.nii.gz',
+                    'sub-s15/ses-session1/anat/sub-s15_ses-session1_T1w.nii.gz'],
+                ['projID/sesID/2/fmri_fMRI_Ret_bars_2017010717300.nii.gz',
+                    'sub-s15/ses-session1/func/sub-s15_ses-session1_task-fMRIRetbars_bold.nii.gz'],
+                [{'Test2': 'val2'},
+                    'sub-s15/ses-session1/anat/sub-s15_ses-session1_T1w.json'],
+                [{'RepetitionTime': 'val2', 'TaskName': 'fMRIRetbars'},
+                    'sub-s15/ses-session1/func/sub-s15_ses-session1_task-fMRIRetbars_bold.json']]
+        # Compare files
+        self._compare_file_lookup(files_lookup, files_exp)
 
     def test_create_bids_hierarchy_underscores(self):
         # TODO: CAN labels have underscores?!?!? is that BIDS compliant? - seems like no - no underscores allowed
-        #'Checking underscores'
+        # Checking underscores
         flywheel_hierarchy = {
             "projID": {
                 "sesID1": {
@@ -867,6 +931,16 @@ class bidsTestCases(unittest.TestCase):
                             }}}}
         ## Call function
         bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        # Assert files_lookup is as expected...
+        files_exp = [
+                ['projID/sesID1/623765726354fsd7263476s876fjh/T1.nii.gz',
+                    'sub-123rt/ses-ses23/anat/sub-123rt_ses-ses23_T1w.nii.gz'],
+                ['projID/sesID1/623765726354fsd72348573476fjh/fmri.nii.gz',
+                    'sub-123rt/ses-ses23/func/sub-123rt_ses-ses23_task-fMRItaskthisisthetaskchecktest_bold.nii.gz'],
+                [{'RepetitionTime': 'val', 'TaskName': 'fMRItaskthisisthetaskchecktest'},
+                    'sub-123rt/ses-ses23/func/sub-123rt_ses-ses23_task-fMRItaskthisisthetaskchecktest_bold.json']]
+        # Compare files
+        self._compare_file_lookup(files_lookup, files_exp)
 
     def test_create_bids_hierarchy_rest(self):
         # NOTE: rest must be in the acquisition label to be found...
@@ -877,21 +951,21 @@ class bidsTestCases(unittest.TestCase):
                         "label": "1^53",
                         "subject_code": "98001",
                         "acquisitions": {
-                            "623765726354fsd7263476s876fjh": {
+                            "123": {
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
                                 'measurements': ['anatomy_t1w'],
                                 'type': ['nifti'], 'infos': [{}]
                                 },
-                            "623765726354fsd72348573476fjh": {
+                            "456": {
                                 "label": "fMRI task ",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['fmri.nii.gz'],
                                 'measurements': ['functional'],
                                 'type': ['nifti'], 'infos': [{'RepetitionTime':'val'}]
                                 },
-                            "12654sadflkje87we87weradsf": {
+                            "678": {
                                 "label": "rest fMRI task",
                                 "created": "2017-09-19T10:39:58.721Z",
                                 "files": ['fmri.nii.gz'],
@@ -902,6 +976,21 @@ class bidsTestCases(unittest.TestCase):
         ## Call function
         bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
 
+        # Assert files_lookup is as expected...
+        files_exp = [
+                ['projID/sesID1/123/T1.nii.gz',
+                    'sub-98001/ses-153/anat/sub-98001_ses-153_T1w.nii.gz'],
+                ['projID/sesID1/456/fmri.nii.gz',
+                    'sub-98001/ses-153/func/sub-98001_ses-153_task-fMRItask_bold.nii.gz'],
+                ['projID/sesID1/678/fmri.nii.gz',
+                    'sub-98001/ses-153/func/sub-98001_ses-153_task-rest_bold.nii.gz'],
+                [{'RepetitionTime': 'val', 'TaskName': 'fMRItask'},
+                    'sub-98001/ses-153/func/sub-98001_ses-153_task-fMRItask_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'rest'},
+                    'sub-98001/ses-153/func/sub-98001_ses-153_task-rest_bold.json']]
+        # Compare files
+        self._compare_file_lookup(files_lookup, files_exp)
+
     def test_create_bids_hierarchy_sbref(self):
         #"Handling 'sbref' files"
         flywheel_hierarchy = {
@@ -910,35 +999,35 @@ class bidsTestCases(unittest.TestCase):
                         "label": "s001",
                         "subject_code": "001",
                         "acquisitions": {
-                            "123726354fsd7263476s876fjh": {
+                            "12": {
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
                                 'measurements': ['anatomy_t1w'],
                                 'type': ['nifti'], 'infos': [{}]
                                 },
-                            "234526354fsd723485734fsrt": {
+                            "34": {
                                 "label": "fMRI_REST_AP",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['rfMRI_REST_AP.nii.gz'],
                                 'measurements': ['functional'],
                                 'type': ['nifti'], 'infos': [{'RepetitionTime':'val'}]
                                 },
-                            "345sadflkje87we87weradsf": {
+                            "56": {
                                 "label": "fMRi_REST_SBRef",
                                 "created": "2017-09-19T10:39:58.721Z",
                                 "files": ['sbref.nii.gz'],
                                 'measurements': ['functional'],
                                 'type': ['nifti'], 'infos': [{}]
                                 },
-                            "456756756756623432klj": {
+                            "78": {
                                 "label": "fMRI_task_AP",
                                 "created": "2017-09-19T15:39:58.721Z",
                                 "files": ['rfMRI_task_AP.nii.gz'],
                                 'measurements': ['functional'],
                                 'type': ['nifti'], 'infos': [{'RepetitionTime':'val'}]
                                 },
-                            "5676663441265dsf": {
+                            "90": {
                                 "label": "fMRi_task_AP_SBRef",
                                 "created": "2017-09-19T15:39:58.721Z",
                                 "files": ['task_sbref.nii.gz'],
@@ -948,6 +1037,25 @@ class bidsTestCases(unittest.TestCase):
                             }}}}
         ## Call function
         bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+
+        # Assert files_lookup is as expected...
+        files_exp = [
+                ['projID/sesID1/12/T1.nii.gz',
+                    'sub-001/ses-s001/anat/sub-001_ses-s001_T1w.nii.gz'],
+                ['projID/sesID1/34/rfMRI_REST_AP.nii.gz',
+                    'sub-001/ses-s001/func/sub-001_ses-s001_task-rest_bold.nii.gz'],
+                ['projID/sesID1/56/sbref.nii.gz',
+                    'sub-001/ses-s001/func/sub-001_ses-s001_task-rest_sbref.nii.gz'],
+                ['projID/sesID1/78/rfMRI_task_AP.nii.gz',
+                    'sub-001/ses-s001/func/sub-001_ses-s001_task-fMRItaskAP_bold.nii.gz'],
+                ['projID/sesID1/90/task_sbref.nii.gz',
+                    'sub-001/ses-s001/func/sub-001_ses-s001_task-fMRitaskAP_sbref.nii.gz'],
+                [{'RepetitionTime': 'val', 'TaskName': 'rest'},
+                    'sub-001/ses-s001/func/sub-001_ses-s001_task-rest_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'fMRItaskAP'},
+                    'sub-001/ses-s001/func/sub-001_ses-s001_task-fMRItaskAP_bold.json']]
+        # Compare files
+        self._compare_file_lookup(files_lookup, files_exp)
 
     def test_create_bids_hierarchy_customer_example(self):
         # customer example
@@ -975,6 +1083,8 @@ class bidsTestCases(unittest.TestCase):
                     'subject_code': 'DistractWM_123'}}}
         ## Call function
         bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        # Assert files_lookup is an empty list since 'measurements' is None
+        self.assertEqual(files_lookup, [])
 
     def test_create_bids_hierarchy_customer_fieldmaps(self):
         # customer fieldmap example
@@ -1185,25 +1295,26 @@ class bidsTestCases(unittest.TestCase):
         flywheel_hierarchy = {
             "projID": {
                 "sesID1": {
-                        "label": "1^53",
+                        "label": "123",
                         "subject_code": "98001",
                         "acquisitions": {
-                            "623765726354fsd7263476s876fjh": {
+                            "123": {
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'measurements': ['Anatomy_t1w'],
+                                'measurements': ['anatomy_t1w'],
                                 'type': ['nifti'], 'infos': [{}]
                                 },
-                            "623765726354fsd7263476s876fjh": {
+                            "456": {
                                 "label": "fMRI task",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['fmri.nii.gz'],
-                                'measurements': ['Functional'],
+                                'measurements': ['functional'],
                                 'type': ['nifti'], 'infos': [{}]
                                 }}}}}
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        with self.assertRaises(SystemExit) as err:
+            create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
 
     def test_create_bids_hierarchy_case1(self):
         """ Case 1: phase difference image and at least one magnitude image
@@ -1337,10 +1448,8 @@ class bidsTestCases(unittest.TestCase):
                                   'sub-001_ses-123_magnitude2.nii.gz',
                                   'sub-001_ses-123_phase1.json',
                                   'sub-001_ses-123_phase2.json']}}}
-
         # Compare files
         self._compare_file_lookup(files_lookup, files_exp)
-
         # Assert fmap folder is the same
         self.assertEqual(
                 bids_hierarchy['sub-001']['ses-123']['fmap'],
