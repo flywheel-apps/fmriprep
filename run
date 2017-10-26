@@ -79,8 +79,16 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
   zip -r "$GEAR_OUTPUT_DIR"/fmriprep_output_$(basename "$BIDS_DIR") "$FMRIPREP_OUTPUT_DIR"
   chmod -R 777 $GEAR_OUTPUT_DIR
   echo -e "Wrote: `ls $GEAR_OUTPUT_DIR`"
+
+elif [[ $config_save_outputs == 'true' ]] ; then
+  # Generate zipped output of fmriprep
+  echo "Error occurred. Config 'save_outputs' set to true. Zipping up outputs."
+  zip -r "$GEAR_OUTPUT_DIR"/fmriprep_output_$(basename "$BIDS_DIR") "$FMRIPREP_OUTPUT_DIR"
+  chmod -R 777 $GEAR_OUTPUT_DIR
+  echo -e "Wrote: `ls $GEAR_OUTPUT_DIR`"
+
 else
-  echo "$CONTAINER Errors encountered during execution. Cleaning up and exiting."
+  echo "$CONTAINER Errors encountered during execution. Save outputs config not set. Cleaning up and exiting."
 fi
 
 # Clean up
