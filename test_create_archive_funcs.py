@@ -282,7 +282,7 @@ class bidsTestCases(unittest.TestCase):
                         'types': ['nifti'], 'infos': [{'RepetitionTime': 'val'}]
                         }
                     }}}}
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         # Assert files_lookup is as expected...
         files_exp = [
                 ('11/22/33/T1.nii.gz', 'sub-98001/ses-122/anat/sub-98001_ses-122_T1w.nii.gz'),
@@ -328,7 +328,7 @@ class bidsTestCases(unittest.TestCase):
                     }}
 
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         files_exp = [
             ['projID/sesID1/623765726354fsd7263476s/T1.nii.gz',
                 'sub-JaneDoe1/ses-session1/anat/sub-JaneDoe1_ses-session1_T1w.nii.gz'],
@@ -381,7 +381,7 @@ class bidsTestCases(unittest.TestCase):
                                 }}}
                             }}
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         files_exp = [
                 ['projID/sesID1/623765726354fsd7263476s/T1.nii.gz',
                     'sub-s001/ses-session1/anat/sub-s001_ses-session1_T1w.nii.gz'],
@@ -475,7 +475,7 @@ class bidsTestCases(unittest.TestCase):
                                 'type': ['nifti'], 'infos': [{'RepetitionTime':'val'}]
                                 }}}}}
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         files_exp = [
                 ['projID/sesID1/623765476s/T1.nii.gz',
                     'sub-s001/ses-session1/anat/sub-s001_ses-session1_T1w.nii.gz'],
@@ -582,7 +582,7 @@ class bidsTestCases(unittest.TestCase):
                             }}}
 
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         # Assert files_lookup is as expected...
         files_exp = [
                 ['projID/sesID1/623765476s/T1.nii.gz',
@@ -649,7 +649,7 @@ class bidsTestCases(unittest.TestCase):
                                 'type': ['nifti'], 'infos': [{'RepetitionTime':'val'}]
                                 }}}}}
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         # Assert files_lookup is as expected...
         files_exp = [
                 ['projID/sesID1/alksdfiuer932/T1.nii.gz',
@@ -708,7 +708,7 @@ class bidsTestCases(unittest.TestCase):
                                 'type': ['nifti'], 'infos': [{'RepetitionTime':'val'}]
                                 }}}}}
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         # Assert files_lookup is as expected...
         files_exp = [
                 ['projID/sesID1/alksdfiuer932/T1.nii.gz',
@@ -751,7 +751,7 @@ class bidsTestCases(unittest.TestCase):
                                 'type': ['nifti'], 'infos': [{'RepetitionTime':'val'}]
                                 }}}}}
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         # Assert files_lookup is as expected...
         files_exp = [
                 ['projID/sesID1/1/T1.nii',
@@ -788,7 +788,7 @@ class bidsTestCases(unittest.TestCase):
                                 'type': ['nifti'], 'infos': [{'RepetitionTime':'val'}]
                                 }}}}}
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         # Assert files_lookup is an empty list - nothing to do.
         self.assertEqual(files_lookup, [])
 
@@ -834,7 +834,7 @@ class bidsTestCases(unittest.TestCase):
                                 }}},
                             }}
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         # Assert files_lookup is as expected...
         files_exp = [
                 ['projID/sesID1/7823765726354fsd7263476s/T1.nii.gz',
@@ -891,7 +891,7 @@ class bidsTestCases(unittest.TestCase):
                                      ],
                             }}}}}
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         # Assert files_lookup is as expected...
         files_exp = [
                 ['projID/sesID/1/T1w_20171023.nii.gz',
@@ -930,7 +930,7 @@ class bidsTestCases(unittest.TestCase):
                                 }
                             }}}}
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         # Assert files_lookup is as expected...
         files_exp = [
                 ['projID/sesID1/623765726354fsd7263476s876fjh/T1.nii.gz',
@@ -974,7 +974,7 @@ class bidsTestCases(unittest.TestCase):
                                 },
                             }}}}
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
 
         # Assert files_lookup is as expected...
         files_exp = [
@@ -1036,7 +1036,7 @@ class bidsTestCases(unittest.TestCase):
                                 }
                             }}}}
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
 
         # Assert files_lookup is as expected...
         files_exp = [
@@ -1082,7 +1082,7 @@ class bidsTestCases(unittest.TestCase):
                     'label': '09/18/17 17:25 PM',
                     'subject_code': 'DistractWM_123'}}}
         ## Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         # Assert files_lookup is an empty list since 'measurements' is None
         self.assertEqual(files_lookup, [])
 
@@ -1183,7 +1183,7 @@ class bidsTestCases(unittest.TestCase):
                         }
                     }}}}
         # Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         # Assert files_lookup is as expected...
         files_exp = [
                 ['projectID/sessionID/1/1.3.12.2.1107.5.2.43.66044.2017091919393376149693793.0.0.0.nii.gz',
@@ -1239,7 +1239,7 @@ class bidsTestCases(unittest.TestCase):
         # Compare files
         self._compare_file_lookup(files_lookup, files_exp)
 
-        # pretty print the bids_hierarchy
+        #Define the expected bids format
         bids_exp = {
             'sub-HEROgka1': {
                 'ses-session1': {
@@ -1314,7 +1314,7 @@ class bidsTestCases(unittest.TestCase):
                                 }}}}}
         ## Call function
         with self.assertRaises(SystemExit) as err:
-            create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+            create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
 
     def test_create_bids_hierarchy_case1(self):
         """ Case 1: phase difference image and at least one magnitude image
@@ -1356,7 +1356,7 @@ class bidsTestCases(unittest.TestCase):
                                 'type': ['nifti'], 'infos': [{}]
                                 }}}}}
 
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         files_exp = [
                 ['projID/sesID1/12345/phasediff.nii.gz',
                     'sub-001/ses-123/fmap/sub-001_ses-123_phasediff.nii.gz'],
@@ -1429,7 +1429,7 @@ class bidsTestCases(unittest.TestCase):
                                 'type': ['nifti'], 'infos': [{}]
                                 }}}}}
         # Call function
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, None)
         files_exp = [['projID/sesID1/123/phase1.nii.gz',
             'sub-001/ses-123/fmap/sub-001_ses-123_phase1.nii.gz'],
             ['projID/sesID1/45/phase2.nii.gz',
@@ -1481,12 +1481,24 @@ class bidsTestCases(unittest.TestCase):
                         "subject_code": "001",
                         "acquisitions": {
                     "1": {
+                        "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                        'measurements': ['functional'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j-', 'RepetitionTime': 0.8}]
+                        },
+                    "2": {
+                        "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                        'measurements': ['functional'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j', 'RepetitionTime': 0.8}]
+                        },
+                    "3": {
                         "label": "SpinEchoFieldMap_AP", "created": "2017-09-19T14:39:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
                         'measurements': ['field_map'], 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j-','TotalReadoutTime': 0.1}]
                         },
-                    "2": {
+                    "4": {
                         "label": "SpinEchoFieldMap_PA", "created": "2017-09-19T14:40:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
                         'measurements': ['field_map'], 'type': ['nifti'],
@@ -1494,38 +1506,394 @@ class bidsTestCases(unittest.TestCase):
                         }
                     }}}}
 
-        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy)
+        fieldmap_intendedfor = {'projectID': {'sessionID': {
+                     '3/1.3.12.2.1107.5.2.4.nii.gz': ['2/1.3.12.2.1107.5.2.4000.nii.gz'],
+                     '4/1.3.12.2.1107.5.2.4000.nii.gz': ['1/1.3.12.2.1107.5.2.4.nii.gz']}}}
+        # Call function
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, fieldmap_intendedfor)
 
-        files_exp = [
-                ['projectID/sessionID/1/1.3.12.2.1107.5.2.4.nii.gz',
-                    'sub-001/ses-ses1/fmap/sub-001_ses-ses1_dir-AP_epi.nii.gz'],
-                ['projectID/sessionID/2/1.3.12.2.1107.5.2.4000.nii.gz',
-                    'sub-001/ses-ses1/fmap/sub-001_ses-ses1_dir-PA_epi.nii.gz'],
-                [{'PhaseEncodingDirection': 'j-', 'TotalReadoutTime': 0.1},
-                    'sub-001/ses-ses1/fmap/sub-001_ses-ses1_dir-AP_epi.json'],
-                [{'PhaseEncodingDirection': 'j', 'TotalReadoutTime': 0.35},
-                    'sub-001/ses-ses1/fmap/sub-001_ses-ses1_dir-PA_epi.json']
-                ]
-
-        bids_exp = {'sub-001': {'ses-ses1': {'fmap': ['sub-001_ses-ses1_dir-AP_epi.nii.gz',
-                                   'sub-001_ses-ses1_dir-PA_epi.nii.gz',
-                                   'sub-001_ses-ses1_dir-AP_epi.json',
-                                   'sub-001_ses-ses1_dir-PA_epi.json']}}}
-
-        # Compare files
-        self._compare_file_lookup(files_lookup, files_exp)
+        bids_exp = {'sub-001': {'ses-ses1': {
+                            'fmap': [
+                                'sub-001_ses-ses1_dir-AP_epi.nii.gz',
+                                'sub-001_ses-ses1_dir-PA_epi.nii.gz',
+                                'sub-001_ses-ses1_dir-AP_epi.json',
+                                'sub-001_ses-ses1_dir-PA_epi.json'
+                                ],
+                            'func': [
+                                'sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.nii.gz',
+                                'sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.nii.gz',
+                                'sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.json',
+                                'sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.json',
+                                ]
+                            }
+                        }}
 
         # Assert fmap folder is the same
         self.assertEqual(
                 bids_hierarchy['sub-001']['ses-ses1']['fmap'],
                 bids_exp['sub-001']['ses-ses1']['fmap']
                 )
+        # Assert func folder is the same
+        self.assertEqual(
+                bids_hierarchy['sub-001']['ses-ses1']['func'],
+                bids_exp['sub-001']['ses-ses1']['func']
+                )
+
+        files_exp = [
+            ['projectID/sessionID/1/1.3.12.2.1107.5.2.4.nii.gz',
+              'sub-001/ses-ses1/func/sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.nii.gz'],
+             ['projectID/sessionID/2/1.3.12.2.1107.5.2.4000.nii.gz',
+              'sub-001/ses-ses1/func/sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.nii.gz'],
+             ['projectID/sessionID/3/1.3.12.2.1107.5.2.4.nii.gz',
+              'sub-001/ses-ses1/fmap/sub-001_ses-ses1_dir-AP_epi.nii.gz'],
+             ['projectID/sessionID/4/1.3.12.2.1107.5.2.4000.nii.gz',
+              'sub-001/ses-ses1/fmap/sub-001_ses-ses1_dir-PA_epi.nii.gz'],
+             [{'PhaseEncodingDirection': 'j-',
+               'RepetitionTime': 0.8,
+               'TaskName': 'tfMRILFContrastAP'},
+              'sub-001/ses-ses1/func/sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.json'],
+             [{'PhaseEncodingDirection': 'j',
+               'RepetitionTime': 0.8,
+               'TaskName': 'tfMRILFContrastPA'},
+              'sub-001/ses-ses1/func/sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.json'],
+             [{'PhaseEncodingDirection': 'j-',
+                 'TotalReadoutTime': 0.1,
+                 'IntendedFor': ['func/sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.nii.gz']},
+              'sub-001/ses-ses1/fmap/sub-001_ses-ses1_dir-AP_epi.json'],
+             [{'PhaseEncodingDirection': 'j',
+                 'TotalReadoutTime': 0.35,
+                 'IntendedFor': ['func/sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.nii.gz']},
+              'sub-001/ses-ses1/fmap/sub-001_ses-ses1_dir-PA_epi.json']
+             ]
+
+        # Compare files
+        self._compare_file_lookup(files_lookup, files_exp)
+
+    def test_create_bids_hierarchy_case4_multiple_fieldmaps(self):
+        """ """
+        # TODO: THIS UNIT TEST IS CURRENTLY FAILING -- CANNOT handle multiple fieldmaps
+        flywheel_hierarchy = {
+                "projectID": {
+                    "sessionID": {
+                        "label": "ses1",
+                        "subject_code": "001",
+                        "acquisitions": {
+                    "1": {
+                        "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                        'measurements': ['functional'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j-', 'RepetitionTime': 0.8}]
+                        },
+                    "2": {
+                        "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                        'measurements': ['functional'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j', 'RepetitionTime': 0.8}]
+                        },
+                    "3": {
+                        "label": "SpinEchoFieldMap_AP_run1", "created": "2017-09-19T14:41:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                        'measurements': ['field_map'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j-','TotalReadoutTime': 0.1}]
+                        },
+                    "4": {
+                        "label": "SpinEchoFieldMap_PA_run1", "created": "2017-09-19T14:42:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                        'measurements': ['field_map'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j','TotalReadoutTime': 0.35}]
+                        },
+                    "5": {
+                        "label": "tfMRI_LFContrast_AP_run2", "created": "2017-09-19T15:50:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                        'measurements': ['functional'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j-', 'RepetitionTime': 0.8}]
+                        },
+                    "6": {
+                        "label": "tfMRI_LFContrast_PA_run2", "created": "2017-09-19T15:51:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                        'measurements': ['functional'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j', 'RepetitionTime': 0.8}]
+                        },
+                    "7": {
+                        "label": "SpinEchoFieldMap_AP_run2", "created": "2017-09-19T15:52:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                        'measurements': ['field_map'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j-','TotalReadoutTime': 0.1}]
+                        },
+                    "8": {
+                        "label": "SpinEchoFieldMap_PA_run2", "created": "2017-09-19T15:53:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                        'measurements': ['field_map'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j','TotalReadoutTime': 0.35}]
+                        }
+                    }}}}
+
+        fieldmap_intendedfor = create_archive_funcs.determine_fmap_intendedfor(flywheel_hierarchy)
+        # Call function
+        bids_hierarchy, files_lookup = create_archive_funcs.create_bids_hierarchy(flywheel_hierarchy, fieldmap_intendedfor)
+
+        bids_exp = {'sub-001': {'ses-ses1': {'fmap': ['sub-001_ses-ses1_dir-AP_run-1_epi.nii.gz',
+                                   'sub-001_ses-ses1_dir-PA_run-1_epi.nii.gz',
+                                   'sub-001_ses-ses1_dir-AP_run-2_epi.nii.gz',
+                                   'sub-001_ses-ses1_dir-PA_run-2_epi.nii.gz',
+                                   'sub-001_ses-ses1_dir-AP_run-1_epi.json',
+                                   'sub-001_ses-ses1_dir-PA_run-1_epi.json',
+                                   'sub-001_ses-ses1_dir-AP_run-2_epi.json',
+                                   'sub-001_ses-ses1_dir-PA_run-2_epi.json'],
+                          'func': ['sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.nii.gz',
+                                   'sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.nii.gz',
+                                   'sub-001_ses-ses1_task-tfMRILFContrastAP_run-2_bold.nii.gz',
+                                   'sub-001_ses-ses1_task-tfMRILFContrastPA_run-2_bold.nii.gz',
+                                   'sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.json',
+                                   'sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.json',
+                                   'sub-001_ses-ses1_task-tfMRILFContrastAP_run-2_bold.json',
+                                   'sub-001_ses-ses1_task-tfMRILFContrastPA_run-2_bold.json']}}}
+        # Assert fmap folder is the same
+        self.assertEqual(
+                bids_hierarchy['sub-001']['ses-ses1']['fmap'],
+                bids_exp['sub-001']['ses-ses1']['fmap']
+                )
+        # Assert func folder is the same
+        self.assertEqual(
+                bids_hierarchy['sub-001']['ses-ses1']['func'],
+                bids_exp['sub-001']['ses-ses1']['func']
+                )
+
+        # Compare files
+        #self._compare_file_lookup(files_lookup, files_exp)
+
+    def test_determine_fmap_intendedfor_epi_i(self):
+        """ """
+        flywheel_hierarchy = {
+            "projectID": {
+                "sessionID": {
+                    "label": "ses1",
+                    "subject_code": "001",
+                    "acquisitions": {
+                "1": {
+                    "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                    'measurements': ['functional'], 'type': ['nifti'],
+                    'infos': [{'PhaseEncodingDirection': 'i-', 'RepetitionTime': 0.8}]
+                    },
+                "2": {
+                    "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                    'measurements': ['functional'], 'type': ['nifti'],
+                    'infos': [{'PhaseEncodingDirection': 'i', 'RepetitionTime': 0.8}]
+                    },
+                "3": {
+                    "label": "SpinEchoFieldMap_AP", "created": "2017-09-19T14:39:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                    'measurements': ['field_map'], 'type': ['nifti'],
+                    'infos': [{'PhaseEncodingDirection': 'i-','TotalReadoutTime': 0.1}]
+                    },
+                "4": {
+                    "label": "SpinEchoFieldMap_PA", "created": "2017-09-19T14:40:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                    'measurements': ['field_map'], 'type': ['nifti'],
+                    'infos': [{'PhaseEncodingDirection': 'i','TotalReadoutTime': 0.35}]
+                    }
+                }}}}
+        # Generate
+        fmaps_intendedfor = create_archive_funcs.determine_fmap_intendedfor(flywheel_hierarchy)
+        fmaps_intendedfor_exp = {'projectID': {'sessionID': {
+            '3/1.3.12.2.1107.5.2.4.nii.gz': ['2/1.3.12.2.1107.5.2.4000.nii.gz'],
+            '4/1.3.12.2.1107.5.2.4000.nii.gz': ['1/1.3.12.2.1107.5.2.4.nii.gz']}}}
+        self.assertEqual(fmaps_intendedfor, fmaps_intendedfor_exp)
+
+    def test_determine_fmap_intendedfor_epi_j(self):
+        """ """
+        flywheel_hierarchy = {
+            "projectID": {
+                "sessionID": {
+                    "label": "ses1",
+                    "subject_code": "001",
+                    "acquisitions": {
+                "1": {
+                    "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                    'measurements': ['functional'], 'type': ['nifti'],
+                    'infos': [{'PhaseEncodingDirection': 'j-', 'RepetitionTime': 0.8}]
+                    },
+                "2": {
+                    "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                    'measurements': ['functional'], 'type': ['nifti'],
+                    'infos': [{'PhaseEncodingDirection': 'j', 'RepetitionTime': 0.8}]
+                    },
+                "3": {
+                    "label": "SpinEchoFieldMap_AP", "created": "2017-09-19T14:39:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                    'measurements': ['field_map'], 'type': ['nifti'],
+                    'infos': [{'PhaseEncodingDirection': 'j-','TotalReadoutTime': 0.1}]
+                    },
+                "4": {
+                    "label": "SpinEchoFieldMap_PA", "created": "2017-09-19T14:40:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                    'measurements': ['field_map'], 'type': ['nifti'],
+                    'infos': [{'PhaseEncodingDirection': 'j','TotalReadoutTime': 0.35}]
+                    }
+                }}}}
+        # Generate
+        fmaps_intendedfor = create_archive_funcs.determine_fmap_intendedfor(flywheel_hierarchy)
+        fmaps_intendedfor_exp = {'projectID': {'sessionID': {
+            '3/1.3.12.2.1107.5.2.4.nii.gz': ['2/1.3.12.2.1107.5.2.4000.nii.gz'],
+            '4/1.3.12.2.1107.5.2.4000.nii.gz': ['1/1.3.12.2.1107.5.2.4.nii.gz']}}}
+        self.assertEqual(fmaps_intendedfor, fmaps_intendedfor_exp)
+
+    def test_determine_fmap_intendedfor_epi_k(self):
+        """ """
+        flywheel_hierarchy = {
+            "projectID": {
+                "sessionID": {
+                    "label": "ses1",
+                    "subject_code": "001",
+                    "acquisitions": {
+                "1": {
+                    "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                    'measurements': ['functional'], 'type': ['nifti'],
+                    'infos': [{'PhaseEncodingDirection': 'k-', 'RepetitionTime': 0.8}]
+                    },
+                "2": {
+                    "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                    'measurements': ['functional'], 'type': ['nifti'],
+                    'infos': [{'PhaseEncodingDirection': 'k', 'RepetitionTime': 0.8}]
+                    },
+                "3": {
+                    "label": "SpinEchoFieldMap_AP", "created": "2017-09-19T14:39:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                    'measurements': ['field_map'], 'type': ['nifti'],
+                    'infos': [{'PhaseEncodingDirection': 'k-','TotalReadoutTime': 0.1}]
+                    },
+                "4": {
+                    "label": "SpinEchoFieldMap_PA", "created": "2017-09-19T14:40:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                    'measurements': ['field_map'], 'type': ['nifti'],
+                    'infos': [{'PhaseEncodingDirection': 'k','TotalReadoutTime': 0.35}]
+                    }
+                }}}}
+        # Generate
+        fmaps_intendedfor = create_archive_funcs.determine_fmap_intendedfor(flywheel_hierarchy)
+        fmaps_intendedfor_exp = {'projectID': {'sessionID': {
+            '3/1.3.12.2.1107.5.2.4.nii.gz': ['2/1.3.12.2.1107.5.2.4000.nii.gz'],
+            '4/1.3.12.2.1107.5.2.4000.nii.gz': ['1/1.3.12.2.1107.5.2.4.nii.gz']}}}
+        self.assertEqual(fmaps_intendedfor, fmaps_intendedfor_exp)
+
+    def test_determine_fmap_intendedfor_epi_none(self):
+        """ """
+        flywheel_hierarchy = {
+            "projectID": {
+                "sessionID": {
+                    "label": "ses1",
+                    "subject_code": "001",
+                    "acquisitions": {
+                "1": {
+                    "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                    'measurements': ['functional'], 'type': ['nifti'],
+                    'infos': [{'RepetitionTime': 0.8}]
+                    },
+                "2": {
+                    "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                    'measurements': ['functional'], 'type': ['nifti'],
+                    'infos': [{'RepetitionTime': 0.8}]
+                    },
+                "3": {
+                    "label": "SpinEchoFieldMap_AP", "created": "2017-09-19T14:39:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                    'measurements': ['field_map'], 'type': ['nifti'],
+                    'infos': [{'TotalReadoutTime': 0.1}]
+                    },
+                "4": {
+                    "label": "SpinEchoFieldMap_PA", "created": "2017-09-19T14:40:00.000Z",
+                    "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                    'measurements': ['field_map'], 'type': ['nifti'],
+                    'infos': [{'TotalReadoutTime': 0.35}]
+                    }
+                }}}}
+        # Generate
+        fmaps_intendedfor = create_archive_funcs.determine_fmap_intendedfor(flywheel_hierarchy)
+        fmaps_intendedfor_exp = {'projectID': {'sessionID': {}}}
+        self.assertEqual(fmaps_intendedfor, fmaps_intendedfor_exp)
+
+    def test_determine_fmap_intendedfor_epi_multiple(self):
+        """ """
+        flywheel_hierarchy = {
+                "projectID": {
+                    "sessionID": {
+                        "label": "ses1",
+                        "subject_code": "001",
+                        "acquisitions": {
+                    "1": {
+                        "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                        'measurements': ['functional'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j-', 'RepetitionTime': 0.8}]
+                        },
+                    "2": {
+                        "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                        'measurements': ['functional'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j', 'RepetitionTime': 0.8}]
+                        },
+                    "3": {
+                        "label": "SpinEchoFieldMap_AP_run1", "created": "2017-09-19T14:41:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                        'measurements': ['field_map'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j-','TotalReadoutTime': 0.1}]
+                        },
+                    "4": {
+                        "label": "SpinEchoFieldMap_PA_run1", "created": "2017-09-19T14:42:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                        'measurements': ['field_map'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j','TotalReadoutTime': 0.35}]
+                        },
+                    "5": {
+                        "label": "tfMRI_LFContrast_AP_run2", "created": "2017-09-19T15:50:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                        'measurements': ['functional'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j-', 'RepetitionTime': 0.8}]
+                        },
+                    "6": {
+                        "label": "tfMRI_LFContrast_PA_run2", "created": "2017-09-19T15:51:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                        'measurements': ['functional'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j', 'RepetitionTime': 0.8}]
+                        },
+                    "7": {
+                        "label": "SpinEchoFieldMap_AP_run2", "created": "2017-09-19T15:52:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
+                        'measurements': ['field_map'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j-','TotalReadoutTime': 0.1}]
+                        },
+                    "8": {
+                        "label": "SpinEchoFieldMap_PA_run2", "created": "2017-09-19T15:53:00.000Z",
+                        "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
+                        'measurements': ['field_map'], 'type': ['nifti'],
+                        'infos': [{'PhaseEncodingDirection': 'j','TotalReadoutTime': 0.35}]
+                        }
+                    }}}}
+
+        fmaps_intendedfor = create_archive_funcs.determine_fmap_intendedfor(flywheel_hierarchy)
+        fmaps_intendedfor_exp = {'projectID': {'sessionID': {'3/1.3.12.2.1107.5.2.4.nii.gz': ['2/1.3.12.2.1107.5.2.4000.nii.gz'],
+                             '4/1.3.12.2.1107.5.2.4000.nii.gz': ['1/1.3.12.2.1107.5.2.4.nii.gz'],
+                             '7/1.3.12.2.1107.5.2.4.nii.gz': ['6/1.3.12.2.1107.5.2.4000.nii.gz'],
+                             '8/1.3.12.2.1107.5.2.4000.nii.gz': ['5/1.3.12.2.1107.5.2.4.nii.gz']}}}
+        self.assertEqual(fmaps_intendedfor, fmaps_intendedfor_exp)
+
 
 if __name__ == "__main__":
 
     #suite = unittest.TestSuite()
-    #suite.addTest(bidsTestCases('test_create_bids_hierarchy_case1'))
-    #suite.addTest(bidsTestCases('test_create_bids_hierarchy_case2'))
+    #suite.addTest(bidsTestCases('test_determine_fmap_intendedfor_epi_i'))
+    #suite.addTest(bidsTestCases('test_determine_fmap_intendedfor_epi_j'))
+    #suite.addTest(bidsTestCases('test_determine_fmap_intendedfor_epi_k'))
+    #suite.addTest(bidsTestCases('test_determine_fmap_intendedfor_epi_multiple'))
+    #suite.addTest(bidsTestCases('test_determine_fmap_intendedfor_epi_none'))
     #suite.addTest(bidsTestCases('test_create_bids_hierarchy_case4'))
     #unittest.TextTestRunner().run(suite)
 

@@ -5,7 +5,7 @@ import pprint
 
 import flywheel
 
-from create_archive_funcs import get_flywheel_hierarchy, create_bids_hierarchy
+from create_archive_funcs import get_flywheel_hierarchy, determine_fmap_intendedfor, create_bids_hierarchy
 
 ### SETUP
 # Define variables
@@ -34,9 +34,14 @@ print("Create Flywheel Hierarchy")
 flywheel_hierarchy = get_flywheel_hierarchy(fw, analysis_id)
 pprint.pprint(flywheel_hierarchy)
 
+# Determine what fieldmaps and functionals are connected...
+print("Determine fmap intendedfor")
+fmaps_intendedfor = determine_fmap_intendedfor(flywheel_hierarchy)
+print(fmaps_intendedfor)
+
 ### Create bids hierarchy
 print("Create BIDS Hierarchy")
-bids_hierarchy, files_lookup = create_bids_hierarchy(flywheel_hierarchy)
+bids_hierarchy, files_lookup = create_bids_hierarchy(flywheel_hierarchy, fmaps_intendedfor)
 # Print out BIDS hierarchy (for logs)
 pprint.pprint(bids_hierarchy)
 

@@ -4,6 +4,11 @@ import sys
 
 #from jsonschema import validate
 
+from datetime import datetime
+
+
+from pprint import pprint
+
 #### Define functions
 def get_flywheel_hierarchy(fw, analysis_id):
     """
@@ -225,11 +230,93 @@ def check_meta_info(f, b, info):
                 reqvals_notpresent = True
     # Else print, I didn't recognize the file type...
     else:
-        print("I DO NOT RECOGNIZE THE FILETYPE")
+        print("Could not identify file type")
 
     return reqvals_notpresent
 
-def create_bids_hierarchy(flywheel_hierarchy):
+
+
+def determine_fmap_intendedfor(flywheel_hierarchy):
+    """ """
+    # initialize dictionary
+    fmaps_intendedfor = {}
+    # Determine if fieldmaps are present within flywheel hierarchy
+    # Participant Directory
+    for project in flywheel_hierarchy.keys():
+        fmaps_intendedfor[project] = {}
+        # Session Directory
+        for session_id in flywheel_hierarchy[project].keys():
+            fmaps_intendedfor[project][session_id] = {}
+            # initialize lists
+            fmaps_time = {'i':[],'j':[],'k':[],'i-':[],'j-':[],'k-':[]}
+            fmaps_filenames = {'i':[],'j':[],'k':[],'i-':[],'j-':[],'k-':[]}
+            funcs = []
+
+            # Iterate over acquisitions
+            for acq_id in flywheel_hierarchy[project][session_id]['acquisitions'].keys():
+                if 'field_map' in flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['measurements']:
+                    # Get PhaseEncodingDirection
+                    pe_dir = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['infos'][-1].get('PhaseEncodingDirection')
+                    if pe_dir:
+                        fmaps_time[pe_dir].append(
+                            flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['created'],
+                        )
+                        fmaps_filenames[pe_dir].append(
+                            os.path.join(
+                                acq_id,
+                                flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['files'][-1]
+                                )
+                        )
+                elif 'functional' in flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['measurements']:
+                    # Get PhaseEncodingDirection
+                    pe_dir = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['infos'][-1].get('PhaseEncodingDirection')
+                    if pe_dir:
+                        # Flip the pe_dir so it indicates which pe the fieldmap should be for the functional image...
+                        if '-' in pe_dir: pe_dir_flipped = pe_dir[0]
+                        else: pe_dir_flipped = pe_dir + '-'
+
+                        # Add timestamp, pathname, pe_dir_flipped
+                        funcs.append(
+                                [
+                                    flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['created'],
+                                    os.path.join(
+                                        acq_id,
+                                        flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['files'][-1]
+                                        ),
+                                    pe_dir_flipped
+                                    ]
+                                )
+                else:
+                    pass
+
+            ###
+            # Determine which fieldmaps go with which functional datasets
+            if funcs:
+                # Initialize a dictionary with empty lists
+                all_fmap_filenames = [x for alist in fmaps_filenames.values() for x in alist]
+                tmp = dict.fromkeys(all_fmap_filenames)
+                for key in tmp.keys():
+                    tmp[key] = []
+
+                # Iterate over each functional image, determine which fmap timepoint it is closest to...
+                for func_time, func_filename, func_pedir_flipped in funcs:
+                    if fmaps_filenames[func_pedir_flipped]:
+                        # Get the func time
+                        FMT = "%Y-%m-%dT%H:%M:%S.%fZ"
+                        ft = datetime.strptime(func_time, FMT)
+                        # Determing the fieldmap that the functional image is closest to...
+                        fmap_time = min(fmaps_time[func_pedir_flipped], key=lambda x:abs(datetime.strptime(x, FMT)-ft))
+                        fmap_idx = fmaps_time[func_pedir_flipped].index(fmap_time)
+                        fmap_filename = fmaps_filenames[func_pedir_flipped][fmap_idx]
+                        tmp[fmap_filename].append(func_filename)
+
+                # add tmp to dictionary
+                fmaps_intendedfor[project][session_id].update(tmp)
+
+    return fmaps_intendedfor
+
+
+def create_bids_hierarchy(flywheel_hierarchy, fieldmap_intendedfor):
     """
     """
 
@@ -433,6 +520,27 @@ def create_bids_hierarchy(flywheel_hierarchy):
             taskname = b[find_taskname.start()+5:find_taskname.end()]
             info['TaskName'] = taskname
 
+        # If a fieldmap, determine which files this fieldmap is intended for...
+        if 'fmap' in b:
+            if fieldmap_intendedfor:
+                try:
+                    # Get the flywheel names of all of the functional files that the fieldmap is intended for...
+                    funcs_f = fieldmap_intendedfor[project_id][session_id]['%s/%s' % (acq_id,filename)]
+                    # Now get the bids name of that flywheel file...
+                    funcs_b = []
+                    for ff in funcs_f:
+                        # ff is actually the acq_id/flywheel_filename,make it so that it's the full flywheel pathname
+                        fff = os.path.join(project_id, session_id, ff)
+                        # Get bids filename
+                        for flyfile, bidsfile in files_lookup:
+                            if flyfile == fff:
+                                part, ses, subdir, fname = bidsfile.split('/')
+                                # Append filename to th elist
+                                funcs_b.append(os.path.join(subdir,fname))
+                    info['IntendedFor'] = funcs_b
+                except KeyError:
+                    pass
+
         ## Check required information from file 'info' based on BIDS filetype
         reqvals_notpresent += check_meta_info(f, b, info)
         # Save meta information to JSON file
@@ -444,10 +552,11 @@ def create_bids_hierarchy(flywheel_hierarchy):
             # Add json_filename to bids_hierarchy
             populate_bids_hierarchy(json_filename, bids_hierarchy)
 
+
     # If the required values are not present, can't run fmriprep
     if reqvals_notpresent:
         print('Required meta information is not present')
-        print('Run the dcm2niix gear to generate meta info')
+        print('Run the dcm2niix gear to generate meta info for nifti files')
         sys.exit(1)
 
     # Append json_files to files_lookup
