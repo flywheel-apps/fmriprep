@@ -1,13 +1,4 @@
-# fmriprep
-fMRIprep is a functional magnetic resonance image pre-processing pipeline that is designed to provide an easily accessible, state-of-the-art interface that is robust to differences in scan acquisition protocols and that requires minimal user input, while providing easily interpretable and comprehensive error and output reporting. http://fmriprep.readthedocs.io
+# flywheel/fmriprep
+fmriprep is a functional magnetic resonance imaging (fMRI) data preprocessing pipeline that is designed to provide an easily accessible, state-of-the-art interface that is robust to variations in scan acquisition protocols and that requires minimal user input, while providing easily interpretable and comprehensive error and output reporting. It performs basic processing steps (coregistration, normalization, unwarping, noise component extraction, segmentation, skullstripping etc.) providing outputs that can be easily submitted to a variety of group level analyses, including task-based or resting-state fMRI, graph theory measures, surface or volume-based statistics, etc.
 
-### Example Usage
-This Gear is built to take a BIDS dataset archive (.tar or zip) and execute fMRIPrep. Outputs are provided as an archive in the output directory.
-
-```
-# Assumes BIDS dataset archive is located at ./input/bids_dataset
-docker run -ti --rm \
-    -v $(pwd)/input:/flywheel/v0/input \
-    -v $(pwd)/output:/flywheel/v0/output \
-    flywheel/fmriprep
-```
+For more info, please refer to: http://fmriprep.readthedocs.io
