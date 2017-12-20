@@ -44,94 +44,26 @@ fi
 
 
 ################################################################################
-# ORGANIZE
-
-# Make basic BIDS DIR structure
-BIDS_DIR=/bids/ds01
-SUB_ID=sub-${config_Subject_ID}
-BIDS_DIR_SUB=${BIDS_DIR}/${SUB_ID}
-BIDS_ANAT=${BIDS_DIR_SUB}/anat
-BIDS_FUNC=${BIDS_DIR_SUB}/func
-mkdir -p ${BIDS_DIR_SUB}
-mkdir -p ${BIDS_ANAT}
-mkdir -p ${BIDS_FUNC}
-
-
-################################################################################
-# Read JSON data from config
-
-# Run 1
-TR[1]=${config_Functional_NIfTI_run_01_TR}
-TASK[1]=${config_Functional_NIfTI_run_01_TASK}
-
-# Run 2
-TR[2]=${config_Functional_NIfTI_run_02_TR}
-TASK[2]=${config_Functional_NIfTI_run_02_TASK}
-
-# Run 3
-TR[3]=${config_Functional_NIfTI_run_03_TR}
-TASK[3]=${config_Functional_NIfTI_run_03_TASK}
-
-# Run 4
-TR[4]=${config_Functional_NIfTI_run_04_TR}
-TASK[4]=${config_Functional_NIfTI_run_04_TASK}
-
-# Run 5
-TR[5]=${config_Functional_NIfTI_run_05_TR}
-TASK[5]=${config_Functional_NIfTI_run_05_TASK}
-
-# Run 6
-TR[6]=${config_Functional_NIfTI_run_06_TR}
-TASK[6]=${config_Functional_NIfTI_run_06_TASK}
-
+# CREATE A BIDS FORMATTED DIRECTORY
+#   Use Python SDK to accomplish this task
+/usr/local/miniconda/bin/python ${FLYWHEEL_BASE}/create_archive.py
+BIDS_DIR=$(find $INPUT_DIR/* -maxdepth 0 -type d)
 
 ################################################################################
 # VALIDATE INPUT DATA
-
-# T1w NIfTI directory
-T1FILE=$(find $INPUT_DIR/T1w_NIfTI -type f -name "*.nii.gz")
-if [[ -z "${T1FILE}" ]]; then
-  echo "${CONTAINER}  T1 file required but not found!"
-  exit 1
+# Check if the input directory is not empty
+if [[ "$(ls -A $INPUT_DIR)" ]] ; then
+    echo "$CONTAINER  Starting..."
 else
-  cp "${T1FILE}" ${BIDS_ANAT}/${SUB_ID}_T1w.nii.gz
+    echo "Input directory is empty: $INPUT_DIR"
+    exit 1
 fi
-
-# T2w (optional)
-if [[ -d $INPUT_DIR/T2_NIfTI ]]; then
-  T2FILE=$(find $INPUT_DIR/T2_NIfTI -type f -name "*.nii.gz")
-  cp "${T2FILE}" ${BIDS_ANAT}/${SUB_ID}_inplaneT2.nii.gz
-fi
-
-# FUNCTIONALS (must have at least one)
-FUNC_DIRS=$(find $INPUT_DIR -type d -name "Functional*")
-if [[ -z "${FUNC_DIRS}" ]]; then
-  echo "${CONTAINER}  Minimum of 1 functional file required but 0 found!"
-  exit 1
-else
-  for i in $(seq 6); do
-    FD=$INPUT_DIR/Functional_NIfTI_run-0$i
-    if [[ -d $FD ]]; then
-
-      # Generate the JSON File for this run
-      JF=${BIDS_DIR_SUB}/task-${TASK[$i]}_bold.json
-      echo "{\"RepetitionTime\": ${TR[$i]}, \"TaskName\": \"${TASK[$i]}\"}" > ${JF}
-
-      # Copy functional file to bids dataset
-      FUNCFILE=$(find $FD/* -type f -name "*.nii.gz")
-      RUN=$(echo -n $FD | tail -c 6)
-      cp "${FUNCFILE}" ${BIDS_FUNC}/${SUB_ID}_task-${TASK[$i]//[[:blank:]]/}_${RUN}_bold.nii.gz
-    fi
-  done
-fi
-
 
 ################################################################################
 # RUN FMRIPREP
 
-time /usr/local/miniconda/bin/fmriprep $BIDS_DIR $FMRIPREP_OUTPUT_DIR participant -w $WORKING_DIR $FREESURFER_FLAG
+time /usr/local/miniconda/bin/fmriprep $INPUT_DIR $FMRIPREP_OUTPUT_DIR participant -w $WORKING_DIR $FREESURFER_FLAG
 FMRIPREP_EXITSTATUS=$?
-
 
 ################################################################################
 # CLEANUP OUTPUTS
@@ -145,8 +77,16 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
   zip -r "$GEAR_OUTPUT_DIR"/fmriprep_output_$(basename "$BIDS_DIR") *
   chmod -R 777 $GEAR_OUTPUT_DIR
   echo -e "Wrote: `ls $GEAR_OUTPUT_DIR`"
+
+elif [[ $config_save_outputs == 'true' ]] ; then
+  # Generate zipped output of fmriprep
+  echo "Error occurred. Config 'save_outputs' set to true. Zipping up outputs."
+  zip -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_output_$(basename "$BIDS_DIR") "$FMRIPREP_OUTPUT_DIR"
+  chmod -R 777 $GEAR_OUTPUT_DIR
+  echo -e "Wrote: `ls $GEAR_OUTPUT_DIR`"
+
 else
-  echo "$CONTAINER Errors encountered during execution. Cleaning up and exiting."
+  echo "$CONTAINER Errors encountered during execution. Save outputs config not set. Cleaning up and exiting."
 fi
 
 # Clean up
