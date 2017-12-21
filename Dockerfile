@@ -1,7 +1,7 @@
 #flywheel/fmriprep
 
 # Get the fmriprep algorithm from DockerHub
-FROM poldracklab/fmriprep:1.0.0-rc5
+FROM poldracklab/fmriprep:1.0.0
 # FROM bids/fmriprep:0.4.5
 MAINTAINER Flywheel <support@flywheel.io>
 
@@ -32,4 +32,3 @@ COPY create_archive_funcs.py /flywheel/v0/create_archive_funcs.py
 # ENV preservation for Flywheel Engine
 RUN env -u HOSTNAME -u PWD | \
   awk -F = '{ print "export " $1 "=\"" $2 "\"" }' > ${FLYWHEEL}/docker-env.sh
-
