@@ -2,7 +2,6 @@
 
 # Get the fmriprep algorithm from DockerHub
 FROM poldracklab/fmriprep:1.0.0
-# FROM bids/fmriprep:0.4.5
 MAINTAINER Flywheel <support@flywheel.io>
 
 # Install jq to parse the JSON config file
@@ -13,7 +12,7 @@ ENV FLYWHEEL /flywheel/v0
 RUN mkdir -p ${FLYWHEEL}
 COPY run ${FLYWHEEL}/run
 COPY manifest.json ${FLYWHEEL}/manifest.json
-
+COPY parse_config.py /flywheel/v0/parse_config.py
 
 # Set the entrypoint
 ENTRYPOINT ["/flywheel/v0/run"]
@@ -27,6 +26,7 @@ ENV PYTHONPATH /flywheel/v0/sdk
 # Copy over python scripts that generate the BIDS hierarchy
 COPY create_archive.py /flywheel/v0/create_archive.py
 COPY create_archive_funcs.py /flywheel/v0/create_archive_funcs.py
+RUN chmod +x ${FLYWHEEL}/*
 
 
 # ENV preservation for Flywheel Engine
