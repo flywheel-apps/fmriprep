@@ -1,7 +1,7 @@
 #flywheel/fmriprep
 
 # Get the fmriprep algorithm from DockerHub
-FROM poldracklab/fmriprep:1.0.0
+FROM poldracklab/fmriprep:1.0.4
 MAINTAINER Flywheel <support@flywheel.io>
 
 # Install jq to parse the JSON config file
