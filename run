@@ -21,6 +21,13 @@ CONTAINER='[flywheel/fmriprep]'
 
 
 ################################################################################
+# DISPLAY FMRIPREP DOCKERFILE FOR BUILD INFO
+
+echo "$CONTAINER BEGIN FMRIPREP DOCKERFILE"
+cat ${FLYWHEEL_BASE}/*Dockerfile
+echo "$CONTAINER END FMRIPREP DOCKERFILE"
+
+################################################################################
 # CONFIGURE ENV
 
 source ${FLYWHEEL_BASE}/docker-env.sh

@@ -1,12 +1,11 @@
 #flywheel/fmriprep
 
+############################
 # Get the fmriprep algorithm from DockerHub
 FROM poldracklab/fmriprep:1.0.4
 MAINTAINER Flywheel <support@flywheel.io>
 
-# Install jq to parse the JSON config file
-RUN apt-get update && apt-get -y install jq tar zip
-
+ENV FMRIPREP_VERSION 1.0.4
 
 ############################
 # Make directory for flywheel spec (v0)
@@ -18,6 +17,18 @@ COPY parse_config.py /flywheel/v0/parse_config.py
 
 # Set the entrypoint
 ENTRYPOINT ["/flywheel/v0/run"]
+
+# Add the fmriprep dockerfile to the container
+ADD https://raw.githubusercontent.com/poldracklab/fmriprep/${FMRIPREP_VERSION}/Dockerfile ${FLYWHEEL}/fmriprep_${FMRIPREP_VERSION}_Dockerfile
+
+
+############################
+# Install basic dependencies
+RUN apt-get update && apt-get -y install \
+    jq \
+    tar \
+    zip \
+    build-essential
 
 
 ############################
