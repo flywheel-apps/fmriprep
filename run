@@ -27,6 +27,7 @@ echo "$CONTAINER BEGIN FMRIPREP DOCKERFILE"
 cat ${FLYWHEEL_BASE}/*Dockerfile
 echo "$CONTAINER END FMRIPREP DOCKERFILE"
 
+
 ################################################################################
 # CONFIGURE ENV
 
@@ -94,6 +95,7 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
   # Convert index to standalone index
   echo "$CONTAINER  generating output html report"
   html_file=`find "$FMRIPREP_OUTPUT_DIR"/fmriprep/ -name *.html`
+  SUB_ID=$(basename $"html_file" .html)
 
   if [[ -n "$html_file" ]]; then
     output_html_file="$GEAR_OUTPUT_DIR"/`basename "$html_file"`
@@ -105,11 +107,11 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
 
   # Generate zipped output of fmriprep
   cd "$FMRIPREP_OUTPUT_DIR"
-  zip -r "$GEAR_OUTPUT_DIR"/fmriprep_output_$(basename "$BIDS_DIR") *
+  zip -r "$GEAR_OUTPUT_DIR"/fmriprep_output_"$SUB_ID"_$(basename "$BIDS_DIR") *
 
   if [[ $config_save_intermediate_work == 'true' ]] ; then
     cd "$WORKING_DIR"
-    zip -r "$GEAR_OUTPUT_DIR"/fmriprep_output_work_$(basename "$BIDS_DIR") *
+    zip -r "$GEAR_OUTPUT_DIR"/fmriprep_output_work_"$SUB_ID"_$(basename "$BIDS_DIR") *
   fi
   chmod -R 777 $GEAR_OUTPUT_DIR
 
