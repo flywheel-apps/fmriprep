@@ -83,8 +83,18 @@ FMRIPREP_EXITSTATUS=$?
 # CLEANUP OUTPUTS
 
 if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
-  # Copy reports to top level of output directory
-  cp -a "$FMRIPREP_OUTPUT_DIR"/fmriprep/*.html $GEAR_OUTPUT_DIR
+
+  # Convert index to standalone index
+  echo "$CONTAINER  generating output html report"
+  html_file=`find "$FMRIPREP_OUTPUT_DIR"/fmriprep/ -name *.html`
+
+  if [[ -n "$html_file" ]]; then
+    output_html_file="$GEAR_OUTPUT_DIR"/`basename "$html_file"`
+    echo "$CONTAINER  generating $output_html_file"
+    python /opt/webpage2html/webpage2html.py -q -s "$fmriqa_output"/index.html > "$output_html_file"
+  else
+    echo "$CONTAINER  no output html report found!"
+  fi
 
   # Generate zipped output of fmriprep
   cd "$FMRIPREP_OUTPUT_DIR"
@@ -95,7 +105,6 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
     zip -r "$GEAR_OUTPUT_DIR"/fmriprep_output_work_$(basename "$BIDS_DIR") *
   fi
   chmod -R 777 $GEAR_OUTPUT_DIR
-  echo -e "Wrote: `ls $GEAR_OUTPUT_DIR`"
 
 elif [[ $config_save_outputs == 'true' ]] ; then
   # Generate zipped output of fmriprep
@@ -103,7 +112,6 @@ elif [[ $config_save_outputs == 'true' ]] ; then
   zip -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_output_$(basename "$BIDS_DIR") "$FMRIPREP_OUTPUT_DIR"
   zip -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_output_work_$(basename "$BIDS_DIR") "$WORKING_DIR"
   chmod -R 777 $GEAR_OUTPUT_DIR
-  echo -e "Wrote: `ls $GEAR_OUTPUT_DIR`"
 
 else
   echo "$CONTAINER Errors encountered during execution. Save outputs config not set. Cleaning up and exiting."
@@ -112,5 +120,7 @@ fi
 # Clean up
 rm -rf "$WORKING_DIR"
 rm -rf "$FMRIPREP_OUTPUT_DIR"
+
+echo -e "Wrote: `ls $GEAR_OUTPUT_DIR`"
 
 exit $FMRIPREP_EXITSTATUS
