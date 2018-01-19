@@ -23,6 +23,14 @@ ENTRYPOINT ["/flywheel/v0/run"]
 COPY sdk /flywheel/v0/sdk
 ENV PYTHONPATH /flywheel/v0/sdk
 
+# Download/Install webpage2html
+ENV COMMIT=4dec20eba862335aaf1718d04b313bdc96e7dc8e
+ENV URL=https://github.com/zTrix/webpage2html/archive/$COMMIT.zip
+RUN curl -#L  $URL | bsdtar -xf- -C /opt/
+WORKDIR /opt
+RUN mv webpage2html-$COMMIT webpage2html
+RUN pip install -r webpage2html/requirements.txt
+
 # Copy over python scripts that generate the BIDS hierarchy
 COPY create_archive.py /flywheel/v0/create_archive.py
 COPY create_archive_funcs.py /flywheel/v0/create_archive_funcs.py
