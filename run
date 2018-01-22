@@ -93,43 +93,45 @@ FMRIPREP_EXITSTATUS=$?
 if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
 
   # Convert index to standalone index
-  echo "$CONTAINER  generating output html report"
+  echo "$CONTAINER  Generating output html report"
   html_file=`find "$FMRIPREP_OUTPUT_DIR"/fmriprep/ -name *.html`
   SUB_ID=$(basename $"html_file" .html)
 
   if [[ -n "$html_file" ]]; then
     output_html_file="$GEAR_OUTPUT_DIR"/`basename "$html_file"`
-    echo "$CONTAINER  generating $output_html_file"
-    python /opt/webpage2html/webpage2html.py -q -s "$fmriqa_output"/index.html > "$output_html_file"
+    echo "$CONTAINER  writing $output_html_file"
+    time python /opt/webpage2html/webpage2html.py -q -s "$fmriqa_output"/index.html > "$output_html_file"
   else
     echo "$CONTAINER  no output html report found!"
   fi
 
   # Generate zipped output of fmriprep
   cd "$FMRIPREP_OUTPUT_DIR"
-  zip -r "$GEAR_OUTPUT_DIR"/fmriprep_output_"$SUB_ID"_$(basename "$BIDS_DIR") *
+  echo "$CONTAINER  generating zip archive from outputs..."
+  time zip -q -r "$GEAR_OUTPUT_DIR"/fmriprep_output_"$SUB_ID"_$(basename "$BIDS_DIR") *
 
   if [[ $config_save_intermediate_work == 'true' ]] ; then
+    echo "$CONTAINER  generating zip archive from intermediate work files..."
     cd "$WORKING_DIR"
-    zip -r "$GEAR_OUTPUT_DIR"/fmriprep_output_work_"$SUB_ID"_$(basename "$BIDS_DIR") *
+    time zip -q -r "$GEAR_OUTPUT_DIR"/fmriprep_output_work_"$SUB_ID"_$(basename "$BIDS_DIR") *
   fi
   chmod -R 777 $GEAR_OUTPUT_DIR
 
 elif [[ $config_save_outputs == 'true' ]] ; then
   # Generate zipped output of fmriprep
-  echo "Error occurred. Config 'save_outputs' set to true. Zipping up outputs."
-  zip -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_output_$(basename "$BIDS_DIR") "$FMRIPREP_OUTPUT_DIR"
-  zip -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_output_work_$(basename "$BIDS_DIR") "$WORKING_DIR"
+  echo "$CONTAINER  Error occurred. Config 'save_outputs' set to true. Zipping up outputs."
+  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_output_$(basename "$BIDS_DIR") "$FMRIPREP_OUTPUT_DIR"
+  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_output_work_$(basename "$BIDS_DIR") "$WORKING_DIR"
   chmod -R 777 $GEAR_OUTPUT_DIR
 
 else
-  echo "$CONTAINER Errors encountered during execution. Save outputs config not set. Cleaning up and exiting."
+  echo "$CONTAINER  Errors encountered during execution. Save outputs config not set. Cleaning up and exiting."
 fi
 
 # Clean up
 rm -rf "$WORKING_DIR"
 rm -rf "$FMRIPREP_OUTPUT_DIR"
 
-echo -e "Wrote: `ls $GEAR_OUTPUT_DIR`"
+echo -e "Wrote: `ls -lh $GEAR_OUTPUT_DIR`"
 
 exit $FMRIPREP_EXITSTATUS
