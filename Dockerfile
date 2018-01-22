@@ -29,31 +29,19 @@ RUN apt-get update && apt-get -y install \
     tar \
     zip \
     bsdtar \
-    build-essential \
-    python-pip
+    build-essential
 
 
 ############################
 # Install the Flywheel SDK
 WORKDIR /opt/flywheel
-# Commit for version of SDK to build
-ENV COMMIT af59edf
+ENV COMMIT=af59edf
 RUN git clone https://github.com/flywheel-io/sdk workspace/src/flywheel.io/sdk
 RUN ln -s workspace/src/flywheel.io/sdk sdk
-RUN cd sdk && git checkout $COMMIT && cd ../
+RUN cd sdk && git checkout $COMMIT > /dev/null && cd ../
 RUN sdk/make.sh
 RUN sdk/bridge/make.sh
 ENV PYTHONPATH /opt/flywheel/workspace/src/flywheel.io/sdk/bridge/dist/python/flywheel
-
-
-############################
-# Download/Install webpage2html
-ENV COMMIT=d117f0dca228eada3442ae84e49e76e89f48acef
-ENV URL=https://github.com/zTrix/webpage2html/archive/$COMMIT.zip
-RUN curl -#L  $URL | bsdtar -xf- -C /opt/
-WORKDIR /opt
-RUN mv webpage2html-$COMMIT webpage2html
-RUN /usr/bin/pip install -r webpage2html/requirements.txt
 
 
 ############################
