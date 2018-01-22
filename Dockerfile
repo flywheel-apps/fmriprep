@@ -29,7 +29,8 @@ RUN apt-get update && apt-get -y install \
     tar \
     zip \
     bsdtar \
-    build-essential
+    build-essential \
+    python-pip
 
 
 ############################
@@ -47,12 +48,12 @@ ENV PYTHONPATH /opt/flywheel/workspace/src/flywheel.io/sdk/bridge/dist/python/fl
 
 ############################
 # Download/Install webpage2html
-ENV COMMIT=4dec20eba862335aaf1718d04b313bdc96e7dc8e
+ENV COMMIT=d117f0dca228eada3442ae84e49e76e89f48acef
 ENV URL=https://github.com/zTrix/webpage2html/archive/$COMMIT.zip
 RUN curl -#L  $URL | bsdtar -xf- -C /opt/
 WORKDIR /opt
 RUN mv webpage2html-$COMMIT webpage2html
-RUN pip install -r webpage2html/requirements.txt
+RUN /usr/bin/pip install -r webpage2html/requirements.txt
 
 
 ############################

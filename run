@@ -93,14 +93,14 @@ FMRIPREP_EXITSTATUS=$?
 if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
 
   # Convert index to standalone index
-  echo "$CONTAINER  Generating output html report"
-  html_file=`find "$FMRIPREP_OUTPUT_DIR"/fmriprep/ -name *.html`
-  SUB_ID=$(basename $"html_file" .html)
+  echo "$CONTAINER  Generating output html report..."
+  html_file=`find "$FMRIPREP_OUTPUT_DIR"/fmriprep/ -name "*.html"`
+  SUB_ID=$(basename "$html_file" .html)
 
   if [[ -n "$html_file" ]]; then
     output_html_file="$GEAR_OUTPUT_DIR"/`basename "$html_file"`
     echo "$CONTAINER  writing $output_html_file"
-    time python /opt/webpage2html/webpage2html.py -q -s "$fmriqa_output"/index.html > "$output_html_file"
+    time python2.7 /opt/webpage2html/webpage2html.py -q -s "$html_file" > "$output_html_file"
   else
     echo "$CONTAINER  no output html report found!"
   fi
