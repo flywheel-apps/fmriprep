@@ -37,7 +37,6 @@ RUN apt-get update && apt-get -y install \
 WORKDIR /opt/flywheel
 # Commit for version of SDK to build
 ENV COMMIT af59edf
-ENV LD_LIBRARY_PATH ' '
 RUN git clone https://github.com/flywheel-io/sdk workspace/src/flywheel.io/sdk
 RUN ln -s workspace/src/flywheel.io/sdk sdk
 RUN cd sdk && git checkout $COMMIT && cd ../
