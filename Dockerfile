@@ -28,7 +28,6 @@ RUN apt-get update && apt-get -y install \
     jq \
     tar \
     zip \
-    bsdtar \
     build-essential
 
 
