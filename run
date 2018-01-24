@@ -114,20 +114,19 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
   # Generate zipped output of fmriprep
   cd "$FMRIPREP_OUTPUT_DIR"
   echo "$CONTAINER  generating zip archive from outputs..."
-  time zip -q -r "$GEAR_OUTPUT_DIR"/fmriprep_output_"$SUB_ID"_$(basename "$BIDS_DIR") *
+  time zip -q -r "$GEAR_OUTPUT_DIR"/fmriprep_output_"$SUB_ID" *
 
   if [[ $config_save_intermediate_work == 'true' ]] ; then
     echo "$CONTAINER  generating zip archive from intermediate work files..."
     cd "$WORKING_DIR"
-    time zip -q -r "$GEAR_OUTPUT_DIR"/fmriprep_output_work_"$SUB_ID"_$(basename "$BIDS_DIR") *
+    time zip -q -r "$GEAR_OUTPUT_DIR"/fmriprep_output_work_"$SUB_ID" *
   fi
   chmod -R 777 $GEAR_OUTPUT_DIR
 
 elif [[ $config_save_outputs == 'true' ]] ; then
-  # Generate zipped output of fmriprep
   echo "$CONTAINER  Error occurred. Config 'save_outputs' set to true. Zipping up outputs."
-  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_output_$(basename "$BIDS_DIR") "$FMRIPREP_OUTPUT_DIR"
-  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_output_work_$(basename "$BIDS_DIR") "$WORKING_DIR"
+  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_output "$FMRIPREP_OUTPUT_DIR"
+  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_output "$WORKING_DIR"
   chmod -R 777 $GEAR_OUTPUT_DIR
 
 else
