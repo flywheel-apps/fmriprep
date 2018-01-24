@@ -52,6 +52,16 @@
       "description": "FreeSurfer License Reference (4th line of 'license')",
       "default": "",
       "type": "string"
+    },
+    "intermediate_files": {
+      "description": "Space separated list of FOLDERS to retain from the intermediate work directory.",
+      "default": "",
+      "type": "string"
+    },
+    "intermediate_folders": {
+      "description": "Space separated list of FOLDERS to retain from the intermediate work directory.",
+      "default": "",
+      "type": "string"
     }
   }
 }

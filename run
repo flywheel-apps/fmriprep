@@ -111,6 +111,22 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
     echo "$CONTAINER  no output html report found!"
   fi
 
+  # Look for files/folders to preserve from the working DIRECTORY
+  work_file_zip="$GEAR_OUTPUT_DIR"/fmriprep_output_work_selected_"$SUB_ID".zip
+  if [[ -n "$config_intermediate_files" ]]; then
+    cd "$WORKING_DIR"
+    for f in "$config_intermediate_files"; do
+      zip $work_file_zip `find . -type f -name "$f"`
+    done
+  fi
+
+  if [[ -n "$config_intermediate_folders" ]]; then
+    cd "$WORKING_DIR"
+    for f in $config_intermediate_folders; do
+      zip $work_file_zip `find . -type d -name "$f"`
+    done
+  fi
+
   # Generate zipped output of fmriprep
   cd "$FMRIPREP_OUTPUT_DIR"
   echo "$CONTAINER  generating zip archive from outputs..."
