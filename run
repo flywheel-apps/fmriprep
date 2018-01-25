@@ -114,6 +114,7 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
   # Look for files/folders to preserve from the working DIRECTORY
   work_file_zip="$GEAR_OUTPUT_DIR"/fmriprep_output_work_selected_"$SUB_ID".zip
   if [[ -n "$config_intermediate_files" ]]; then
+    echo "$CONTAINER  Archiving selected intermediate files..."
     cd "$WORKING_DIR"
     for f in "$config_intermediate_files"; do
       zip $work_file_zip `find . -type f -name "$f"`
@@ -121,6 +122,7 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
   fi
 
   if [[ -n "$config_intermediate_folders" ]]; then
+    echo "$CONTAINER  Archiving selected intermediate folders..."
     cd "$WORKING_DIR"
     for f in $config_intermediate_folders; do
       zip $work_file_zip `find . -type d -name "$f"`
