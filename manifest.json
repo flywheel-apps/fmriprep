@@ -7,9 +7,9 @@
   "maintainer": "Flywheel <support@flywheel.io>",
   "source": "https://github.com/flywheel-apps/fmriprep",
   "url": "https://github.com/poldracklab/fmriprep",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "custom": {
-    "docker-image": "flywheel/fmriprep:v0.4.2"
+    "docker-image": "flywheel/fmriprep:0.4.3"
   },
   "license": "Other",
   "inputs": {
