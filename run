@@ -11,10 +11,11 @@
 FLYWHEEL_BASE=/flywheel/v0
 MANIFEST_FILE=$FLYWHEEL_BASE/manifest.json
 CONFIG_FILE=$FLYWHEEL_BASE/config.json
+ANALYSIS_ID=$(jq -r '.destination.id' $CONFIG_FILE)
 INPUT_DIR=$FLYWHEEL_BASE/input
 GEAR_OUTPUT_DIR=$FLYWHEEL_BASE/output
-FMRIPREP_OUTPUT_DIR=$GEAR_OUTPUT_DIR/fmriprep_output
-WORKING_DIR=$GEAR_OUTPUT_DIR/work
+FMRIPREP_OUTPUT_DIR=$GEAR_OUTPUT_DIR/"$ANALYSIS_ID"
+WORKING_DIR=$GEAR_OUTPUT_DIR/"$ANALYSIS_ID"_work
 LICENSE_FILE=/opt/freesurfer/license.txt
 
 CONTAINER='[flywheel/fmriprep]'
@@ -98,7 +99,7 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
 
   if [[ -n "$html_file" ]]; then
     echo "$CONTAINER  Converting output html report..."
-    output_html_file="$GEAR_OUTPUT_DIR"/`basename "$html_file"`.zip
+    output_html_file="$GEAR_OUTPUT_DIR"/`basename "$html_file"`_"$ANALYSIS_ID".zip
     cd `dirname $html_file`
     cp "$SUB_ID".html index.html
     zip -r -q "$output_html_file" \
@@ -112,7 +113,7 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
   fi
 
   # Look for files/folders to preserve from the working DIRECTORY
-  work_file_zip="$GEAR_OUTPUT_DIR"/fmriprep_output_work_selected_"$SUB_ID".zip
+  work_file_zip="$GEAR_OUTPUT_DIR"/fmriprep_work_selected_"$SUB_ID"_"$ANALYSIS_ID".zip
   if [[ -n "$config_intermediate_files" ]]; then
     echo "$CONTAINER  Archiving selected intermediate files..."
     cd "$WORKING_DIR"
@@ -130,21 +131,22 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
   fi
 
   # Generate zipped output of fmriprep
-  cd "$FMRIPREP_OUTPUT_DIR"
+  cd "$GEAR_OUTPUT_DIR"
   echo "$CONTAINER  generating zip archive from outputs..."
-  time zip -q -r "$GEAR_OUTPUT_DIR"/fmriprep_output_"$SUB_ID" *
+  time zip -q -r "$GEAR_OUTPUT_DIR"/fmriprep_"$SUB_ID"_"$ANALYSIS_ID" $(basename "$FMRIPREP_OUTPUT_DIR")
 
   if [[ $config_save_intermediate_work == 'true' ]] ; then
     echo "$CONTAINER  generating zip archive from intermediate work files..."
-    cd "$WORKING_DIR"
-    time zip -q -r "$GEAR_OUTPUT_DIR"/fmriprep_output_work_"$SUB_ID" *
+    cd "$GEAR_OUTPUT_DIR"
+    time zip -q -r "$GEAR_OUTPUT_DIR"/fmriprep_work_"$SUB_ID"_"$ANALYSIS_ID" $(basename "$WORKING_DIR")
   fi
   chmod -R 777 $GEAR_OUTPUT_DIR
 
 elif [[ $config_save_outputs == 'true' ]] ; then
   echo "$CONTAINER  Error occurred. Config 'save_outputs' set to true. Zipping up outputs."
-  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_output "$FMRIPREP_OUTPUT_DIR"
-  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_output "$WORKING_DIR"
+  cd "$GEAR_OUTPUT_DIR"
+  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_"$ANALYSIS_ID"  $(basename "$FMRIPREP_OUTPUT_DIR")
+  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_work_"$ANALYSIS_ID" $(basename "$WORKING_DIR")
   chmod -R 777 $GEAR_OUTPUT_DIR
 
 else
