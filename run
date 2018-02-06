@@ -99,7 +99,7 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
 
   if [[ -n "$html_file" ]]; then
     echo "$CONTAINER  Converting output html report..."
-    output_html_file="$GEAR_OUTPUT_DIR"/`basename "$html_file"`_"$ANALYSIS_ID".zip
+    output_html_file="$GEAR_OUTPUT_DIR"/`basename "$html_file" .html`_"$ANALYSIS_ID".html.zip
     cd `dirname $html_file`
     cp "$SUB_ID".html index.html
     zip -r -q "$output_html_file" \
