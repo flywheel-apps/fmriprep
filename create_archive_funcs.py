@@ -10,6 +10,33 @@ from datetime import datetime
 from pprint import pprint
 
 #### Define functions
+def merge_classification(dst, src):
+    if src is None:
+        return
+
+    for key in src.keys():
+        if key not in dst:
+            dst[key] = []
+
+        for val in src[key]:
+            if val not in dst[key]:
+                dst[key].append(val)
+
+def has_classification_value(classification, aspect, value):
+    return value in classification.get(aspect, [])
+
+def get_anatomy_contrast(classification):
+    if not has_classification_value(classification, 'Intent', 'Structural'):
+        return None
+
+    contrast = classification.get('Contrast', [])
+    if 'T1' in contrast:
+        return 'T1'
+    if 'T2' in contrast:
+        return 'T2'
+
+    return None
+
 def get_flywheel_hierarchy(fw, analysis_id):
     """
         Takes fw client, a container id and container_type as input
@@ -30,7 +57,10 @@ def get_flywheel_hierarchy(fw, analysis_id):
                             "label": "T1 MPRAGE",
                             "created": "2017-09-19T14:39:58.721Z",
                             "files": ['T1.nii.gz',]
-                            "measurements": ['anatomy_t1w'],
+                            "classification": {
+                                "Intent": ["Structural"],
+                                "Contrast": ["T1"]
+                            },
                             "type": ['nifti'],
                             "infos": [{}]
                     },
@@ -38,7 +68,9 @@ def get_flywheel_hierarchy(fw, analysis_id):
                             "label": "task123123",
                             "created": "2017-09-19T12:39:58.721Z",
                             "files": ['fmri.nii.gz'],
-                            "measurements": ['functional'],
+                            "classification": {
+                                "Intent": ["Functional"]
+                            },
                             "type": ['nifti'],
                             "infos": [{'RepetitionTime': 2.3}]
                     }
@@ -98,21 +130,21 @@ def get_flywheel_hierarchy(fw, analysis_id):
                     'label': acq.get('label'),
                     'created': acq.get('created'),
                     'files': [],
-                    'measurements': [],
+                    'classification': {},
                     'infos': []
                     }
             # Iterate over all files within acquisition
             for f in acq['files']:
                 filename = f['name']
-                ## Sometimes measurement is not present - if not, assign measurement value to be None
-                measurements = f.get('measurements')
+                ## Sometimes classification is not present - if not, assign classification value to be None
+                classification = f.get('classification')
                 # Get type - we are only concerned with nifti files that contain the BIDS side car meta information
                 ftype = f.get('type')
                 # Get info from file
                 info = f.get('info')
-                if ftype == 'nifti' and measurements:
+                if ftype == 'nifti' and classification:
                     flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['files'].append(filename)
-                    flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['measurements'].append(measurements[0].lower())
+                    merge_classification(flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['classification'], classification)
                     flywheel_hierarchy[project_id][session_id]['acquisitions'][acq_id]['infos'].append(info)
 
             # If no nifti files found for an acquisition, remove it
@@ -254,7 +286,7 @@ def determine_fmap_intendedfor(flywheel_hierarchy):
 
             # Iterate over acquisitions
             for acq_id in flywheel_hierarchy[project][session_id]['acquisitions'].keys():
-                if 'field_map' in flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['measurements']:
+                if has_classification_value(flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['classification'], 'Intent', 'Fieldmap'):
                     # Get PhaseEncodingDirection
                     pe_dir = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['infos'][-1].get('PhaseEncodingDirection')
                     if pe_dir:
@@ -267,7 +299,7 @@ def determine_fmap_intendedfor(flywheel_hierarchy):
                                 flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['files'][-1]
                                 )
                         )
-                elif 'functional' in flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['measurements']:
+                elif has_classification_value(flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['classification'], 'Intent', 'Functional'):
                     # Get PhaseEncodingDirection
                     pe_dir = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['infos'][-1].get('PhaseEncodingDirection')
                     if pe_dir:
@@ -335,7 +367,7 @@ def create_bids_hierarchy(flywheel_hierarchy, fieldmap_intendedfor):
                 # Get meta info for BIDS
                 subject_code = flywheel_hierarchy[project][session_id]['subject_code']
                 session_label = flywheel_hierarchy[project][session_id]['label']
-                measurements = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['measurements']
+                classification = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['classification']
 
                 # Get nifti file
                 # NOTE! If there are multiple nifti files within the one acquisition,
@@ -358,18 +390,20 @@ def create_bids_hierarchy(flywheel_hierarchy, fieldmap_intendedfor):
                 acquisition_label = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['label']
 
                 ### HANDLE T1w/T2w images
-                if ('anatomy_t1w' in measurements) or ('anatomy_t2w' in measurements):
+                anatomy_contrast = get_anatomy_contrast(classification)
+
+                if anatomy_contrast:
                     # Define dirname
                     bids_dirname = 'anat'
                     # Create the new name of the file that conforms to bids spec
-                    if 'anatomy_t1w' in measurements:
+                    if anatomy_contrast == 'T1':
                         desc = 'T1w'
-                    if 'anatomy_t2w' in measurements:
+                    if anatomy_contrast == 'T2':
                         desc = 'T2w'
                     bids_filename = '%s_%s_%s%s' % (participant_bids, session_bids, desc, extension)
 
                 ### HANDLE Functional images
-                elif 'functional' in measurements:
+                elif has_classification_value(classification, 'Intent', 'Functional'):
                     # Define dirname
                     bids_dirname = 'func'
                     # Use the acquistion label as the task name (i.e. task-balloontask or task-rest)
@@ -391,7 +425,7 @@ def create_bids_hierarchy(flywheel_hierarchy, fieldmap_intendedfor):
                     bids_filename = '%s_%s_%s_%s%s' % (participant_bids, session_bids, taskname, bids_func_desc, extension)
 
                 ### HANDLE Fieldmap images
-                elif 'field_map' in measurements:
+                elif has_classification_value(classification, 'Intent', 'Fieldmap'):
                     # Define dirname
                     bids_dirname = 'fmap'
 
