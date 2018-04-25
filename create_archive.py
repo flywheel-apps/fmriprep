@@ -68,23 +68,25 @@ for flywheel_file, bids_file in files_lookup:
         # Download file
         fw.download_file_from_acquisition(acq_id, filename, os.path.join(rootdir, bids_file))
 
-# Add support for manifest-defined anatomical files
-t1_anat_dir = os.path.join(flywheel_basedir, 't1w_anatomy')
+### Use manifest-defined anatomical files if they were provided
+t1_anat_dir = os.path.join(flywheel_basedir, 'input', 't1w_anatomy')
 if os.path.isdir(t1_anat_dir):
     t1_file = os.listdir(t1_anat_dir)
     if t1_file:
         t1_file = os.path.join(t1_anat_dir, t1_file[0])
-        dest_file = os.path.join(rootdir, sub_dir, ses_dir, 'anat', 'sub-' + sub_dir + '_ses-' + ses_dir + '_T1w.nii.gz')
+        dest_file = os.path.join(rootdir, sub_dir, ses_dir, 'anat', sub_dir + '_' + ses_dir + '_T1w.nii.gz')
         if os.path.exists(dest_file):
             print('Found downloaded T1 file - overwriting!')
+            os.remove(destfile.replace('.nii.gz', '.json'))
         os.rename(t1_file, dest_file)
 
-t2_anat_dir = os.path.join(flywheel_basedir, 't2w_anatomy')
+t2_anat_dir = os.path.join(flywheel_basedir, 'input', 't2w_anatomy')
 if os.path.isdir(t2_anat_dir):
     t2_file = os.listdir(t2_anat_dir)
     if t2_file:
-        t2_file = os.path.join(t1_anat_dir, t2_file[0])
-        dest_file = os.path.join(rootdir, sub_dir, ses_dir, 'anat', 'sub-' + sub_dir + '_ses-' + ses_dir + '_T2w.nii.gz')
+        t2_file = os.path.join(t2_anat_dir, t2_file[0])
+        dest_file = os.path.join(rootdir, sub_dir, ses_dir, 'anat', sub_dir + '_' + ses_dir + '_T2w.nii.gz')
         if os.path.exists(dest_file):
             print('Found downloaded T2 file - overwriting!')
+            os.remove(destfile.replace('.nii.gz', '.json'))
         os.rename(t2_file, dest_file)

@@ -65,7 +65,7 @@ echo -e ${LICENSE} > ${LICENSE_FILE}
 # CREATE A BIDS FORMATTED DIRECTORY
 #   Use Python SDK to accomplish this task
 /usr/local/miniconda/bin/python ${FLYWHEEL_BASE}/create_archive.py
-BIDS_DIR=$(find $INPUT_DIR/* -maxdepth 0 -type d)
+BIDS_DIR=$INPUT_DIR/bids_dataset
 
 
 ################################################################################
