@@ -16,7 +16,11 @@
     "api_key": {
       "base": "api-key"
     },
-    "anatomy": {
+    "t1w_anatomy": {
+      "base": "file",
+      "optional": true
+    },
+    "t2w_anatomy": {
       "base": "file",
       "optional": true
     }
