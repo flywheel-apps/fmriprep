@@ -2,6 +2,7 @@ import os
 import json
 import re
 import pprint
+import shutil
 
 import flywheel
 
@@ -69,6 +70,7 @@ for flywheel_file, bids_file in files_lookup:
         fw.download_file_from_acquisition(acq_id, filename, os.path.join(rootdir, bids_file))
 
 ### Use manifest-defined anatomical files if they were provided
+print('Looking for manifest-defined anatomical files')
 t1_anat_dir = os.path.join(flywheel_basedir, 'input', 't1w_anatomy')
 if os.path.isdir(t1_anat_dir):
     t1_file = os.listdir(t1_anat_dir)
@@ -77,8 +79,9 @@ if os.path.isdir(t1_anat_dir):
         dest_file = os.path.join(rootdir, sub_dir, ses_dir, 'anat', sub_dir + '_' + ses_dir + '_T1w.nii.gz')
         if os.path.exists(dest_file):
             print('Found downloaded T1 file - overwriting!')
-            os.remove(destfile.replace('.nii.gz', '.json'))
-        os.rename(t1_file, dest_file)
+            os.remove(dest_file)
+            os.remove(dest_file.replace('.nii.gz', '.json'))
+        shutil.copyfile(t1_file, dest_file)
 
 t2_anat_dir = os.path.join(flywheel_basedir, 'input', 't2w_anatomy')
 if os.path.isdir(t2_anat_dir):
@@ -88,5 +91,6 @@ if os.path.isdir(t2_anat_dir):
         dest_file = os.path.join(rootdir, sub_dir, ses_dir, 'anat', sub_dir + '_' + ses_dir + '_T2w.nii.gz')
         if os.path.exists(dest_file):
             print('Found downloaded T2 file - overwriting!')
-            os.remove(destfile.replace('.nii.gz', '.json'))
-        os.rename(t2_file, dest_file)
+            os.remove(dest_file)
+            os.remove(dest_file.replace('.nii.gz', '.json'))
+        shutil.copyfile(t2_file, dest_file)
