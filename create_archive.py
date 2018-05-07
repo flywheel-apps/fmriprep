@@ -76,7 +76,10 @@ if os.path.isdir(t1_anat_dir):
     t1_file = os.listdir(t1_anat_dir)
     if t1_file:
         t1_file = os.path.join(t1_anat_dir, t1_file[0])
-        dest_file = os.path.join(rootdir, sub_dir, ses_dir, 'anat', sub_dir + '_' + ses_dir + '_T1w.nii.gz')
+        anat_dir = os.path.join(rootdir, sub_dir, ses_dir, 'anat')
+        if not os.path.isdir(anat_dir):
+            os.mkdir(anat_dir)
+        dest_file = os.path.join(anat_dir, sub_dir + '_' + ses_dir + '_T1w.nii.gz')
         if os.path.exists(dest_file):
             print('Found downloaded T1 file - overwriting!')
             os.remove(dest_file)
@@ -87,8 +90,11 @@ t2_anat_dir = os.path.join(flywheel_basedir, 'input', 't2w_anatomy')
 if os.path.isdir(t2_anat_dir):
     t2_file = os.listdir(t2_anat_dir)
     if t2_file:
+        anat_dir = os.path.join(rootdir, sub_dir, ses_dir, 'anat')
+        if not os.path.isdir(anat_dir):
+            os.mkdir(anat_dir)
         t2_file = os.path.join(t2_anat_dir, t2_file[0])
-        dest_file = os.path.join(rootdir, sub_dir, ses_dir, 'anat', sub_dir + '_' + ses_dir + '_T2w.nii.gz')
+        dest_file = os.path.join(anat_dir, sub_dir + '_' + ses_dir + '_T2w.nii.gz')
         if os.path.exists(dest_file):
             print('Found downloaded T2 file - overwriting!')
             os.remove(dest_file)
