@@ -18,9 +18,23 @@
     },
     "t1w_anatomy": {
       "base": "file",
-      "optional": true
+      "optional": true,
+      "type": {
+        "enum": [
+          "nifti"
+        ]
+      }
     },
     "t2w_anatomy": {
+      "base": "file",
+      "optional": true,
+      "type": {
+        "enum": [
+          "nifti"
+        ]
+      }
+    },
+    "freesurfer_license": {
       "base": "file",
       "optional": true
     }
