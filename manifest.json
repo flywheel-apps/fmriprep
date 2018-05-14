@@ -17,6 +17,7 @@
       "base": "api-key"
     },
     "t1w_anatomy": {
+      "description": "T1 weighted anatomical NIfTI file. When provided this file will be used in place of any T1w images found in the current session.",
       "base": "file",
       "optional": true,
       "type": {
@@ -26,6 +27,7 @@
       }
     },
     "t2w_anatomy": {
+      "description": "T2 weighted anatomical NIfTI file. When provided this file will be used in place of any T2w images found in the current session.",
       "base": "file",
       "optional": true,
       "type": {
@@ -35,6 +37,7 @@
       }
     },
     "freesurfer_license": {
+      "description": "FreeSurfer license file. When this file is provided it will by copied to the $FSHOME directory and used during execution of the container.",
       "base": "file",
       "optional": true
     }
