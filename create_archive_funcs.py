@@ -25,14 +25,14 @@ def merge_classification(dst, src):
 def has_classification_value(classification, aspect, value):
     return value in classification.get(aspect, [])
 
-def get_anatomy_contrast(classification):
+def get_anatomy_measurement(classification):
     if not has_classification_value(classification, 'Intent', 'Structural'):
         return None
 
-    contrast = classification.get('Contrast', [])
-    if 'T1' in contrast:
+    measurement = classification.get('Measurement', [])
+    if 'T1' in measurement:
         return 'T1'
-    if 'T2' in contrast:
+    if 'T2' in measurement:
         return 'T2'
 
     return None
@@ -59,7 +59,7 @@ def get_flywheel_hierarchy(fw, analysis_id):
                             "files": ['T1.nii.gz',]
                             "classification": {
                                 "Intent": ["Structural"],
-                                "Contrast": ["T1"]
+                                "Measurement": ["T1"]
                             },
                             "type": ['nifti'],
                             "infos": [{}]
@@ -390,15 +390,15 @@ def create_bids_hierarchy(flywheel_hierarchy, fieldmap_intendedfor):
                 acquisition_label = flywheel_hierarchy[project][session_id]['acquisitions'][acq_id]['label']
 
                 ### HANDLE T1w/T2w images
-                anatomy_contrast = get_anatomy_contrast(classification)
+                anatomy_measurement = get_anatomy_measurement(classification)
 
-                if anatomy_contrast:
+                if anatomy_measurement:
                     # Define dirname
                     bids_dirname = 'anat'
                     # Create the new name of the file that conforms to bids spec
-                    if anatomy_contrast == 'T1':
+                    if anatomy_measurement == 'T1':
                         desc = 'T1w'
-                    if anatomy_contrast == 'T2':
+                    if anatomy_measurement == 'T2':
                         desc = 'T2w'
                     bids_filename = '%s_%s_%s%s' % (participant_bids, session_bids, desc, extension)
 
