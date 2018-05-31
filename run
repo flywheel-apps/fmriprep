@@ -17,6 +17,7 @@ GEAR_OUTPUT_DIR=$FLYWHEEL_BASE/output
 FMRIPREP_OUTPUT_DIR=$GEAR_OUTPUT_DIR/"$ANALYSIS_ID"
 WORKING_DIR=$GEAR_OUTPUT_DIR/"$ANALYSIS_ID"_work
 LICENSE_FILE=/opt/freesurfer/license.txt
+FREESURFER_LICENSE_DIR=$INPUT_DIR/freesurfer_license
 
 CONTAINER='[flywheel/fmriprep]'
 
@@ -56,9 +57,17 @@ fi
 ################################################################################
 # Freesurfer License
 
-touch ${LICENSE_FILE}
-LICENSE=$(${FLYWHEEL_BASE}/parse_config.py --json_file=${CONFIG_FILE} -l)
-echo -e ${LICENSE} > ${LICENSE_FILE}
+# User-Provided license file
+if [[ -d "$FREESURFER_LICENSE_DIR" ]]; then
+  fs_file=$(find $FREESURFER_LICENSE_DIR/* -type f | head -1)
+fi
+
+if [[ -n "$fs_file" ]]; then
+  cp "$fs_file" ${LICENSE_FILE}
+else
+  echo -e "${CONTAINER}  A license file is required to run!"
+  exit 1
+fi
 
 
 ################################################################################
@@ -78,6 +87,7 @@ else
     exit 1
 fi
 
+# Show the contents of the BIDS directory
 ls -R ${BIDS_DIR}
 
 
