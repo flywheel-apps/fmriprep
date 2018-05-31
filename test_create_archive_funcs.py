@@ -273,7 +273,7 @@ class bidsTestCases(unittest.TestCase):
                 "acquisitions": {
                     "33": {
                         "label": "T1 MPRAGE", "created": "2017-09-19T14:39:58.721Z",
-                        "files": ['T1.nii.gz'], 'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                        "files": ['T1.nii.gz'], 'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                         'types': ['nifti'], 'infos': [{}]
                         },
                     "44": {
@@ -303,7 +303,7 @@ class bidsTestCases(unittest.TestCase):
                     "acquisitions": {
                         "623765726354fsd7263476s": {
                             "label": "T1 MPRAGE", "created": "2017-09-19T14:39:58.721Z",
-                            "files": ['T1.nii.gz'], 'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                            "files": ['T1.nii.gz'], 'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                             'type': ['nifti'], 'infos': [{}]
                         },
                         "623765726354fsd7263476s876fjh": {
@@ -317,7 +317,7 @@ class bidsTestCases(unittest.TestCase):
                     "acquisitions": {
                        "623112765726354fsdfjh": {
                             "label": "T1 MPRAGE", "created": "2017-09-19T14:39:58.721Z",
-                            "files": ['T1.nii.gz'], 'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                            "files": ['T1.nii.gz'], 'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                             'type': ['nifti'], 'infos': [{}]
                         },
                         "623765726354fsd7263476s876fjh": {
@@ -357,7 +357,7 @@ class bidsTestCases(unittest.TestCase):
                         "acquisitions": {
                             "623765726354fsd7263476s": {
                                 "label": "T1 MPRAGE", "created": "2017-09-19T14:39:58.721Z",
-                                "files": ['T1.nii.gz'], 'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                "files": ['T1.nii.gz'], 'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "623765726354fsd7263476s876fjh": {
@@ -371,7 +371,7 @@ class bidsTestCases(unittest.TestCase):
                         "acquisitions": {
                             "623112765726354fsdfjh": {
                                 "label": "T1 MPRAGE", "created": "2017-09-19T14:39:58.721Z",
-                                "files": ['T1.nii.gz'], 'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                "files": ['T1.nii.gz'], 'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "623765726354fsd7263476s876fjh": {
@@ -410,7 +410,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "623765726354fsd7263476s876fjh": {
@@ -428,7 +428,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "62y6667777jh": {
@@ -446,7 +446,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "62377sdkjfhaiueyr666764jh": {
@@ -464,7 +464,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "623765726354fsd7263476s876fjh": {
@@ -515,7 +515,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1w",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "6237610s877763": {
@@ -533,7 +533,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "62y8767777jh": {
@@ -551,7 +551,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1w",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "62377sdkxxjfhaiuex": {
@@ -569,7 +569,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1w",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "6237italjsd843727": {
@@ -624,21 +624,21 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1 MPRAGE 1",
                                 "created": "2017-09-19T10:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{'Test': 1}]
                                 },
                             "62asdfsafdh": {
                                 "label": "T1 MPRAGE 2",
                                 "created": "2017-09-19T14:10:09.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{'Test': 1}]
                                 },
                             "62skldfjuh": {
                                 "label": "T1 MPRAGE 3",
                                 "created": "2017-09-20T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{'Test': 1}]
                                 },
                             "982734adsdf": {
@@ -683,7 +683,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1 MPRAGE 1",
                                 "created": "2017-09-19T10:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "62asdfsafdh": {
@@ -740,7 +740,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{'Test': 1}]
                                 },
                             "2": {
@@ -804,7 +804,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "6563765726354fsd7263476s876fjh": {
@@ -822,7 +822,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-20T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "343765726354fsd7263476s876fjh": {
@@ -869,7 +869,7 @@ class bidsTestCases(unittest.TestCase):
                                       u'T1w_20171023.nii.gz'
                                       ],
                             'label': u'T1 MRPRAGE',
-                            'classification': {u'Intent': [u'Structural'], u'Contrast': [u'T1', u'T2']},
+                            'classification': {u'Intent': [u'Structural'], u'Measurement': [u'T1', u'T2']},
                             'types': [u'nifti', u'nifti'],
                             'infos': [
                                     {'Test1':'val1'},
@@ -918,7 +918,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1_MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "623765726354fsd72348573476fjh": {
@@ -955,7 +955,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "456": {
@@ -1003,7 +1003,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "34": {
@@ -1097,76 +1097,76 @@ class bidsTestCases(unittest.TestCase):
                     "1": {
                         "label": "SpinEchoFieldMap_AP", "created": "2017-09-19T14:39:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091919393376149693793.0.0.0.nii.gz'],
-                        'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                        'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': '1','TotalReadoutTime': '2'}]
                         },
                     "2": {
                         "label": "SpinEchoFieldMap_PA", "created": "2017-09-19T14:40:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091919401467612294451.0.0.0.nii.gz'],
-                        'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                        'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': '1','TotalReadoutTime': '2'}]
                         },
                     "3": {
-                        "label": "tfMRI_LFContrast_PA_run1_SBRef", "created": "2017-09-19T14:42:00.000Z",
+                        "label": "tfMRI_LFMeasurement_PA_run1_SBRef", "created": "2017-09-19T14:42:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091919421021234395122.0.0.0.nii.gz'],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'], 'infos': [{}]
                         },
                     "4": {
-                        "label": "tfMRI_LFContrast_PA_run1","created": "2017-09-19T14:42:00.000Z",
+                        "label": "tfMRI_LFMeasurement_PA_run1","created": "2017-09-19T14:42:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091919421231599295123.0.0.0.nii.gz'],
                         'classification': { 'Intent': ['Functional'] },'type': ['nifti'],
                         'infos': [{'RepetitionTime':'val'}]
                         },
                     "5": {
-                        "label": "tfMRI_LFContrast_AP_run1_SBRef", "created": "2017-09-19T14:50:00.000Z",
+                        "label": "tfMRI_LFMeasurement_AP_run1_SBRef", "created": "2017-09-19T14:50:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091919493668688474262.0.0.0.nii.gz'],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'], 'infos': [{}]
                         },
                     "6": {
-                        "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:50:00.000Z",
+                        "label": "tfMRI_LFMeasurement_AP_run1", "created": "2017-09-19T14:50:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091919493882400374263.0.0.0.nii.gz'],
                         'classification': { 'Intent': ['Functional'] },'type': ['nifti'],
                         'infos': [{'RepetitionTime':'val'}]
                         },
-                    "7": {"label": "tfMRI_LFContrast_PA_run2_SBRef", "created": "2017-09-19T14:56:00.000Z",
+                    "7": {"label": "tfMRI_LFMeasurement_PA_run2_SBRef", "created": "2017-09-19T14:56:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091919545114956153402.0.0.0.nii.gz'],
                         'classification': { 'Intent': ['Functional'] },'type': ['nifti'], 'infos': [{}]
                         },
                     "8": {
-                        "label": "tfMRI_LFContrast_PA_run2","created": "2017-09-19T14:56:00.000Z",
+                        "label": "tfMRI_LFMeasurement_PA_run2","created": "2017-09-19T14:56:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091919545332144453403.0.0.0.nii.gz'],
                         'classification': { 'Intent': ['Functional'] },'type': ['nifti'],
                         'infos': [{'RepetitionTime':'val'}]
                         },
                     "9": {
-                        "label": "tfMRI_LFContrast_AP_run2_SBRef", "created": "2017-09-19T15:01:00.000Z",
+                        "label": "tfMRI_LFMeasurement_AP_run2_SBRef", "created": "2017-09-19T15:01:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091920004535912132542.0.0.0.nii.gz',],
                         'classification': { 'Intent': ['Functional'] },'type': ['nifti'], 'infos': [{}]
                         },
                     "10": {
-                        "label": "tfMRI_LFContrast_AP_run2","created": "2017-09-19T15:01:00.000Z",
+                        "label": "tfMRI_LFMeasurement_AP_run2","created": "2017-09-19T15:01:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091920004747015432543.0.0.0.nii.gz',],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                         'infos': [{'RepetitionTime':'val'}]
                         },
                     "11": {
-                        "label": "tfMRI_LFContrast_PA_run3_SBRef","created": "2017-09-19T15:09:00.000Z",
+                        "label": "tfMRI_LFMeasurement_PA_run3_SBRef","created": "2017-09-19T15:09:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091920083225750111682.0.0.0.nii.gz',],
                         'classification': { 'Intent': ['Functional'] },'type': ['nifti'], 'infos': [{}]
                         },
                     "12": {
-                        "label": "tfMRI_LFContrast_PA_run3", "created": "2017-09-19T15:09:00.000Z",
+                        "label": "tfMRI_LFMeasurement_PA_run3", "created": "2017-09-19T15:09:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091920083444350411683.0.0.0.nii.gz',],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                         'infos': [{'RepetitionTime':'val'}]
                         },
                     "13": {
-                        "label": "tfMRI_LFContrast_AP_run3_SBRef", "created": "2017-09-19T15:14:00.000Z",
+                        "label": "tfMRI_LFMeasurement_AP_run3_SBRef", "created": "2017-09-19T15:14:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091920134318597290822.0.0.0.nii.gz',],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'], 'infos': [{}]
                         },
                     "14": {
-                        "label": "tfMRI_LFContrast_AP_run3", "created": "2017-09-19T15:14:00.000Z",
+                        "label": "tfMRI_LFMeasurement_AP_run3", "created": "2017-09-19T15:14:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091920134531766790823.0.0.0.nii.gz',],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                         'infos': [{'RepetitionTime':'val'}]
@@ -1174,12 +1174,12 @@ class bidsTestCases(unittest.TestCase):
                     "15": {
                         "label": "T1w_MPR","created": "2017-09-19T15:26:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091920200439073969961.0.0.0.nii.gz',],
-                        'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] }, 'type': ['nifti'], 'infos': [{}]
+                        'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] }, 'type': ['nifti'], 'infos': [{}]
                         },
                     "16": {
                         "label": "T2w_SPC","created": "2017-09-19T15:32:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.43.66044.2017091920324580650270941.0.0.0.nii.gz'],
-                        'classification': { 'Intent': ['Structural'], 'Contrast': ['T2'] }, 'type': ['nifti'], 'infos': [{}]
+                        'classification': { 'Intent': ['Structural'], 'Measurement': ['T2'] }, 'type': ['nifti'], 'infos': [{}]
                         }
                     }}}}
         # Call function
@@ -1191,29 +1191,29 @@ class bidsTestCases(unittest.TestCase):
                 ['projectID/sessionID/2/1.3.12.2.1107.5.2.43.66044.2017091919401467612294451.0.0.0.nii.gz',
                     'sub-HEROgka1/ses-session1/fmap/sub-HEROgka1_ses-session1_dir-PA_epi.nii.gz'],
                 ['projectID/sessionID/3/1.3.12.2.1107.5.2.43.66044.2017091919421021234395122.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-1_sbref.nii.gz'],
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-1_sbref.nii.gz'],
                 ['projectID/sessionID/4/1.3.12.2.1107.5.2.43.66044.2017091919421231599295123.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-1_bold.nii.gz'], 
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-1_bold.nii.gz'], 
                 ['projectID/sessionID/5/1.3.12.2.1107.5.2.43.66044.2017091919493668688474262.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-1_sbref.nii.gz'], 
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-1_sbref.nii.gz'], 
                 ['projectID/sessionID/6/1.3.12.2.1107.5.2.43.66044.2017091919493882400374263.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-1_bold.nii.gz'],
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-1_bold.nii.gz'],
                 ['projectID/sessionID/7/1.3.12.2.1107.5.2.43.66044.2017091919545114956153402.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-2_sbref.nii.gz'],
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-2_sbref.nii.gz'],
                 ['projectID/sessionID/8/1.3.12.2.1107.5.2.43.66044.2017091919545332144453403.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-2_bold.nii.gz'], 
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-2_bold.nii.gz'], 
                 ['projectID/sessionID/9/1.3.12.2.1107.5.2.43.66044.2017091920004535912132542.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-2_sbref.nii.gz'],
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-2_sbref.nii.gz'],
                 ['projectID/sessionID/10/1.3.12.2.1107.5.2.43.66044.2017091920004747015432543.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-2_bold.nii.gz'],
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-2_bold.nii.gz'],
                 ['projectID/sessionID/11/1.3.12.2.1107.5.2.43.66044.2017091920083225750111682.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-3_sbref.nii.gz'],
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-3_sbref.nii.gz'],
                 ['projectID/sessionID/12/1.3.12.2.1107.5.2.43.66044.2017091920083444350411683.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-3_bold.nii.gz'],
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-3_bold.nii.gz'],
                 ['projectID/sessionID/13/1.3.12.2.1107.5.2.43.66044.2017091920134318597290822.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-3_sbref.nii.gz'], 
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-3_sbref.nii.gz'], 
                 ['projectID/sessionID/14/1.3.12.2.1107.5.2.43.66044.2017091920134531766790823.0.0.0.nii.gz', 
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-3_bold.nii.gz'],
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-3_bold.nii.gz'],
                 ['projectID/sessionID/15/1.3.12.2.1107.5.2.43.66044.2017091920200439073969961.0.0.0.nii.gz',
                     'sub-HEROgka1/ses-session1/anat/sub-HEROgka1_ses-session1_T1w.nii.gz'],
                 ['projectID/sessionID/16/1.3.12.2.1107.5.2.43.66044.2017091920324580650270941.0.0.0.nii.gz',
@@ -1223,18 +1223,18 @@ class bidsTestCases(unittest.TestCase):
                     'sub-HEROgka1/ses-session1/fmap/sub-HEROgka1_ses-session1_dir-AP_epi.json'],
                 [{'PhaseEncodingDirection': '1', 'TotalReadoutTime': '2'},
                     'sub-HEROgka1/ses-session1/fmap/sub-HEROgka1_ses-session1_dir-PA_epi.json'],
-                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFContrastPA'},
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-1_bold.json'],
-                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFContrastAP'},
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-1_bold.json'],
-                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFContrastPA'},
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-2_bold.json'],
-                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFContrastAP'}, 
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-2_bold.json'],
-                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFContrastPA'},
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-3_bold.json'],
-                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFContrastAP'},
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-3_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFMeasurementPA'},
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-1_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFMeasurementAP'},
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-1_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFMeasurementPA'},
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-2_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFMeasurementAP'}, 
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-2_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFMeasurementPA'},
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-3_bold.json'],
+                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFMeasurementAP'},
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-3_bold.json'],
                 ]
         # Compare files
         self._compare_file_lookup(files_lookup, files_exp)
@@ -1254,24 +1254,24 @@ class bidsTestCases(unittest.TestCase):
                         'sub-HEROgka1_ses-session1_dir-PA_epi.json'
                         ],
                     'func': [
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-1_sbref.nii.gz',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-1_bold.nii.gz',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-1_sbref.nii.gz',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-1_bold.nii.gz',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-2_sbref.nii.gz',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-2_bold.nii.gz',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-2_sbref.nii.gz',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-2_bold.nii.gz',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-3_sbref.nii.gz',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-3_bold.nii.gz',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-3_sbref.nii.gz',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-3_bold.nii.gz',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-1_bold.json',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-1_bold.json',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-2_bold.json',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-2_bold.json',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastPA_run-3_bold.json',
-                        'sub-HEROgka1_ses-session1_task-tfMRILFContrastAP_run-3_bold.json'
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-1_sbref.nii.gz',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-1_bold.nii.gz',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-1_sbref.nii.gz',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-1_bold.nii.gz',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-2_sbref.nii.gz',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-2_bold.nii.gz',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-2_sbref.nii.gz',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-2_bold.nii.gz',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-3_sbref.nii.gz',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-3_bold.nii.gz',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-3_sbref.nii.gz',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-3_bold.nii.gz',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-1_bold.json',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-1_bold.json',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-2_bold.json',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-2_bold.json',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-3_bold.json',
+                        'sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-3_bold.json'
                         ]
                     }}}
         # Assert anat folder is the same
@@ -1302,7 +1302,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "T1 MPRAGE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['T1.nii.gz'],
-                                'classification': { 'Intent': ['Structural'], 'Contrast': ['T1'] },
+                                'classification': { 'Intent': ['Structural'], 'Measurement': ['T1'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "456": {
@@ -1336,7 +1336,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "phaseDiff",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['phasediff.nii.gz'],
-                                'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] },
+                                'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] },
                                 'type': ['nifti'],
                                 'infos': [{'EchoTime1': 0.006,
                                     'EchoTime2': 0.00746}]
@@ -1345,14 +1345,14 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "FieldmapMag",
                                 "created": "2017-09-19T14:39:00.000Z",
                                 "files": ['mag1.nii.gz'],
-                                'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] },
+                                'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "89": {
                                 "label": "FieldmapMag",
                                 "created": "2017-09-19T14:59:00.000Z",
                                 "files": ['mag2.nii.gz'],
-                                'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] },
+                                'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 }}}}}
 
@@ -1402,7 +1402,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "PHASE",
                                 "created": "2017-09-19T14:39:58.721Z",
                                 "files": ['phase1.nii.gz'],
-                                'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] },
+                                'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] },
                                 'type': ['nifti'],
                                 'infos': [{'EchoTime': 0.006}]
                                 },
@@ -1410,7 +1410,7 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "PHASE",
                                 "created": "2017-09-19T14:44:58.721Z",
                                 "files": ['phase2.nii.gz'],
-                                'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] },
+                                'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] },
                                 'type': ['nifti'],
                                 'infos': [{'EchoTime': 0.00746}]
                                 },
@@ -1418,14 +1418,14 @@ class bidsTestCases(unittest.TestCase):
                                 "label": "FieldmapMag",
                                 "created": "2017-09-19T14:39:00.000Z",
                                 "files": ['mag1.nii.gz'],
-                                'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] },
+                                'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 },
                             "89": {
                                 "label": "FieldmapMag",
                                 "created": "2017-09-19T14:59:00.000Z",
                                 "files": ['mag2.nii.gz'],
-                                'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] },
+                                'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] },
                                 'type': ['nifti'], 'infos': [{}]
                                 }}}}}
         # Call function
@@ -1481,13 +1481,13 @@ class bidsTestCases(unittest.TestCase):
                         "subject_code": "001",
                         "acquisitions": {
                     "1": {
-                        "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                        "label": "tfMRI_LFMeasurement_AP_run1", "created": "2017-09-19T14:39:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j-', 'RepetitionTime': 0.8}]
                         },
                     "2": {
-                        "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                        "label": "tfMRI_LFMeasurement_PA_run1", "created": "2017-09-19T14:40:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j', 'RepetitionTime': 0.8}]
@@ -1495,13 +1495,13 @@ class bidsTestCases(unittest.TestCase):
                     "3": {
                         "label": "SpinEchoFieldMap_AP", "created": "2017-09-19T14:39:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
-                        'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                        'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j-','TotalReadoutTime': 0.1}]
                         },
                     "4": {
                         "label": "SpinEchoFieldMap_PA", "created": "2017-09-19T14:40:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
-                        'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                        'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j','TotalReadoutTime': 0.35}]
                         }
                     }}}}
@@ -1520,10 +1520,10 @@ class bidsTestCases(unittest.TestCase):
                                 'sub-001_ses-ses1_dir-PA_epi.json'
                                 ],
                             'func': [
-                                'sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.nii.gz',
-                                'sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.nii.gz',
-                                'sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.json',
-                                'sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.json',
+                                'sub-001_ses-ses1_task-tfMRILFMeasurementAP_run-1_bold.nii.gz',
+                                'sub-001_ses-ses1_task-tfMRILFMeasurementPA_run-1_bold.nii.gz',
+                                'sub-001_ses-ses1_task-tfMRILFMeasurementAP_run-1_bold.json',
+                                'sub-001_ses-ses1_task-tfMRILFMeasurementPA_run-1_bold.json',
                                 ]
                             }
                         }}
@@ -1541,28 +1541,28 @@ class bidsTestCases(unittest.TestCase):
 
         files_exp = [
             ['projectID/sessionID/1/1.3.12.2.1107.5.2.4.nii.gz',
-              'sub-001/ses-ses1/func/sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.nii.gz'],
+              'sub-001/ses-ses1/func/sub-001_ses-ses1_task-tfMRILFMeasurementAP_run-1_bold.nii.gz'],
              ['projectID/sessionID/2/1.3.12.2.1107.5.2.4000.nii.gz',
-              'sub-001/ses-ses1/func/sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.nii.gz'],
+              'sub-001/ses-ses1/func/sub-001_ses-ses1_task-tfMRILFMeasurementPA_run-1_bold.nii.gz'],
              ['projectID/sessionID/3/1.3.12.2.1107.5.2.4.nii.gz',
               'sub-001/ses-ses1/fmap/sub-001_ses-ses1_dir-AP_epi.nii.gz'],
              ['projectID/sessionID/4/1.3.12.2.1107.5.2.4000.nii.gz',
               'sub-001/ses-ses1/fmap/sub-001_ses-ses1_dir-PA_epi.nii.gz'],
              [{'PhaseEncodingDirection': 'j-',
                'RepetitionTime': 0.8,
-               'TaskName': 'tfMRILFContrastAP'},
-              'sub-001/ses-ses1/func/sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.json'],
+               'TaskName': 'tfMRILFMeasurementAP'},
+              'sub-001/ses-ses1/func/sub-001_ses-ses1_task-tfMRILFMeasurementAP_run-1_bold.json'],
              [{'PhaseEncodingDirection': 'j',
                'RepetitionTime': 0.8,
-               'TaskName': 'tfMRILFContrastPA'},
-              'sub-001/ses-ses1/func/sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.json'],
+               'TaskName': 'tfMRILFMeasurementPA'},
+              'sub-001/ses-ses1/func/sub-001_ses-ses1_task-tfMRILFMeasurementPA_run-1_bold.json'],
              [{'PhaseEncodingDirection': 'j-',
                  'TotalReadoutTime': 0.1,
-                 'IntendedFor': ['func/sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.nii.gz']},
+                 'IntendedFor': ['func/sub-001_ses-ses1_task-tfMRILFMeasurementPA_run-1_bold.nii.gz']},
               'sub-001/ses-ses1/fmap/sub-001_ses-ses1_dir-AP_epi.json'],
              [{'PhaseEncodingDirection': 'j',
                  'TotalReadoutTime': 0.35,
-                 'IntendedFor': ['func/sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.nii.gz']},
+                 'IntendedFor': ['func/sub-001_ses-ses1_task-tfMRILFMeasurementAP_run-1_bold.nii.gz']},
               'sub-001/ses-ses1/fmap/sub-001_ses-ses1_dir-PA_epi.json']
              ]
 
@@ -1579,13 +1579,13 @@ class bidsTestCases(unittest.TestCase):
                         "subject_code": "001",
                         "acquisitions": {
                     "1": {
-                        "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                        "label": "tfMRI_LFMeasurement_AP_run1", "created": "2017-09-19T14:39:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j-', 'RepetitionTime': 0.8}]
                         },
                     "2": {
-                        "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                        "label": "tfMRI_LFMeasurement_PA_run1", "created": "2017-09-19T14:40:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j', 'RepetitionTime': 0.8}]
@@ -1593,23 +1593,23 @@ class bidsTestCases(unittest.TestCase):
                     "3": {
                         "label": "SpinEchoFieldMap_AP_run1", "created": "2017-09-19T14:41:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
-                        'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                        'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j-','TotalReadoutTime': 0.1}]
                         },
                     "4": {
                         "label": "SpinEchoFieldMap_PA_run1", "created": "2017-09-19T14:42:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
-                        'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                        'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j','TotalReadoutTime': 0.35}]
                         },
                     "5": {
-                        "label": "tfMRI_LFContrast_AP_run2", "created": "2017-09-19T15:50:00.000Z",
+                        "label": "tfMRI_LFMeasurement_AP_run2", "created": "2017-09-19T15:50:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j-', 'RepetitionTime': 0.8}]
                         },
                     "6": {
-                        "label": "tfMRI_LFContrast_PA_run2", "created": "2017-09-19T15:51:00.000Z",
+                        "label": "tfMRI_LFMeasurement_PA_run2", "created": "2017-09-19T15:51:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j', 'RepetitionTime': 0.8}]
@@ -1617,13 +1617,13 @@ class bidsTestCases(unittest.TestCase):
                     "7": {
                         "label": "SpinEchoFieldMap_AP_run2", "created": "2017-09-19T15:52:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
-                        'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                        'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j-','TotalReadoutTime': 0.1}]
                         },
                     "8": {
                         "label": "SpinEchoFieldMap_PA_run2", "created": "2017-09-19T15:53:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
-                        'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                        'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j','TotalReadoutTime': 0.35}]
                         }
                     }}}}
@@ -1640,14 +1640,14 @@ class bidsTestCases(unittest.TestCase):
                                    'sub-001_ses-ses1_dir-PA_run-1_epi.json',
                                    'sub-001_ses-ses1_dir-AP_run-2_epi.json',
                                    'sub-001_ses-ses1_dir-PA_run-2_epi.json'],
-                          'func': ['sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.nii.gz',
-                                   'sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.nii.gz',
-                                   'sub-001_ses-ses1_task-tfMRILFContrastAP_run-2_bold.nii.gz',
-                                   'sub-001_ses-ses1_task-tfMRILFContrastPA_run-2_bold.nii.gz',
-                                   'sub-001_ses-ses1_task-tfMRILFContrastAP_run-1_bold.json',
-                                   'sub-001_ses-ses1_task-tfMRILFContrastPA_run-1_bold.json',
-                                   'sub-001_ses-ses1_task-tfMRILFContrastAP_run-2_bold.json',
-                                   'sub-001_ses-ses1_task-tfMRILFContrastPA_run-2_bold.json']}}}
+                          'func': ['sub-001_ses-ses1_task-tfMRILFMeasurementAP_run-1_bold.nii.gz',
+                                   'sub-001_ses-ses1_task-tfMRILFMeasurementPA_run-1_bold.nii.gz',
+                                   'sub-001_ses-ses1_task-tfMRILFMeasurementAP_run-2_bold.nii.gz',
+                                   'sub-001_ses-ses1_task-tfMRILFMeasurementPA_run-2_bold.nii.gz',
+                                   'sub-001_ses-ses1_task-tfMRILFMeasurementAP_run-1_bold.json',
+                                   'sub-001_ses-ses1_task-tfMRILFMeasurementPA_run-1_bold.json',
+                                   'sub-001_ses-ses1_task-tfMRILFMeasurementAP_run-2_bold.json',
+                                   'sub-001_ses-ses1_task-tfMRILFMeasurementPA_run-2_bold.json']}}}
         # Assert fmap folder is the same
         self.assertEqual(
                 bids_hierarchy['sub-001']['ses-ses1']['fmap'],
@@ -1671,13 +1671,13 @@ class bidsTestCases(unittest.TestCase):
                     "subject_code": "001",
                     "acquisitions": {
                 "1": {
-                    "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                    "label": "tfMRI_LFMeasurement_AP_run1", "created": "2017-09-19T14:39:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
                     'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                     'infos': [{'PhaseEncodingDirection': 'i-', 'RepetitionTime': 0.8}]
                     },
                 "2": {
-                    "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                    "label": "tfMRI_LFMeasurement_PA_run1", "created": "2017-09-19T14:40:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
                     'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                     'infos': [{'PhaseEncodingDirection': 'i', 'RepetitionTime': 0.8}]
@@ -1685,13 +1685,13 @@ class bidsTestCases(unittest.TestCase):
                 "3": {
                     "label": "SpinEchoFieldMap_AP", "created": "2017-09-19T14:39:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
-                    'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                    'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                     'infos': [{'PhaseEncodingDirection': 'i-','TotalReadoutTime': 0.1}]
                     },
                 "4": {
                     "label": "SpinEchoFieldMap_PA", "created": "2017-09-19T14:40:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
-                    'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                    'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                     'infos': [{'PhaseEncodingDirection': 'i','TotalReadoutTime': 0.35}]
                     }
                 }}}}
@@ -1711,13 +1711,13 @@ class bidsTestCases(unittest.TestCase):
                     "subject_code": "001",
                     "acquisitions": {
                 "1": {
-                    "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                    "label": "tfMRI_LFMeasurement_AP_run1", "created": "2017-09-19T14:39:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
                     'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                     'infos': [{'PhaseEncodingDirection': 'j-', 'RepetitionTime': 0.8}]
                     },
                 "2": {
-                    "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                    "label": "tfMRI_LFMeasurement_PA_run1", "created": "2017-09-19T14:40:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
                     'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                     'infos': [{'PhaseEncodingDirection': 'j', 'RepetitionTime': 0.8}]
@@ -1725,13 +1725,13 @@ class bidsTestCases(unittest.TestCase):
                 "3": {
                     "label": "SpinEchoFieldMap_AP", "created": "2017-09-19T14:39:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
-                    'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                    'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                     'infos': [{'PhaseEncodingDirection': 'j-','TotalReadoutTime': 0.1}]
                     },
                 "4": {
                     "label": "SpinEchoFieldMap_PA", "created": "2017-09-19T14:40:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
-                    'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                    'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                     'infos': [{'PhaseEncodingDirection': 'j','TotalReadoutTime': 0.35}]
                     }
                 }}}}
@@ -1751,13 +1751,13 @@ class bidsTestCases(unittest.TestCase):
                     "subject_code": "001",
                     "acquisitions": {
                 "1": {
-                    "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                    "label": "tfMRI_LFMeasurement_AP_run1", "created": "2017-09-19T14:39:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
                     'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                     'infos': [{'PhaseEncodingDirection': 'k-', 'RepetitionTime': 0.8}]
                     },
                 "2": {
-                    "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                    "label": "tfMRI_LFMeasurement_PA_run1", "created": "2017-09-19T14:40:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
                     'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                     'infos': [{'PhaseEncodingDirection': 'k', 'RepetitionTime': 0.8}]
@@ -1765,13 +1765,13 @@ class bidsTestCases(unittest.TestCase):
                 "3": {
                     "label": "SpinEchoFieldMap_AP", "created": "2017-09-19T14:39:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
-                    'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                    'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                     'infos': [{'PhaseEncodingDirection': 'k-','TotalReadoutTime': 0.1}]
                     },
                 "4": {
                     "label": "SpinEchoFieldMap_PA", "created": "2017-09-19T14:40:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
-                    'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                    'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                     'infos': [{'PhaseEncodingDirection': 'k','TotalReadoutTime': 0.35}]
                     }
                 }}}}
@@ -1791,13 +1791,13 @@ class bidsTestCases(unittest.TestCase):
                     "subject_code": "001",
                     "acquisitions": {
                 "1": {
-                    "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                    "label": "tfMRI_LFMeasurement_AP_run1", "created": "2017-09-19T14:39:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
                     'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                     'infos': [{'RepetitionTime': 0.8}]
                     },
                 "2": {
-                    "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                    "label": "tfMRI_LFMeasurement_PA_run1", "created": "2017-09-19T14:40:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
                     'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                     'infos': [{'RepetitionTime': 0.8}]
@@ -1805,13 +1805,13 @@ class bidsTestCases(unittest.TestCase):
                 "3": {
                     "label": "SpinEchoFieldMap_AP", "created": "2017-09-19T14:39:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
-                    'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                    'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                     'infos': [{'TotalReadoutTime': 0.1}]
                     },
                 "4": {
                     "label": "SpinEchoFieldMap_PA", "created": "2017-09-19T14:40:00.000Z",
                     "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
-                    'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                    'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                     'infos': [{'TotalReadoutTime': 0.35}]
                     }
                 }}}}
@@ -1829,13 +1829,13 @@ class bidsTestCases(unittest.TestCase):
                         "subject_code": "001",
                         "acquisitions": {
                     "1": {
-                        "label": "tfMRI_LFContrast_AP_run1", "created": "2017-09-19T14:39:00.000Z",
+                        "label": "tfMRI_LFMeasurement_AP_run1", "created": "2017-09-19T14:39:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j-', 'RepetitionTime': 0.8}]
                         },
                     "2": {
-                        "label": "tfMRI_LFContrast_PA_run1", "created": "2017-09-19T14:40:00.000Z",
+                        "label": "tfMRI_LFMeasurement_PA_run1", "created": "2017-09-19T14:40:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j', 'RepetitionTime': 0.8}]
@@ -1843,23 +1843,23 @@ class bidsTestCases(unittest.TestCase):
                     "3": {
                         "label": "SpinEchoFieldMap_AP_run1", "created": "2017-09-19T14:41:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
-                        'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                        'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j-','TotalReadoutTime': 0.1}]
                         },
                     "4": {
                         "label": "SpinEchoFieldMap_PA_run1", "created": "2017-09-19T14:42:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
-                        'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                        'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j','TotalReadoutTime': 0.35}]
                         },
                     "5": {
-                        "label": "tfMRI_LFContrast_AP_run2", "created": "2017-09-19T15:50:00.000Z",
+                        "label": "tfMRI_LFMeasurement_AP_run2", "created": "2017-09-19T15:50:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j-', 'RepetitionTime': 0.8}]
                         },
                     "6": {
-                        "label": "tfMRI_LFContrast_PA_run2", "created": "2017-09-19T15:51:00.000Z",
+                        "label": "tfMRI_LFMeasurement_PA_run2", "created": "2017-09-19T15:51:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
                         'classification': { 'Intent': ['Functional'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j', 'RepetitionTime': 0.8}]
@@ -1867,13 +1867,13 @@ class bidsTestCases(unittest.TestCase):
                     "7": {
                         "label": "SpinEchoFieldMap_AP_run2", "created": "2017-09-19T15:52:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4.nii.gz'],
-                        'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                        'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j-','TotalReadoutTime': 0.1}]
                         },
                     "8": {
                         "label": "SpinEchoFieldMap_PA_run2", "created": "2017-09-19T15:53:00.000Z",
                         "files": ['1.3.12.2.1107.5.2.4000.nii.gz'],
-                        'classification': { 'Intent': ['Fieldmap'], 'Contrast': ['B0'] }, 'type': ['nifti'],
+                        'classification': { 'Intent': ['Fieldmap'], 'Measurement': ['B0'] }, 'type': ['nifti'],
                         'infos': [{'PhaseEncodingDirection': 'j','TotalReadoutTime': 0.35}]
                         }
                     }}}}
