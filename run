@@ -87,7 +87,7 @@ fi
 #   Use Python SDK to accomplish this task
 
 /usr/local/miniconda/bin/python ${FLYWHEEL_BASE}/create_archive.py
-if [[ $? ~= 0 ]]; then
+if [[ $? != 0 ]]; then
   echo "$CONTAINER  Problem creating archive! Exiting (1)"
   exit 1
 fi
