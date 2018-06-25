@@ -36,15 +36,27 @@ echo "$CONTAINER END FMRIPREP DOCKERFILE"
 source ${FLYWHEEL_BASE}/docker-env.sh
 
 
-###############################################################################
-# Parse config options from CONFIG file or MANIFEST
+##############################################################################
+# Parse configuration
 
-if [[ -f $CONFIG_FILE ]]; then
-  eval $(jq -r '.config | to_entries[] | "config_\(.key)=\(.value)"' $CONFIG_FILE)
-else
-  CONFIG_FILE=$MANIFEST_FILE
-  eval $(jq -r '.config | to_entries[] | "config_\(.key)=\(.value.default)"' $CONFIG_FILE)
-fi
+function parse_config {
+
+  CONFIG_FILE=$FLYWHEEL_BASE/config.json
+  MANIFEST_FILE=$FLYWHEEL_BASE/manifest.json
+
+  if [[ -f $CONFIG_FILE ]]; then
+    echo "$(cat $CONFIG_FILE | jq -r '.config.'$1)"
+  else
+    CONFIG_FILE=$MANIFEST_FILE
+    echo "$(cat $MANIFEST_FILE | jq -r '.config.'$1'.default')"
+  fi
+}
+
+config_freesurfer="$(parse_config 'freesurfer')"
+config_save_outputs="$(parse_config 'save_outputs')"
+config_save_intermediate_work="$(parse_config 'save_intermediate_work')"
+config_intermediate_files="$(parse_config 'intermediate_files')"
+config_intermediate_folders="$(parse_config 'intermediate_folders')"
 
 # Boolean parsing of freesurfer config option
 if [[ $config_freesurfer == 'true' ]]; then
