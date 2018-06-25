@@ -18,7 +18,7 @@ FMRIPREP_OUTPUT_DIR=$GEAR_OUTPUT_DIR/"$ANALYSIS_ID"
 WORKING_DIR=$GEAR_OUTPUT_DIR/"$ANALYSIS_ID"_work
 LICENSE_FILE=/opt/freesurfer/license.txt
 FREESURFER_LICENSE_DIR=$INPUT_DIR/freesurfer_license
-
+BIDS_DIR=$INPUT_DIR/bids_dataset
 CONTAINER='[flywheel/fmriprep]'
 
 
@@ -85,8 +85,12 @@ fi
 ################################################################################
 # CREATE A BIDS FORMATTED DIRECTORY
 #   Use Python SDK to accomplish this task
+
 /usr/local/miniconda/bin/python ${FLYWHEEL_BASE}/create_archive.py
-BIDS_DIR=$INPUT_DIR/bids_dataset
+if [[ $? ~= 0 ]]; then
+  echo "$CONTAINER  Problem creating archive! Exiting (1)"
+  exit 1
+fi
 
 
 ################################################################################
