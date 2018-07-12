@@ -52,17 +52,75 @@ function parse_config {
   fi
 }
 
-config_freesurfer="$(parse_config 'freesurfer')"
 config_save_outputs="$(parse_config 'save_outputs')"
 config_save_intermediate_work="$(parse_config 'save_intermediate_work')"
 config_intermediate_files="$(parse_config 'intermediate_files')"
 config_intermediate_folders="$(parse_config 'intermediate_folders')"
 
+
+#################
+# Surface Options
+config_freesurfer="$(parse_config 'freesurfer')"
+
 # Boolean parsing of freesurfer config option
 if [[ $config_freesurfer == 'true' ]]; then
-  FREESURFER_FLAG=''
+  freesurfer_FLAG=''
 else
-  FREESURFER_FLAG='--no-freesurfer'
+  freesurfer_FLAG='--fs-no-reconall'
+fi
+
+##################
+# Workflow Options
+config_ignore="$(parse_config 'ignore')"
+config_longitudinal="$(parse_config 'longitudinal')"
+config_t2s_coreg="$(parse_config 't2s_coreg')"
+config_bold2t1w_dof="$(parse_config 'bold2t1w_dof')"
+config_output_space="$(parse_config 'output_space')"
+config_force_bbr="$(parse_config 'force_bbr')"
+config_force_no_bbr="$(parse_config 'force_no_bbr')"
+config_template="$(parse_config 'template')"
+config_template_resampling_grid="$(parse_config 'template_resampling_grid')"
+config_medial_surface_nan="$(parse_config 'medial_surface_nan')"
+
+template_FLAG='--template '${config_template}
+template_resampling_grid_FLAG='--template-resampling-grid '${config_template_resampling_grid_space}
+bold2t1w_dof_FLAG='--bold2t1w-dof '${config_bold2t1w_dof}
+output_space_FLAG='--output-space '${config_output_space}
+
+if [[ $config_ignore == '' ]]; then
+  ignore_FLAG=''
+else
+  ignore_FLAG='--ignore '${config_ignore}
+fi
+
+if [[ $config_longitudinal == 'true' ]]; then
+  longitudinal_FLAG=''
+else
+  longitudinal_FLAG='--longitudinal'
+fi
+
+if [[ $config_t2s_coreg == 'true' ]]; then
+  t2s_coreg_FLAG=''
+else
+  t2s_coreg_FLAG='--t2s-coreg'
+fi
+
+if [[ $config_force_bbr == 'true' ]]; then
+  force_bbr_FLAG=''
+else
+  force_bbr_FLAG='--force-bbr'
+fi
+
+if [[ $config_force_no_bbr == 'true' ]]; then
+  force_no_bbr_FLAG=''
+else
+  force_no_bbr_FLAG='--force-no-bbr'
+fi
+
+if [[ $config_medial_surface_nan == 'true' ]]; then
+  medial_surface_nan_FLAG=''
+else
+  medial_surface_nan_FLAG='--medial-surface-nan'
 fi
 
 
@@ -110,7 +168,22 @@ ls -R ${BIDS_DIR}
 ################################################################################
 # RUN FMRIPREP
 
-time /usr/local/miniconda/bin/fmriprep ${BIDS_DIR} ${FMRIPREP_OUTPUT_DIR} participant -w ${WORKING_DIR} ${FREESURFER_FLAG}
+time /usr/local/miniconda/bin/fmriprep \
+      ${BIDS_DIR} \
+      ${FMRIPREP_OUTPUT_DIR} \
+      participant \
+      -w ${WORKING_DIR} \
+      ${freesurfer_FLAG} \
+      ${ignore_FLAG} \
+      ${longitudinal_FLAG} \
+      ${t2s_coreg_FLAG} \
+      ${bold2t1w_dof_FLAG} \
+      ${output_space_FLAG} \
+      ${force_bbr_FLAG} \
+      ${force_no_bbr_FLAG} \
+      ${template_FLAG} \
+      ${template_resampling_grid_FLAG} \
+      ${medial_surface_nan_FLAG}
 FMRIPREP_EXITSTATUS=$?
 
 
