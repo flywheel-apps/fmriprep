@@ -25,9 +25,9 @@ CONTAINER='[flywheel/fmriprep]'
 ################################################################################
 # DISPLAY FMRIPREP DOCKERFILE FOR BUILD INFO
 
-echo "$CONTAINER BEGIN FMRIPREP DOCKERFILE"
+echo -e "$CONTAINER BEGIN FMRIPREP DOCKERFILE\n"
 cat ${FLYWHEEL_BASE}/*Dockerfile
-echo "$CONTAINER END FMRIPREP DOCKERFILE"
+echo -e "$CONTAINER END FMRIPREP DOCKERFILE \n"
 
 
 ################################################################################
