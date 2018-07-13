@@ -83,7 +83,7 @@ config_template_resampling_grid="$(parse_config 'template_resampling_grid')"
 config_medial_surface_nan="$(parse_config 'medial_surface_nan')"
 
 template_FLAG='--template '${config_template}
-template_resampling_grid_FLAG='--template-resampling-grid '${config_template_resampling_grid_space}
+template_resampling_grid_FLAG='--template-resampling-grid '${config_template_resampling_grid}
 bold2t1w_dof_FLAG='--bold2t1w-dof '${config_bold2t1w_dof}
 output_space_FLAG='--output-space '${config_output_space}
 
