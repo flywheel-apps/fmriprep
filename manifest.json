@@ -70,6 +70,11 @@
     "ignore": {
       "description": "Ignore selected aspects of the input dataset to disable corresponding parts of the workflow. Possible choices: fieldmaps, slicetiming [default='']",
       "type": "string",
+      "enum": [
+        "",
+        "fieldmaps",
+        "slicetiming"
+      ],
       "default": ""
     },
     "longitudinal": {
@@ -95,6 +100,9 @@
     "template": {
       "description": "Volume template space (default: MNI152NLin2009cAsym). This is currently the only choice.",
       "type": "string",
+      "enum": [
+        "MNI152NLin2009cAsym"
+      ],
       "default": "MNI152NLin2009cAsym"
     },
     "medial_surface_nan": {
@@ -105,11 +113,21 @@
     "template_resampling_grid": {
       "description": "Keyword ('native' [default], '1mm', or '2mm'). Allows to define a reference grid for the resampling of BOLD images in template space. Keyword 'native' will use the original BOLD grid as reference. Keywords '1mm' and '2mm' will use the corresponding isotropic template resolutions. It determines the field of view and resolution of the output images, but is not used in normalization. (default: 'native')",
       "type": "string",
+      "enum": [
+        "native",
+        "1mm",
+        "2mm"
+      ],
       "default": "native"
     },
     "bold2t1w_dof": {
       "description": "Degrees of freedom when registering BOLD to T1w images. 9 (rotation, translation, and scaling) is used by default to compensate for field inhomogeneities. Possible choices: 6, 9, 12. [default=9]",
-      "type": "number",
+      "type": "integer",
+      "enum": [
+        6,
+        9,
+        12
+      ],
       "default": 9
     },
     "output_space": {
