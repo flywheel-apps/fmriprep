@@ -27,14 +27,23 @@ ADD https://raw.githubusercontent.com/poldracklab/fmriprep/${FMRIPREP_VERSION}/D
 RUN apt-get update && apt-get -y install \
     jq \
     tar \
-    zip
+    zip \
+    build-essential
+
 
 ############################
 # Install the Flywheel SDK
-RUN pip install flywheel-sdk
+WORKDIR /opt/flywheel
+ENV COMMIT=d27f0a9
+RUN git clone https://github.com/flywheel-io/sdk workspace/src/flywheel.io/sdk
+RUN ln -s workspace/src/flywheel.io/sdk sdk
+RUN cd sdk && git checkout $COMMIT > /dev/null && cd ../
+RUN sdk/make.sh
+RUN sdk/bridge/make.sh
+ENV PYTHONPATH /opt/flywheel/workspace/src/flywheel.io/sdk/bridge/dist/python/flywheel
 
 
-############################
+# ##########################
 # Copy over python scripts that generate the BIDS hierarchy
 COPY create_archive.py /flywheel/v0/create_archive.py
 COPY create_archive_funcs.py /flywheel/v0/create_archive_funcs.py
