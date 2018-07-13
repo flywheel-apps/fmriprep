@@ -2,10 +2,10 @@
 
 ############################
 # Get the fmriprep algorithm from DockerHub
-FROM poldracklab/fmriprep:1.1.1
+FROM poldracklab/fmriprep:1.1.2
 MAINTAINER Flywheel <support@flywheel.io>
 
-ENV FMRIPREP_VERSION 1.1.1
+ENV FMRIPREP_VERSION 1.1.2
 
 ############################
 # Make directory for flywheel spec (v0)
@@ -43,7 +43,7 @@ RUN sdk/bridge/make.sh
 ENV PYTHONPATH /opt/flywheel/workspace/src/flywheel.io/sdk/bridge/dist/python/flywheel
 
 
-############################
+# ##########################
 # Copy over python scripts that generate the BIDS hierarchy
 COPY create_archive.py /flywheel/v0/create_archive.py
 COPY create_archive_funcs.py /flywheel/v0/create_archive_funcs.py
