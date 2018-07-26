@@ -28,6 +28,9 @@ RUN sdk/make.sh
 RUN sdk/bridge/make.sh
 ENV PYTHONPATH /opt/flywheel/workspace/src/flywheel.io/sdk/bridge/dist/python/flywheel
 
+############################
+# Install the Flywheel BIDS client
+RUN pip install flywheel_bids
 
 ############################
 # Make directory for flywheel spec (v0)
