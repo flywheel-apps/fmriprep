@@ -129,8 +129,12 @@ if __name__ == '__main__':
 
     BIDS_metadata = container.get('info', {}).get('BIDS')
     if BIDS_metadata:
-        export_bids.export_bids(fw, rootdir, None, container_type=container_type, container_id=container_id)
-        if BIDS_metadata != 'NA':
-            download_optional_inputs(flywheel_basedir, BIDS_metadata.get('Subject'), BIDS_metadata.get('Label'))
+        try:
+            export_bids.export_bids(fw, rootdir, None, container_type=container_type, container_id=container_id)
+            if BIDS_metadata != 'NA':
+                download_optional_inputs(flywheel_basedir, BIDS_metadata.get('Subject'), BIDS_metadata.get('Label'))
+        except SystemExit:  # This is a necessary evil until bids_export doesn't call sys.exit(1)
+            print('Curated BIDS export failed, using on-the-fly bids-export')
+            create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id)
     else:
         create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id)
