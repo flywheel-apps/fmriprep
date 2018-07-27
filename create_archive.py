@@ -11,7 +11,7 @@ from create_archive_funcs import get_flywheel_hierarchy, determine_fmap_intended
 
 
 
-def create_and_download_bids(fw, analysis_id):
+def create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id):
     ## Create flywheel hierarchy
     print("Create Flywheel Hierarchy")
     flywheel_hierarchy = get_flywheel_hierarchy(fw, analysis_id)
@@ -51,7 +51,12 @@ def create_and_download_bids(fw, analysis_id):
             # Download file
             fw.download_file_from_acquisition(acq_id, filename, os.path.join(rootdir, bids_file))
 
-    ### Use manifest-defined anatomical files if they were provided
+    download_optional_inputs(flywheel_basedir, sub_dir, ses_dir)
+
+def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir):
+    """
+    Use manifest-defined anatomical files if they were provided
+    """
     print('Looking for manifest-defined anatomical files')
     t1_anat_dir = os.path.join(flywheel_basedir, 'input', 't1w_anatomy')
     if os.path.isdir(t1_anat_dir):
@@ -120,9 +125,12 @@ if __name__ == '__main__':
         container = fw.get_project(container_id)
     elif container_type == 'session':
         # If container type is a session, get the specific session
-        conatiner = fw.get_session(container_id)
+        container = fw.get_session(container_id)
 
-    if container.get('info', {}).get('BIDS'):
+    BIDS_metadata = container.get('info', {}).get('BIDS')
+    if BIDS_metadata:
         export_bids.export_bids(fw, rootdir, None, container_type=container_type, container_id=container_id)
+        if BIDS_metadata != 'NA':
+            download_optional_inputs(flywheel_basedir, BIDS_metadata.get('Subject'), BIDS_metadata.get('Label'))
     else:
-        create_and_download_bids(fw, analysis_id)
+        create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id)

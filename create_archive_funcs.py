@@ -84,8 +84,8 @@ def get_flywheel_hierarchy(fw, analysis_id):
     # Get analysis
     analysis = fw.get_analysis(analysis_id)
     # Get container type and id from
-    container_type = analysis['parent']['type']
-    container_id = analysis['parent']['id']
+    container_type = analysis.parent.type
+    container_id = analysis.parent.id
 
     # Determine if ID is a project or a session ID
     if container_type == 'project':

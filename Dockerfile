@@ -21,12 +21,7 @@ RUN apt-get update && apt-get -y install \
 # Install the Flywheel SDK
 WORKDIR /opt/flywheel
 ENV COMMIT=d27f0a9
-RUN git clone https://github.com/flywheel-io/sdk workspace/src/flywheel.io/sdk
-RUN ln -s workspace/src/flywheel.io/sdk sdk
-RUN cd sdk && git checkout $COMMIT > /dev/null && cd ../
-RUN sdk/make.sh
-RUN sdk/bridge/make.sh
-ENV PYTHONPATH /opt/flywheel/workspace/src/flywheel.io/sdk/bridge/dist/python/flywheel
+RUN pip install flywheel-sdk
 
 ############################
 # Install the Flywheel BIDS client
