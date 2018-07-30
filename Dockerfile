@@ -19,9 +19,7 @@ RUN apt-get update && apt-get -y install \
 
 ############################
 # Install the Flywheel SDK
-WORKDIR /opt/flywheel
-ENV COMMIT=d27f0a9
-RUN pip install flywheel-sdk
+RUN pip install flywheel-sdk>=2.5.0
 
 ############################
 # Install the Flywheel BIDS client
