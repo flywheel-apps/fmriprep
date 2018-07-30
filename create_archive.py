@@ -132,9 +132,16 @@ if __name__ == '__main__':
         try:
             export_bids.export_bids(fw, rootdir, None, container_type=container_type, container_id=container_id)
             if BIDS_metadata != 'NA':
-                download_optional_inputs(flywheel_basedir, BIDS_metadata.get('Subject'), BIDS_metadata.get('Label'))
+                if container_type == 'session':
+                    download_optional_inputs(flywheel_basedir, BIDS_metadata.get('Subject'), BIDS_metadata.get('Label'))
+            else:
+                print('BIDS Curation was not valid, cannot use additional files.')
+
         except SystemExit:  # This is a necessary evil until bids_export doesn't call sys.exit(1)
             print('Curated BIDS export failed, using on-the-fly bids-export')
+            # Clean rootdir
+            shutil.rmtree(rootdir)
+            os.makedirs(rootdir)
             create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id)
     else:
         create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id)
