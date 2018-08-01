@@ -49,6 +49,5 @@ RUN chmod +x ${FLYWHEEL}/*
 
 ############################
 # ENV preservation for Flywheel Engine
-RUN env -u HOSTNAME -u PWD | \
-  awk -F = '{ print "export " $1 "=\"" $2 "\"" }' > ${FLYWHEEL}/docker-env.sh
+RUN jq 'env' -n > ${FLYWHEEL}/docker-env.json
 

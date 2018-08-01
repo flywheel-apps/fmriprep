@@ -89,11 +89,8 @@ def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir):
             shutil.copyfile(t2_file, dest_file)
 
 
-if __name__ == '__main__':
+def main(flywheel_basedir, rootdir):
     ### SETUP
-    # Define variables
-    flywheel_basedir = os.environ['FLYWHEEL']
-    rootdir = os.path.join(flywheel_basedir, 'input', 'bids_dataset')
     if not os.path.exists(rootdir):
         os.makedirs(rootdir)
 
@@ -145,3 +142,8 @@ if __name__ == '__main__':
             create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id)
     else:
         create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id)
+
+if __name__ == '__main__':
+    flywheel_basedir = os.environ['FLYWHEEL']
+    rootdir = os.path.join(flywheel_basedir, 'input', 'bids_dataset')
+    main(flywheel_basedir, rootdir)
