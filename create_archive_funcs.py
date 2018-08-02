@@ -55,7 +55,7 @@ def get_flywheel_hierarchy(fw, analysis_id):
                     "acquisitions": {
                         "<acquisition_id1>": {
                             "label": "T1 MPRAGE",
-                            "created": "2017-09-19T14:39:58.721Z",
+                            "created": datetime.datetime(2017, 09, 19, 14, 39, 58.721)
                             "files": ['T1.nii.gz',]
                             "classification": {
                                 "Intent": ["Structural"],
@@ -66,7 +66,7 @@ def get_flywheel_hierarchy(fw, analysis_id):
                     },
                         "<acquisition_id2>": {
                             "label": "task123123",
-                            "created": "2017-09-19T12:39:58.721Z",
+                            "created": datetime.datetime(2017, 09, 19, 14, 39, 58.721)
                             "files": ['fmri.nii.gz'],
                             "classification": {
                                 "Intent": ["Functional"]
@@ -280,8 +280,8 @@ def determine_fmap_intendedfor(flywheel_hierarchy):
         for session_id in flywheel_hierarchy[project].keys():
             fmaps_intendedfor[project][session_id] = {}
             # initialize lists
-            fmaps_time = {'i':[],'j':[],'k':[],'i-':[],'j-':[],'k-':[]}
-            fmaps_filenames = {'i':[],'j':[],'k':[],'i-':[],'j-':[],'k-':[]}
+            fmaps_time = {'i': [], 'j': [], 'k': [], 'i-': [], 'j-': [], 'k-': []}
+            fmaps_filenames = {'i': [], 'j': [], 'k': [], 'i-': [], 'j-': [], 'k-': []}
             funcs = []
 
             # Iterate over acquisitions
@@ -335,9 +335,9 @@ def determine_fmap_intendedfor(flywheel_hierarchy):
                     if fmaps_filenames[func_pedir_flipped]:
                         # Get the func time
                         FMT = "%Y-%m-%dT%H:%M:%S.%fZ"
-                        ft = datetime.strptime(func_time, FMT)
+                        ft = check_time(func_time, FMT)
                         # Determing the fieldmap that the functional image is closest to...
-                        fmap_time = min(fmaps_time[func_pedir_flipped], key=lambda x:abs(datetime.strptime(x, FMT)-ft))
+                        fmap_time = min(fmaps_time[func_pedir_flipped], key=lambda x: abs(check_time(x, FMT)-ft))
                         fmap_idx = fmaps_time[func_pedir_flipped].index(fmap_time)
                         fmap_filename = fmaps_filenames[func_pedir_flipped][fmap_idx]
                         tmp[fmap_filename].append(func_filename)
@@ -347,6 +347,12 @@ def determine_fmap_intendedfor(flywheel_hierarchy):
 
     return fmaps_intendedfor
 
+
+def check_time(t, fmt):
+    if isinstance(t, str):
+        return datetime.strptime(func_time, fmt)
+    else:
+        return t
 
 def create_bids_hierarchy(flywheel_hierarchy, fieldmap_intendedfor):
     """
