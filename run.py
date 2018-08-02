@@ -156,7 +156,7 @@ def exit_housekeeping(fmriprep_exit_status, fmriprep_output, sub_id,
     if fmriprep_exit_status == 0:
         # Convert index file to standalone zip archive
         html_files = find_file('*.html',
-                              os.path.join(fmriprep_output, 'fmriprep'))
+                               os.path.join(fmriprep_output, 'fmriprep'))
         if html_files:
             html_file = html_files[0]
         else:
@@ -218,7 +218,7 @@ def exit_housekeeping(fmriprep_exit_status, fmriprep_output, sub_id,
         logger.error('Config "save_outputs" set to true. Zipping up outputs.')
         zipped_output = os.join(gear_output,
                                 'fmriprep_{}_{}'.format(sub_id, analysis_id))
-         with zipfile.ZipFile(zipped_output) as output_zip:
+        with zipfile.ZipFile(zipped_output) as output_zip:
             zipdir(fmriprep_output)
         zipped_output = os.join(gear_output,
                                 'fmriprep_work_{}_{}'.format(sub_id,
@@ -228,7 +228,6 @@ def exit_housekeeping(fmriprep_exit_status, fmriprep_output, sub_id,
         recursive_chmod(gear_output)
     else:
         logger.error('Save outputs config not set. Cleaning up and exiting.')
-
 
 
 def main():
@@ -247,6 +246,7 @@ def main():
     os.environ.update(data)
 
     # Parse Configurations
+    config_path = os.path.join(FLYWHEEL_BASE, 'config.json')
     with open(config_path) as config_fp:
         config = json.load(config_fp)
 
@@ -298,6 +298,8 @@ def main():
         ])
 
     # Cleanup Outputs
+    exit_housekeeping(fmriprep_exit_status, fmriprep_output, sub_id,
+                      analysis_id, gear_output, work_dir)
 
 
     # Clean up

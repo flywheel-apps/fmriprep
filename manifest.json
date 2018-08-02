@@ -11,6 +11,7 @@
   "custom": {
     "docker-image": "flywheel/fmriprep:5.4.1_1.1.2"
   },
+  "command": "python run.py",
   "license": "Other",
   "inputs": {
     "api_key": {
