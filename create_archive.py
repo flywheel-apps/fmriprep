@@ -51,7 +51,7 @@ def create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id):
             # Download file
             fw.download_file_from_acquisition(acq_id, filename, os.path.join(rootdir, bids_file))
 
-    download_optional_inputs(flywheel_basedir, sub_dir, ses_dir)
+    download_optional_inputs(flywheel_basedir, 'sub-{}'.format(sub_dir), 'ses-{}'.format(ses_dir))
 
 def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir):
     """
