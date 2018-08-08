@@ -135,12 +135,13 @@ def main(flywheel_basedir, rootdir):
                 print('BIDS Curation was not valid, cannot use additional files.')
 
         except SystemExit:  # This is a necessary evil until bids_export doesn't call sys.exit(1)
-            print('Curated BIDS export failed, using on-the-fly bids-export')
+            print('Curated BIDS export failed, using on-the-fly bids-export. (Deprecated)')
             # Clean rootdir
             shutil.rmtree(rootdir)
             os.makedirs(rootdir)
             create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id)
     else:
+        print('Using on-the-fly bids-export is deprecated.')
         create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id)
 
 if __name__ == '__main__':

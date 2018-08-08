@@ -20,7 +20,7 @@ CONTAINER = '[flywheel/fmriprep]'
 logger = logging.getLogger(CONTAINER)
 
 
-def recursive_chmod(path, perms=0o777):
+def recursive_chmod(path, perms=777):
     for root, dirs, files in os.walk(path):
         for d in dirs:
             os.chmod(os.path.join(root, d), perms)
@@ -71,9 +71,9 @@ def get_flags(config):
     # Surface Options
     config_freesurfer = config['config'].get('freesurfer')
     if config_freesurfer:
-        freesurfer_flag = ''
+        flags['freesurfer_FLAG'] = ''
     else:
-        freesurfer_flag = '--fs-no-reconall'
+        flags['freesurfer_FLAG'] = '--fs-no-reconall'
 
     # Workflow Options
     config_ignore = config['config'].get('ignore')
@@ -151,8 +151,53 @@ def download_and_validate_bids(bids_dir):
     validate_bids(bids_dir)
 
 
-def exit_housekeeping(fmriprep_exit_status, fmriprep_output, sub_id,
-                      analysis_id, gear_output, work_dir):
+def convert_index_to_archive(html_file, sub_id, analysis_id, gear_output):
+    zip_html_basename = '{}_{}.html.zip'.format(sub_id, analysis_id)
+    output_html_file = os.path.join(gear_output, zip_html_basename)
+    index_output_html = os.path.join(html_dir, 'index.html')
+    shutil.copyfile(html_file, index_output_html)
+    with zipfile.ZipFile(output_html_file, 'w') as output_zip:
+        output_zip.write(index_output_html)
+        output_zip.write(os.path.join(html_dir, sub_id, 'figures'))
+        output_zip.write(os.path.join(work_dir, 'reportlets',
+                                      'fmriprep', sub_id))
+    os.remove(index_output_html)
+
+
+def preserve_files_and_folders(work_file_zip, config_intermediate_files,
+                               config_intermediate_folders):
+    if config_intermediate_files:
+            logger.info('Archiving selected intermediate files...')
+            with zipfile.ZipFile(work_file_zip, 'a') as work_zip:
+                for file_pattern in config_intermediate_files:
+                    files = find_file(file_pattern, work_dir)
+                    for f in files:
+                        work_zip.write(f)
+
+    if config_intermediate_folders:
+        logger.info('Archiving selected intermediate folders...')
+        with zipfile.ZipFile(work_file_zip, 'a') as work_zip:
+            for dir_pattern in config_intermediate_files:
+                dirs = find_dir(dir_pattern, work_dir)
+                for d in dirs:
+                    zipdir(work_zip)
+
+
+def save_outputs(sub_id, analysis_id, gear_output, fmriprep_output, work_dir):
+    zipped_output = os.join(gear_output,
+                            'fmriprep_{}_{}'.format(sub_id, analysis_id))
+    with zipfile.ZipFile(zipped_output) as output_zip:
+        zipdir(fmriprep_output)
+    zipped_output = os.join(gear_output,
+                            'fmriprep_work_{}_{}'.format(sub_id,
+                                                         analysis_id))
+    with zipfile.ZipFile(zipped_output) as output_zip:
+        zipdir(work_dir)
+    recursive_chmod(gear_output)
+
+
+def exit_housekeeping(fmriprep_exit_status, fmriprep_output, analysis_id,
+                      gear_output, work_dir):
     if fmriprep_exit_status == 0:
         # Convert index file to standalone zip archive
         html_files = find_file('*.html',
@@ -165,16 +210,8 @@ def exit_housekeeping(fmriprep_exit_status, fmriprep_output, sub_id,
         sub_id = os.path.splitext(os.path.basename(html_file))
         if html_file:
             logger.info('Converting output html report...')
-            zip_html_basename = '{}_{}.html.zip'.format(sub_id, analysis_id)
-            output_html_file = os.path.join(gear_output, zip_html_basename)
-            index_output_html = os.path.join(html_dir, 'index.html')
-            shutil.copyfile(html_file, index_output_html)
-            with zipfile.ZipFile(output_html_file, 'w') as output_zip:
-                output_zip.write(index_output_html)
-                output_zip.write(os.path.join(html_dir, sub_id, 'figures'))
-                output_zip.write(os.path.join(work_dir, 'reportlets',
-                                              'fmriprep', sub_id))
-            os.remove(index_output_html)
+            convert_index_to_archive(html_file, sub_id, analysis_id,
+                                     gear_output)
             logger.info('HTML report converted.')
         else:
             logger.warn('no output html report found!')
@@ -183,21 +220,8 @@ def exit_housekeeping(fmriprep_exit_status, fmriprep_output, sub_id,
         work_filename = 'fmriprep_work_selected_{}_{}.zip'.format(sub_id,
                                                                   analysis_id)
         work_file_zip = os.path.join(gear_output, work_filename)
-        if config_intermediate_files:
-            logger.info('Archiving selected intermediate files...')
-            with zipfile.ZipFile(work_file_zip, 'a') as work_zip:
-                for file_pattern in config_intermediate_files:
-                    files = find_file(file_pattern, work_dir)
-                    for f in files:
-                        work_zip.write(f)
-
-        if config_intermediate_folders:
-            logger.info('Archiving selected intermediate folders...')
-            with zipfile.ZipFile(work_file_zip, 'a') as work_zip:
-                for dir_pattern in config_intermediate_files:
-                    dirs = find_dir(dir_pattern, work_dir)
-                    for d in dirs:
-                        zipdir(work_zip)
+        preserve_files_and_folders(work_file_zip, config_intermediate_files,
+                                   config_intermediate_folders)
 
         # Generate zipped output of fmriprep
         logger.info('generating zip archive from outputs...')
@@ -216,16 +240,8 @@ def exit_housekeeping(fmriprep_exit_status, fmriprep_output, sub_id,
         recursive_chmod(gear_output)
     elif config_save_outputs:
         logger.error('Config "save_outputs" set to true. Zipping up outputs.')
-        zipped_output = os.join(gear_output,
-                                'fmriprep_{}_{}'.format(sub_id, analysis_id))
-        with zipfile.ZipFile(zipped_output) as output_zip:
-            zipdir(fmriprep_output)
-        zipped_output = os.join(gear_output,
-                                'fmriprep_work_{}_{}'.format(sub_id,
-                                                             analysis_id))
-        with zipfile.ZipFile(zipped_output) as output_zip:
-            zipdir(work_dir)
-        recursive_chmod(gear_output)
+        save_outputs(sub_id, analysis_id, gear_output, fmriprep_output,
+                     work_dir)
     else:
         logger.error('Save outputs config not set. Cleaning up and exiting.')
 
@@ -298,9 +314,8 @@ def main():
         ])
 
     # Cleanup Outputs
-    exit_housekeeping(fmriprep_exit_status, fmriprep_output, sub_id,
-                      analysis_id, gear_output, work_dir)
-
+    exit_housekeeping(fmriprep_exit_status, fmriprep_output, analysis_id,
+                      gear_output, work_dir)
 
     # Clean up
     shutil.rmtree(work_dir)
