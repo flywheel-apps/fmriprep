@@ -51,7 +51,7 @@ def create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id):
             # Download file
             fw.download_file_from_acquisition(acq_id, filename, os.path.join(rootdir, bids_file))
 
-    download_optional_inputs(flywheel_basedir, 'sub-{}'.format(sub_dir), 'ses-{}'.format(ses_dir))
+    download_optional_inputs(flywheel_basedir, sub_dir, ses_dir)
 
 def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir):
     """
@@ -89,11 +89,8 @@ def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir):
             shutil.copyfile(t2_file, dest_file)
 
 
-if __name__ == '__main__':
+def main(flywheel_basedir, rootdir):
     ### SETUP
-    # Define variables
-    flywheel_basedir = os.environ['FLYWHEEL']
-    rootdir = os.path.join(flywheel_basedir, 'input', 'bids_dataset')
     if not os.path.exists(rootdir):
         os.makedirs(rootdir)
 
@@ -133,15 +130,21 @@ if __name__ == '__main__':
             export_bids.export_bids(fw, rootdir, None, container_type=container_type, container_id=container_id)
             if BIDS_metadata != 'NA':
                 if container_type == 'session':
-                    download_optional_inputs(flywheel_basedir, BIDS_metadata.get('Subject'), BIDS_metadata.get('Label'))
+                    download_optional_inputs(flywheel_basedir, "sub-{}".format(BIDS_metadata.get('Subject')), "ses-{}".format(BIDS_metadata.get('Label')))
             else:
                 print('BIDS Curation was not valid, cannot use additional files.')
 
         except SystemExit:  # This is a necessary evil until bids_export doesn't call sys.exit(1)
-            print('Curated BIDS export failed, using on-the-fly bids-export')
+            print('Curated BIDS export failed, using on-the-fly bids-export. (Deprecated)')
             # Clean rootdir
             shutil.rmtree(rootdir)
             os.makedirs(rootdir)
             create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id)
     else:
+        print('Using on-the-fly bids-export is deprecated.')
         create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id)
+
+if __name__ == '__main__':
+    flywheel_basedir = os.environ['FLYWHEEL']
+    rootdir = os.path.join(flywheel_basedir, 'input', 'bids_dataset')
+    main(flywheel_basedir, rootdir)
