@@ -8,11 +8,12 @@ class bidsTestCases(unittest.TestCase):
     def _compare_file_lookup(self, files_lookup, files_exp):
         # Iterate over lists and compare...
         for idx in range(len(files_lookup)):
-            f,b = files_lookup[idx]
+            f, b = files_lookup[idx]
             f_exp, b_exp = files_exp[idx]
             # Assert filenames are equal
-            self.assertEqual(f, f_exp)
-            self.assertEqual(b, b_exp)
+            # self.assertEqual(f, f_exp)
+            # self.assertEqual(b, b_exp)
+            self.assertTrue([f, b] in files_exp or (f, b) in files_exp)
 
 
 
@@ -1193,15 +1194,15 @@ class bidsTestCases(unittest.TestCase):
                 ['projectID/sessionID/3/1.3.12.2.1107.5.2.43.66044.2017091919421021234395122.0.0.0.nii.gz',
                     'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-1_sbref.nii.gz'],
                 ['projectID/sessionID/4/1.3.12.2.1107.5.2.43.66044.2017091919421231599295123.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-1_bold.nii.gz'], 
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-1_bold.nii.gz'],
                 ['projectID/sessionID/5/1.3.12.2.1107.5.2.43.66044.2017091919493668688474262.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-1_sbref.nii.gz'], 
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-1_sbref.nii.gz'],
                 ['projectID/sessionID/6/1.3.12.2.1107.5.2.43.66044.2017091919493882400374263.0.0.0.nii.gz',
                     'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-1_bold.nii.gz'],
                 ['projectID/sessionID/7/1.3.12.2.1107.5.2.43.66044.2017091919545114956153402.0.0.0.nii.gz',
                     'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-2_sbref.nii.gz'],
                 ['projectID/sessionID/8/1.3.12.2.1107.5.2.43.66044.2017091919545332144453403.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-2_bold.nii.gz'], 
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-2_bold.nii.gz'],
                 ['projectID/sessionID/9/1.3.12.2.1107.5.2.43.66044.2017091920004535912132542.0.0.0.nii.gz',
                     'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-2_sbref.nii.gz'],
                 ['projectID/sessionID/10/1.3.12.2.1107.5.2.43.66044.2017091920004747015432543.0.0.0.nii.gz',
@@ -1211,8 +1212,8 @@ class bidsTestCases(unittest.TestCase):
                 ['projectID/sessionID/12/1.3.12.2.1107.5.2.43.66044.2017091920083444350411683.0.0.0.nii.gz',
                     'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-3_bold.nii.gz'],
                 ['projectID/sessionID/13/1.3.12.2.1107.5.2.43.66044.2017091920134318597290822.0.0.0.nii.gz',
-                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-3_sbref.nii.gz'], 
-                ['projectID/sessionID/14/1.3.12.2.1107.5.2.43.66044.2017091920134531766790823.0.0.0.nii.gz', 
+                    'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-3_sbref.nii.gz'],
+                ['projectID/sessionID/14/1.3.12.2.1107.5.2.43.66044.2017091920134531766790823.0.0.0.nii.gz',
                     'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-3_bold.nii.gz'],
                 ['projectID/sessionID/15/1.3.12.2.1107.5.2.43.66044.2017091920200439073969961.0.0.0.nii.gz',
                     'sub-HEROgka1/ses-session1/anat/sub-HEROgka1_ses-session1_T1w.nii.gz'],
@@ -1229,7 +1230,7 @@ class bidsTestCases(unittest.TestCase):
                     'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-1_bold.json'],
                 [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFMeasurementPA'},
                     'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-2_bold.json'],
-                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFMeasurementAP'}, 
+                [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFMeasurementAP'},
                     'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementAP_run-2_bold.json'],
                 [{'RepetitionTime': 'val', 'TaskName': 'tfMRILFMeasurementPA'},
                     'sub-HEROgka1/ses-session1/func/sub-HEROgka1_ses-session1_task-tfMRILFMeasurementPA_run-3_bold.json'],
@@ -1276,18 +1277,18 @@ class bidsTestCases(unittest.TestCase):
                     }}}
         # Assert anat folder is the same
         self.assertEqual(
-                 bids_hierarchy['sub-HEROgka1']['ses-session1']['anat'],
-                 bids_exp['sub-HEROgka1']['ses-session1']['anat'],
+                 set(bids_hierarchy['sub-HEROgka1']['ses-session1']['anat']),
+                 set(bids_exp['sub-HEROgka1']['ses-session1']['anat']),
             )
         # Assert fmap folder is the same
         self.assertEqual(
-                bids_hierarchy['sub-HEROgka1']['ses-session1']['fmap'],
-                bids_exp['sub-HEROgka1']['ses-session1']['fmap']
+                set(bids_hierarchy['sub-HEROgka1']['ses-session1']['fmap']),
+                set(bids_exp['sub-HEROgka1']['ses-session1']['fmap'])
             )
         # Assert func folder is the same
         self.assertEqual(
-                bids_hierarchy['sub-HEROgka1']['ses-session1']['func'],
-                bids_exp['sub-HEROgka1']['ses-session1']['func']
+                set(bids_hierarchy['sub-HEROgka1']['ses-session1']['func']),
+                set(bids_exp['sub-HEROgka1']['ses-session1']['func'])
             )
 
     def test_create_bids_hierarchy_no_info(self):
@@ -1376,8 +1377,8 @@ class bidsTestCases(unittest.TestCase):
 
         # Assert fmap folder is the same
         self.assertEqual(
-                bids_hierarchy['sub-001']['ses-123']['fmap'],
-                bids_exp['sub-001']['ses-123']['fmap']
+                set(bids_hierarchy['sub-001']['ses-123']['fmap']),
+                set(bids_exp['sub-001']['ses-123']['fmap'])
                 )
 
     def test_create_bids_hierarchy_case2(self):
@@ -1452,8 +1453,8 @@ class bidsTestCases(unittest.TestCase):
         self._compare_file_lookup(files_lookup, files_exp)
         # Assert fmap folder is the same
         self.assertEqual(
-                bids_hierarchy['sub-001']['ses-123']['fmap'],
-                bids_exp['sub-001']['ses-123']['fmap']
+                set(bids_hierarchy['sub-001']['ses-123']['fmap']),
+                set(bids_exp['sub-001']['ses-123']['fmap'])
                 )
 
     def test_create_bids_hierarchy_case3(self):
@@ -1530,13 +1531,13 @@ class bidsTestCases(unittest.TestCase):
 
         # Assert fmap folder is the same
         self.assertEqual(
-                bids_hierarchy['sub-001']['ses-ses1']['fmap'],
-                bids_exp['sub-001']['ses-ses1']['fmap']
+                set(bids_hierarchy['sub-001']['ses-ses1']['fmap']),
+                set(bids_exp['sub-001']['ses-ses1']['fmap'])
                 )
         # Assert func folder is the same
         self.assertEqual(
-                bids_hierarchy['sub-001']['ses-ses1']['func'],
-                bids_exp['sub-001']['ses-ses1']['func']
+                set(bids_hierarchy['sub-001']['ses-ses1']['func']),
+                set(bids_exp['sub-001']['ses-ses1']['func'])
                 )
 
         files_exp = [
@@ -1650,13 +1651,13 @@ class bidsTestCases(unittest.TestCase):
                                    'sub-001_ses-ses1_task-tfMRILFMeasurementPA_run-2_bold.json']}}}
         # Assert fmap folder is the same
         self.assertEqual(
-                bids_hierarchy['sub-001']['ses-ses1']['fmap'],
-                bids_exp['sub-001']['ses-ses1']['fmap']
+                set(bids_hierarchy['sub-001']['ses-ses1']['fmap']),
+                set(bids_exp['sub-001']['ses-ses1']['fmap'])
                 )
         # Assert func folder is the same
         self.assertEqual(
-                bids_hierarchy['sub-001']['ses-ses1']['func'],
-                bids_exp['sub-001']['ses-ses1']['func']
+                set(bids_hierarchy['sub-001']['ses-ses1']['func']),
+                set(bids_exp['sub-001']['ses-ses1']['func'])
                 )
 
         # Compare files

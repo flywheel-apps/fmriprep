@@ -20,6 +20,7 @@ CONTAINER = '[flywheel/fmriprep]'
 logger = logging.getLogger(CONTAINER)
 
 
+# Helper functions
 def recursive_chmod(path, perms=777):
     for root, dirs, files in os.walk(path):
         for d in dirs:

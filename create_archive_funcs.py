@@ -350,7 +350,7 @@ def determine_fmap_intendedfor(flywheel_hierarchy):
 
 def check_time(t, fmt):
     if isinstance(t, str):
-        return datetime.strptime(func_time, fmt)
+        return datetime.strptime(t, fmt)
     else:
         return t
 

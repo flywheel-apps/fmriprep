@@ -36,7 +36,7 @@ class fmriprepTestCase(unittest.TestCase):
         }
 
     def tearDown(self):
-        shutil.rmtree(self.flywheel)
+        shutil.rmtree('flywheel')
 
     def test_get_flags(self):
         flags = run.get_flags(self.config)
