@@ -12,6 +12,7 @@ class fmriprepTestCase(unittest.TestCase):
     def setUp(self):
         self.flywheel = 'flywheel/v0'
         os.makedirs(self.flywheel)
+        run.FLYWHEEL_BASE = self.flywheel
 
         # Mock config.json
         self.config = {
@@ -105,3 +106,45 @@ class fmriprepTestCase(unittest.TestCase):
         self.assertTrue(html_files[0] == html_path)
 
         shutil.rmtree(file_dir)
+
+    def test_get_freesurfer(self):
+        freesurfer_dir = os.path.join(self.flywheel, 'input',
+                                      'freesurfer_license')
+        os.makedirs(freesurfer_dir)
+        with open(os.path.join(freesurfer_dir, 'license.txt'), 'w') as license:
+            license.write("My license")
+
+        fs_license = run.get_freesurfer_license()
+        expected_license_path = \
+            'flywheel/v0/input/freesurfer_license/license.txt'
+        self.assertTrue(fs_license == expected_license_path)
+
+    def test_convert_index_to_archive(self):
+        html_filename = 'out.html'
+        sub_id = 'ex0000'
+        analysis_id = '123456789009876543211234'
+        gear_output = os.path.join(self.flywheel, 'output')
+        fmriprep_output = os.path.join(gear_output, analysis_id)
+        work_dir = fmriprep_output + '_work'
+        html_filepath = os.path.join(fmriprep_output, 'fmriprep',
+                                     html_filename)
+
+        self.mock_fmriprep_output(fmriprep_output, sub_id, work_dir,
+                                  html_filepath)
+
+        run.convert_index_to_archive(html_filepath, sub_id, analysis_id,
+                                     gear_output, work_dir)
+        zip_file = run.find_file('*.html.zip', gear_output)[0]
+        expected_zip_file = \
+            'flywheel/v0/output/ex0000_123456789009876543211234.html.zip'
+        self.assertEqual(zip_file, expected_zip_file)
+
+    def mock_fmriprep_output(self, fmriprep_output, sub_id, work_dir,
+                             html_filepath):
+
+        os.makedirs(os.path.join(fmriprep_output, 'fmriprep'))
+        os.makedirs(os.path.join(fmriprep_output, 'fmriprep', sub_id,
+                                 'figures'))
+        os.makedirs(os.path.join(work_dir, 'reportlets', 'fmriprep', sub_id))
+        with open(html_filepath, 'w') as html_fd:
+            html_fd.write('</html>')

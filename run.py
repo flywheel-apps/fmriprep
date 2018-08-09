@@ -13,7 +13,7 @@ from flywheel_bids.supporting_files.utils import validate_bids
 import create_archive
 
 # Define Constants
-FLYWHEEL_BASE = '.'
+FLYWHEEL_BASE = '/flywheel/v0'
 CONTAINER = '[flywheel/fmriprep]'
 
 # Set up logger
@@ -130,14 +130,14 @@ def get_flags(config):
 
 
 def get_freesurfer_license():
-    freesurfer_license_dir = os.join(FLYWHEEL_BASE,
-                                     'input', 'freesurfer_license')
+    freesurfer_license_dir = os.path.join(FLYWHEEL_BASE,
+                                          'input', 'freesurfer_license')
     freesurfer_license = None
     if os.path.exists(freesurfer_license_dir):
         dir_contents = os.listdir(freesurfer_license_dir)
         if dir_contents:
-            freesurfer_license = os.join(freesurfer_license_dir,
-                                         dir_contents[0])
+            freesurfer_license = os.path.join(freesurfer_license_dir,
+                                              dir_contents[0])
     return freesurfer_license
 
 
@@ -151,7 +151,9 @@ def download_and_validate_bids(bids_dir):
     validate_bids(bids_dir)
 
 
-def convert_index_to_archive(html_file, sub_id, analysis_id, gear_output):
+def convert_index_to_archive(html_file, sub_id, analysis_id, gear_output,
+                             work_dir):
+    html_dir = os.path.dirname(html_file)
     zip_html_basename = '{}_{}.html.zip'.format(sub_id, analysis_id)
     output_html_file = os.path.join(gear_output, zip_html_basename)
     index_output_html = os.path.join(html_dir, 'index.html')
@@ -206,12 +208,11 @@ def exit_housekeeping(fmriprep_exit_status, fmriprep_output, analysis_id,
             html_file = html_files[0]
         else:
             html_file = None
-        html_dir = os.path.dirname(html_file)
         sub_id = os.path.splitext(os.path.basename(html_file))
         if html_file:
             logger.info('Converting output html report...')
             convert_index_to_archive(html_file, sub_id, analysis_id,
-                                     gear_output)
+                                     gear_output, work_dir)
             logger.info('HTML report converted.')
         else:
             logger.warn('no output html report found!')
