@@ -141,9 +141,9 @@
       "default": false
     },
     "aroma_melodic_dimensionality": {
-      "description": "set the dimensionality of MELODIC before runningICA-AROMA [ default = false ]",
-      "type": "boolean",
-      "default": false
+      "description": "set the dimensionality of MELODIC before runningICA-AROMA [ default = 'None' ]",
+      "type": "string",
+      "default": "None"
     },
     "skull_strip_template": {
       "description": "Possible choices: OASIS, NKI. select ANTs skull-stripping template (default: OASIS))",

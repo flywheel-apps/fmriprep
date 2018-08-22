@@ -124,10 +124,10 @@ else
   use_aroma_FLAG='--use-aroma'
 fi
 
-if [[ $config_aroma_melodic_dimensionality == 'false' ]]; then
+if [[ $config_aroma_melodic_dimensionality == 'None' ]]; then
   aroma_melodic_dimensionality_FLAG=''
 else
-  aroma_melodic_dimensionality_FLAG='--aroma-melodic-dimensionality'
+  aroma_melodic_dimensionality_FLAG='--aroma-melodic-dimensionality '"${config_aroma_melodic_dimensionality}"
 fi
 
 
