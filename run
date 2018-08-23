@@ -284,14 +284,14 @@ FMRIPREP_EXITSTATUS=$?
 if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
 
   # Convert index to standalone zip archive
-  html_file=`find "$FMRIPREP_OUTPUT_DIR"/fmriprep/ -name "*.html"`
+  html_file=$(find "$FMRIPREP_OUTPUT_DIR"/fmriprep/ -name "sub-*.html")
   SUB_ID=$(basename "$html_file" .html)
 
   if [[ -n "$html_file" ]]; then
     echo "$CONTAINER  Converting output html report..."
     output_html_file="$GEAR_OUTPUT_DIR"/`basename "$html_file" .html`_"$ANALYSIS_ID".html.zip
-    cd `dirname $html_file`
-    cp "$SUB_ID".html index.html
+    cd $(dirname $html_file)
+    cp "$html_file" index.html
     zip -r -q "$output_html_file" \
         index.html \
         "$SUB_ID"/figures \
