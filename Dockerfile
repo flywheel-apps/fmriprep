@@ -14,8 +14,10 @@ RUN apt-get update && apt-get -y install \
     jq \
     tar \
     zip \
-    build-essential
+    build-essential \
+    nodejs
 
+RUN npm install -g bids-validator
 
 ############################
 # Install the Flywheel SDK
