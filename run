@@ -232,12 +232,13 @@ fi
 
 ################################################################################
 # VALIDATE INPUT DATA
-# Check if the input directory is not empty
-if [[ "$(ls -A $INPUT_DIR)" ]] ; then
-    echo "$CONTAINER  Starting..."
+# Check if it is correct bids format
+bids-validator "$BIDS_DIR"
+if [[ $? != 0 ]]; then
+  echo "$CONTAINER  Not a valid BIDS Dataset! Exiting (1)"
+  exit 1
 else
-    echo "Input directory is empty: $INPUT_DIR"
-    exit 1
+    echo "$CONTAINER  Starting..."
 fi
 
 # Show the contents of the BIDS directory

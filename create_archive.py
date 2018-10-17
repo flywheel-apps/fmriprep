@@ -130,7 +130,7 @@ if __name__ == '__main__':
     BIDS_metadata = container.get('info', {}).get('BIDS')
     if BIDS_metadata:
         try:
-            export_bids.export_bids(fw, rootdir, None, container_type=container_type, container_id=container_id)
+            export_bids.export_bids(fw, rootdir, None, container_type=container_type, container_id=container_id, validate=False)
             if BIDS_metadata != 'NA':
                 if container_type == 'session':
                     download_optional_inputs(flywheel_basedir, "sub-{}".format(BIDS_metadata.get('Subject')), "ses-{}".format(BIDS_metadata.get('Label')))
