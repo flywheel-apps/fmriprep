@@ -60,6 +60,7 @@ config_intermediate_folders="$(parse_config 'intermediate_folders')"
 ##################
 # Workflow Options
 config_ignore="$(parse_config 'ignore')"
+config_ignore_bids_validation="$(parse_config 'ignore_bids_validation')"
 config_longitudinal="$(parse_config 'longitudinal')"
 config_t2s_coreg="$(parse_config 't2s_coreg')"
 config_bold2t1w_dof="$(parse_config 'bold2t1w_dof')"
@@ -235,8 +236,10 @@ fi
 # Check if it is correct bids format
 bids-validator "$BIDS_DIR"
 if [[ $? != 0 ]]; then
-  echo "$CONTAINER  Not a valid BIDS Dataset! Exiting (1)"
-  exit 1
+  echo "$CONTAINER  Not a valid BIDS Dataset!"
+  if [[ $config_ignore_bids_validation == 'false' ]]; then
+    echo "Exiting (1)"
+    exit 1
 else
     echo "$CONTAINER  Starting..."
 fi
