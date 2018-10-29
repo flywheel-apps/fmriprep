@@ -125,12 +125,13 @@ if __name__ == '__main__':
         container = fw.get_project(container_id)
     elif container_type == 'session':
         # If container type is a session, get the specific session
-        container = fw.get_session(container_id)
+        session = fw.get_session(container_id)
+        container = fw.get_project(session.project)
 
     BIDS_metadata = container.get('info', {}).get('BIDS')
     if BIDS_metadata:
         try:
-            export_bids.export_bids(fw, rootdir, None, container_type=container_type, container_id=container_id, validate=False)
+            export_bids.export_bids(fw, rootdir, container.label, subjects=[session.subject.code], sessions=[session.label], validate=False)
             if BIDS_metadata != 'NA':
                 if container_type == 'session':
                     download_optional_inputs(flywheel_basedir, "sub-{}".format(BIDS_metadata.get('Subject')), "ses-{}".format(BIDS_metadata.get('Label')))

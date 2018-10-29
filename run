@@ -240,6 +240,7 @@ if [[ $? != 0 ]]; then
   if [[ $config_ignore_bids_validation == 'false' ]]; then
     echo "Exiting (1)"
     exit 1
+  fi
 else
     echo "$CONTAINER  Starting..."
 fi
