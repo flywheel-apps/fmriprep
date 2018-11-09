@@ -45,7 +45,7 @@
     "ignore_bids_validation": {
       "description": "Ignore bids validation and continue with fmriprep if validation fails",
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "fs_no_reconall": {
       "description": "Use FreeSurfer to reconstruct surfaces from T1w/T2w structural images. If disabled, several steps in the fmriprep pipeline are added or replaced. [default=false]",
