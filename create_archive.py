@@ -15,7 +15,7 @@ def create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id):
     ## Create flywheel hierarchy
     print("Create Flywheel Hierarchy")
     flywheel_hierarchy = get_flywheel_hierarchy(fw, analysis_id)
-    pprint.pprint(flywheel_hierarchy)
+    #pprint.pprint(flywheel_hierarchy)
 
     # Determine what fieldmaps and functionals are connected...
     print("Determine fmap intendedfor")

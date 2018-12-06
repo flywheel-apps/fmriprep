@@ -206,18 +206,30 @@ fi
 ################################################################################
 # Freesurfer License
 
-# User-Provided license file
+########################
+
+echo "$CONTAINER  Attempting to generate license file..."
+
+need_license=1
+
+# OPTION 1:  User-Provided license file
 if [[ -d "$FREESURFER_LICENSE_DIR" ]]; then
   fs_file=$(find $FREESURFER_LICENSE_DIR/* -type f | head -1)
+  if [[ -n "$fs_file" ]]; then
+    echo "    -->Generating FREESURFER LICENSE file from $fs_file"
+    cp "$fs_file" ${LICENSE_FILE}
+    need_license=0
+  fi
 fi
 
-if [[ -n "$fs_file" ]]; then
-  cp "$fs_file" ${LICENSE_FILE}
-else
-  echo -e "${CONTAINER}  A license file is required to run!"
-  exit 1
+# Other options handled in parse config...
+if [[ $need_license == 1 ]]; then
+  /usr/local/miniconda/bin/python $FLYWHEEL_BASE/parse_config.py --json_file=${CONFIG_FILE}
+  if [[ $? != 0 ]]; then
+    echo "$CONTAINER  Problem generating FreeSurfer License! Exiting(1)"
+    exit 1
+  fi
 fi
-
 
 ################################################################################
 # CREATE A BIDS FORMATTED DIRECTORY
