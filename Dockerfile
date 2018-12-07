@@ -51,3 +51,5 @@ RUN chmod +x ${FLYWHEEL}/*
 # ENV preservation for Flywheel Engine
 RUN env -u HOSTNAME -u PWD | \
   awk -F = '{ print "export " $1 "=\"" $2 "\"" }' > ${FLYWHEEL}/docker-env.sh
+
+WORKDIR /flywheel/v0
