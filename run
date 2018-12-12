@@ -224,7 +224,7 @@ fi
 
 # Other options handled in parse config...
 if [[ $need_license == 1 ]]; then
-  /usr/local/miniconda/bin/python $FLYWHEEL_BASE/parse_config.py --json_file=${CONFIG_FILE}
+  /usr/local/miniconda/bin/python $FLYWHEEL_BASE/fs_license.py --json_file=${CONFIG_FILE}
   if [[ $? != 0 ]]; then
     echo "$CONTAINER  Problem generating FreeSurfer License! Exiting(1)"
     exit 1

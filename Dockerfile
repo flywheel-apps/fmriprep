@@ -31,7 +31,7 @@ ENV FLYWHEEL /flywheel/v0
 RUN mkdir -p ${FLYWHEEL}
 COPY run ${FLYWHEEL}/run
 COPY manifest.json ${FLYWHEEL}/manifest.json
-COPY parse_config.py /flywheel/v0/parse_config.py
+COPY fs_license.py /flywheel/v0/fs_license.py
 
 # Set the entrypoint
 ENTRYPOINT ["/flywheel/v0/run"]
