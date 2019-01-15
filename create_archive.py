@@ -6,6 +6,7 @@ import shutil
 
 import flywheel
 from flywheel_bids import export_bids
+from flywheel_bids.supporting_files.util import process_string_template
 
 from create_archive_funcs import get_flywheel_hierarchy, determine_fmap_intendedfor, create_bids_hierarchy
 
@@ -51,9 +52,9 @@ def create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id):
             # Download file
             fw.download_file_from_acquisition(acq_id, filename, os.path.join(rootdir, bids_file))
 
-    download_optional_inputs(flywheel_basedir, sub_dir, ses_dir)
+    download_optional_inputs(rootdir, flywheel_basedir, sub_dir, ses_dir)
 
-def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir):
+def download_optional_inputs(rootdir, flywheel_basedir, sub_dir=None, ses_dir=None, context=None):
     """
     Use manifest-defined anatomical files if they were provided
     """
@@ -63,10 +64,18 @@ def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir):
         t1_file = os.listdir(t1_anat_dir)
         if t1_file:
             t1_file = os.path.join(t1_anat_dir, t1_file[0])
-            anat_dir = os.path.join(rootdir, sub_dir, ses_dir, 'anat')
+            if context is not None:
+                # If using BIDS module, use the string processing template to get the file path
+                template = '{}/sub-{session.info.BIDS.Subject}[/ses-{session.info.BIDS.Label}]/sub-{session.info.BIDS.Subject}[_ses-{session.info.BIDS.Label}]_T1w.nii.gz'.format(rootdir)
+                dest_file = process_string_template(template, context)
+                anat_dir = os.path.dirname(dest_file)
+            elif sub_dir:
+                anat_dir = os.path.join(rootdir, sub_dir, ses_dir, 'anat')
+                dest_file = os.path.join(anat_dir, sub_dir + '_' + ses_dir + '_T1w.nii.gz')
+            else:
+                raise Exception('Must give bids directories or context object for the optional files')
             if not os.path.isdir(anat_dir):
                 os.mkdir(anat_dir)
-            dest_file = os.path.join(anat_dir, sub_dir + '_' + ses_dir + '_T1w.nii.gz')
             if os.path.exists(dest_file):
                 print('Found downloaded T1 file - overwriting!')
                 os.remove(dest_file)
@@ -77,11 +86,19 @@ def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir):
     if os.path.isdir(t2_anat_dir):
         t2_file = os.listdir(t2_anat_dir)
         if t2_file:
-            anat_dir = os.path.join(rootdir, sub_dir, ses_dir, 'anat')
+            t2_file = os.path.join(t2_anat_dir, t2_file[0])
+            if context is not None:
+                # If using BIDS module, use the string processing template to get the file path
+                template = '{}/sub-{session.info.BIDS.Subject}[/ses-{session.info.BIDS.Label}]/sub-{session.info.BIDS.Subject}[_ses-{session.info.BIDS.Label}]_T2w.nii.gz'.format(rootdir)
+                dest_file = process_string_template(template, context)
+                anat_dir = os.path.dirname(dest_file)
+            elif sub_dir:
+                anat_dir = os.path.join(rootdir, sub_dir, ses_dir, 'anat')
+                dest_file = os.path.join(anat_dir, sub_dir + '_' + ses_dir + '_T2w.nii.gz')
+            else:
+                raise Exception('Must give bids directories or context object for the optional files')
             if not os.path.isdir(anat_dir):
                 os.mkdir(anat_dir)
-            t2_file = os.path.join(t2_anat_dir, t2_file[0])
-            dest_file = os.path.join(anat_dir, sub_dir + '_' + ses_dir + '_T2w.nii.gz')
             if os.path.exists(dest_file):
                 print('Found downloaded T2 file - overwriting!')
                 os.remove(dest_file)
@@ -133,7 +150,8 @@ if __name__ == '__main__':
             export_bids.export_bids(fw, rootdir, None, container_type=container_type, container_id=container_id)
             if BIDS_metadata != 'NA':
                 if container_type == 'session':
-                    download_optional_inputs(flywheel_basedir, "sub-{}".format(BIDS_metadata.get('Subject')), "ses-{}".format(BIDS_metadata.get('Label')))
+                    context = {'session': BIDS_Metadata}
+                    download_optional_inputs(flywheel_basedir, context)
             else:
                 print('BIDS Curation was not valid, cannot use additional files.')
 
