@@ -44,9 +44,9 @@
   },
   "config": {
     "skip_bids_validation": {
-      "description": "Assume the input dataset is BIDS compliant and skip the validation [ default = false ]",
+      "description": "Assume the input dataset is BIDS compliant and skip the validation [ default = true ]",
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "task_id": {
       "description": "Specific task to be processed",
