@@ -281,11 +281,14 @@ fi
 ################################################################################
 # CREATE A BIDS FORMATTED DIRECTORY
 #   Use Python SDK to accomplish this task
-
-/usr/local/miniconda/bin/python ${FLYWHEEL_BASE}/create_archive.py
-if [[ $? != 0 ]]; then
-  echo "$CONTAINER  Problem creating archive! Exiting (1)"
-  exit 1
+if [[ ! -d $INPUT_DIR/bids_dataset ]]; then
+    /usr/local/miniconda/bin/python ${FLYWHEEL_BASE}/create_archive.py
+    if [[ $? != 0 ]]; then
+      echo "$CONTAINER  Problem creating archive! Exiting (1)"
+      exit 1
+    fi
+else
+    echo -e "Found existing data!!!"
 fi
 
 
@@ -305,6 +308,38 @@ ls -R ${BIDS_DIR}
 
 ################################################################################
 # RUN FMRIPREP
+echo -e "time /usr/local/miniconda/bin/fmriprep \
+      ${BIDS_DIR} \
+      ${FMRIPREP_OUTPUT_DIR} \
+      participant \
+      ${skip_bids_validation_FLAG} \
+      ${task_id_FLAG} \
+      ${echo_idx_FLAG} \
+      ${anat_only_FLAG} \
+      ${ignore_aroma_denoising_errors_FLAG} \
+      ${ignore_FLAG} \
+      ${longitudinal_FLAG} \
+      ${t2s_coreg_FLAG} \
+      ${bold2t1w_dof_FLAG} \
+      ${output_space_FLAG} \
+      ${force_bbr_FLAG} \
+      ${force_no_bbr_FLAG} \
+      ${template_FLAG} \
+      ${template_resampling_grid_FLAG} \
+      ${medial_surface_nan_FLAG} \
+      ${use_aroma_FLAG} \
+      ${aroma_melodic_dimensionality_FLAG} \
+      ${skull_strip_template_FLAG} \
+      ${skull_strip_fixed_seed_FLAG} \
+      ${fmap_bspline_FLAG} \
+      ${fmap_no_demean_FLAG} \
+      ${use_syn_sdc_FLAG} \
+      ${force_syn_FLAG} \
+      ${no_submm_recon_FLAG} \
+      ${cifti_output_FLAG} \
+      ${freesurfer_FLAG} \
+      -w ${WORKING_DIR} \
+      ${no_track_FLAG}"
 
 time /usr/local/miniconda/bin/fmriprep \
       ${BIDS_DIR} \
