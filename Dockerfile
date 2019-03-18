@@ -2,10 +2,10 @@
 
 ############################
 # Get the fmriprep algorithm from DockerHub
-FROM poldracklab/fmriprep:1.1.4
+FROM poldracklab/fmriprep:1.2.6-1
 MAINTAINER Flywheel <support@flywheel.io>
 
-ENV FMRIPREP_VERSION 1.1.2
+ENV FMRIPREP_VERSION 1.2.6-1
 
 
 ############################
@@ -16,14 +16,6 @@ RUN apt-get update && apt-get -y install \
     zip \
     build-essential
 
-
-############################
-# Install the Flywheel SDK
-RUN pip install flywheel-sdk>=2.5.0
-
-############################
-# Install the Flywheel BIDS client
-RUN pip install flywheel_bids
 
 ############################
 # Make directory for flywheel spec (v0)
@@ -45,6 +37,14 @@ ADD https://raw.githubusercontent.com/poldracklab/fmriprep/${FMRIPREP_VERSION}/D
 COPY create_archive.py /flywheel/v0/create_archive.py
 COPY create_archive_funcs.py /flywheel/v0/create_archive_funcs.py
 RUN chmod +x ${FLYWHEEL}/*
+
+
+############################
+# Install the Flywheel SDK and BIDS client
+RUN pip install --upgrade pip \
+                          cython \
+                          flywheel-sdk \
+                          flywheel_bids
 
 
 ############################
