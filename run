@@ -60,7 +60,7 @@ config_intermediate_folders="$(parse_config 'intermediate_folders')"
 # BIDS Options
 config_skip_bids_validation="$(parse_config 'skip_bids_validation')"
 if [[ $config_skip_bids_validation == 'false' ]]; then
-  _FLAG=''
+  skip_bids_validation_FLAG=''
 else
   skip_bids_validation_FLAG='--skip-bids-validation'
 fi
@@ -82,7 +82,7 @@ fi
 ##################
 # Performance Options
 config_anat_only="$(parse_config 'anat_only')"
-if [[ $config_ == 'false' ]]; then
+if [[ $config_anat_only == 'false' ]]; then
   anat_only_FLAG=''
 else
   anat_only_FLAG='--anat-only'
@@ -308,7 +308,8 @@ ls -R ${BIDS_DIR}
 
 ################################################################################
 # RUN FMRIPREP
-echo -e "time /usr/local/miniconda/bin/fmriprep \
+echo -e "RUNNING COMMAND: \n
+      /usr/local/miniconda/bin/fmriprep \
       ${BIDS_DIR} \
       ${FMRIPREP_OUTPUT_DIR} \
       participant \
@@ -386,7 +387,7 @@ if [[ $FMRIPREP_EXITSTATUS == 0 ]] ; then
   # Convert html to standalone zip archive
   html_file=$(find "$FMRIPREP_OUTPUT_DIR"/fmriprep/ -name "sub-*.html")
   SUB_ID=$(basename "$html_file" .html)
-  
+
   if [[ -n "$html_file" ]]; then
     echo "$CONTAINER  Converting output html report..."
     output_html_file="$GEAR_OUTPUT_DIR"/`basename "$html_file" .html`_"$ANALYSIS_ID".html.zip
