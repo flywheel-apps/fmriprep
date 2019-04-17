@@ -122,20 +122,21 @@ if __name__ == '__main__':
     # Determine if ID is a project or a session ID
     if container_type == 'project':
         # Get list of sessions within project
-        container = fw.get_project(container_id)
+        project = fw.get_project(container_id)
     elif container_type == 'session':
         # If container type is a session, get the specific session
-        container = fw.get_session(container_id)
+        session = fw.get_session(container_id)
+        project = fw.get_project(session.project)
 
-    BIDS_metadata = container.get('info', {}).get('BIDS')
+    BIDS_metadata = project.get('info', {}).get('BIDS')
     if BIDS_metadata:
         try:
-            export_bids.export_bids(fw, rootdir, None, container_type=container_type, container_id=container_id)
+            export_bids.export_bids(fw, rootdir, project.label, subjects=[session.subject.code], sessions=[session.label], validate=False)
             if BIDS_metadata != 'NA':
                 if container_type == 'session':
                     download_optional_inputs(flywheel_basedir, "sub-{}".format(BIDS_metadata.get('Subject')), "ses-{}".format(BIDS_metadata.get('Label')))
             else:
-                print('BIDS Curation was not valid, cannot use additional files.')
+                print('BIDS Curation was not valid, will not download additional files.')
 
         except SystemExit:  # This is a necessary evil until bids_export doesn't call sys.exit(1)
             print('Curated BIDS export failed, using on-the-fly bids-export')

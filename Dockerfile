@@ -41,10 +41,8 @@ RUN chmod +x ${FLYWHEEL}/*
 
 ############################
 # Install the Flywheel SDK and BIDS client
-RUN pip install --upgrade pip \
-                          cython \
-                          flywheel-sdk \
-                          flywheel_bids
+RUN pip install flywheel-sdk \
+                flywheel_bids
 
 
 ############################
