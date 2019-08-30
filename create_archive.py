@@ -123,12 +123,13 @@ if __name__ == '__main__':
     if container_type == 'project':
         # Get list of sessions within project
         project = fw.get_project(container_id)
+        BIDS_metadata = project.get('info', {}).get('BIDS')
     elif container_type == 'session':
         # If container type is a session, get the specific session
         session = fw.get_session(container_id)
         project = fw.get_project(session.project)
+        BIDS_metadata = session.get('info', {}).get('BIDS')
 
-    BIDS_metadata = project.get('info', {}).get('BIDS')
     if BIDS_metadata:
         try:
             export_bids.export_bids(fw, rootdir, project.label, subjects=[session.subject.code], sessions=[session.label], validate=False)
