@@ -2,10 +2,10 @@
 
 ############################
 # Get the fmriprep algorithm from DockerHub
-FROM poldracklab/fmriprep:1.2.6-1
+FROM poldracklab/fmriprep:1.5.0
 MAINTAINER Flywheel <support@flywheel.io>
 
-ENV FMRIPREP_VERSION 1.2.6-1
+ENV FMRIPREP_VERSION 1.5.0
 
 
 ############################
