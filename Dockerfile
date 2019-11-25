@@ -41,13 +41,13 @@ RUN chmod +x ${FLYWHEEL}/*
 
 ############################
 # Install the Flywheel SDK and BIDS client
-RUN pip install flywheel-sdk \
-                flywheel_bids
+COPY requirements.txt ${FLYWHEEL}/requirements.txt
+RUN pip install requirements.txt && rm -rf /root/.cache/pip
 
 
 ############################
 # ENV preservation for Flywheel Engine
-RUN env -u HOSTNAME -u PWD | \
-  awk -F = '{ print "export " $1 "=\"" $2 "\"" }' > ${FLYWHEEL}/docker-env.sh
+RUN RUN python -c 'import os, json; f = open("/tmp/gear_environ.json", "w"); json.dump(dict(os.environ), f)'
+
 
 WORKDIR /flywheel/v0
