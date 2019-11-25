@@ -135,7 +135,8 @@ def check_type(val,expected):
 
         # Otherwise we're comparing a value, not a type
         else:
-            if type(expected)
+            if type(expected):
+                pass
 
 
 
@@ -143,53 +144,53 @@ def check_type(val,expected):
 
 
 def validate(context):
-    log = context.log
-    for key in fmriprep_options:
-        expected = fmriprep_options[key]
-        if key in context.config:
-            if isinstance(key,list):
-
-            if type(key) == type:
-                if not isinstance(context.config[key],expected):
-                    if key == str:
-                        try:
-                            log.warning('Config option {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))
-                            log.info('Attempting to convert')
-                            context.config[key]='{}'.format(context.config[key])
-                        except:
-                            raise Exception('Unable to convert {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))')
-
-                    elif key == bool:
-                        try:
-                            log.warning('Config option {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))
-                            log.info('Attempting to convert')
-                            if context.config[key]=='true':
-                                context.config[key] == True
-                            elif context.config[key]=='false':
-                                context.config[key] == False
-                        except:
-                            raise Exception('Unable to convert {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))')
-
-                    elif key == int:
-                        try:
-                            log.warning('Config option {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))
-                            log.info('Attempting to convert')
-                            context.config[key] = int(context.config[key])
-
-                        except:
-                            raise Exception('Unable to convert {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))')
-
-                    elif key == int:
-                        try:
-                            log.warning('Config option {}: {} needs to be type {}'.format(key, context.config[key],
-                                                                                          fmriprep_options['key']))
-                            log.info('Attempting to convert')
-                            context.config[key] = int(context.config[key])
-
-                        except:
-                            raise Exception(
-                                'Unable to convert {}: {} needs to be type {}'.format(key, context.config[key],
-                                                                                      fmriprep_options['key']))
+    # log = context.log
+    # for key in fmriprep_options:
+    #     expected = fmriprep_options[key]
+    #     if key in context.config:
+    #         if isinstance(key,list):
+    #
+    #         if type(key) == type:
+    #             if not isinstance(context.config[key],expected):
+    #                 if key == str:
+    #                     try:
+    #                         log.warning('Config option {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))
+    #                         log.info('Attempting to convert')
+    #                         context.config[key]='{}'.format(context.config[key])
+    #                     except:
+    #                         raise Exception('Unable to convert {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))')
+    #
+    #                 elif key == bool:
+    #                     try:
+    #                         log.warning('Config option {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))
+    #                         log.info('Attempting to convert')
+    #                         if context.config[key]=='true':
+    #                             context.config[key] == True
+    #                         elif context.config[key]=='false':
+    #                             context.config[key] == False
+    #                     except:
+    #                         raise Exception('Unable to convert {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))')
+    #
+    #                 elif key == int:
+    #                     try:
+    #                         log.warning('Config option {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))
+    #                         log.info('Attempting to convert')
+    #                         context.config[key] = int(context.config[key])
+    #
+    #                     except:
+    #                         raise Exception('Unable to convert {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))')
+    #
+    #                 elif key == int:
+    #                     try:
+    #                         log.warning('Config option {}: {} needs to be type {}'.format(key, context.config[key],
+    #                                                                                       fmriprep_options['key']))
+    #                         log.info('Attempting to convert')
+    #                         context.config[key] = int(context.config[key])
+    #
+    #                     except:
+    #                         raise Exception(
+    #                             'Unable to convert {}: {} needs to be type {}'.format(key, context.config[key],
+    #                                                                                   fmriprep_options['key']))
 
 
     pass

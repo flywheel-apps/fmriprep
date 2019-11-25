@@ -44,7 +44,7 @@
 
     "skull-strip-template": {
       "description": "select a template for skull-stripping with antsBrainExtraction",
-      "type": "file",
+      "base": "file",
       "enum": [
         "nifti"
       ]
