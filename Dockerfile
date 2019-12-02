@@ -21,12 +21,12 @@ RUN apt-get update && apt-get -y install \
 # Make directory for flywheel spec (v0)
 ENV FLYWHEEL /flywheel/v0
 RUN mkdir -p ${FLYWHEEL}
-COPY run ${FLYWHEEL}/run
+COPY run.py ${FLYWHEEL}/run.py
 COPY manifest.json ${FLYWHEEL}/manifest.json
 COPY fs_license.py /flywheel/v0/fs_license.py
+COPY utils ${FLYWHEEL}/utils
 
-# Set the entrypoint
-ENTRYPOINT ["/flywheel/v0/run"]
+
 
 # Add the fmriprep dockerfile to the container
 ADD https://raw.githubusercontent.com/poldracklab/fmriprep/${FMRIPREP_VERSION}/Dockerfile ${FLYWHEEL}/fmriprep_${FMRIPREP_VERSION}_Dockerfile
@@ -42,12 +42,15 @@ RUN chmod +x ${FLYWHEEL}/*
 ############################
 # Install the Flywheel SDK and BIDS client
 COPY requirements.txt ${FLYWHEEL}/requirements.txt
-RUN pip install requirements.txt && rm -rf /root/.cache/pip
+RUN pip install -r ${FLYWHEEL}/requirements.txt && rm -rf /root/.cache/pip
 
 
 ############################
 # ENV preservation for Flywheel Engine
-RUN RUN python -c 'import os, json; f = open("/tmp/gear_environ.json", "w"); json.dump(dict(os.environ), f)'
+RUN python -c 'import os, json; f = open("/tmp/gear_environ.json", "w"); json.dump(dict(os.environ), f)'
 
 
 WORKDIR /flywheel/v0
+
+# Set the entrypoint
+ENTRYPOINT ["/usr/local/miniconda/bin/python3.7 /flywheel/v0/run.py"]

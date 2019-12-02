@@ -6,63 +6,62 @@ import utils.common as cm
 import logging
 from collections import OrderedDict
 import glob
-import zip_utils as zp
+import utils.zip_utils as zp
 import shutil
 from zipfile import ZipFile, ZIP_DEFLATED
 
-
-container='[flywheel/fmriprep]'
+container = '[flywheel/fmriprep]'
 
 fmriprep_options = OrderedDict({"h": bool,
-                             "version": bool,
-                             "skip_bids_validation": bool,
-                             "participant_label": str,
-                             "t": str,
-                             "echoidx": str,
-                             "nthreads": int,
-                             "omp-nthreads": int,
-                             "mem-mb": float,
-                             "low-mem": bool,
-                             "use-plugin": bool,
-                             "anat-only": bool,
-                             "boilerplate": bool,
-                             "error-on-aroma-warnings": bool,
-                             "v": bool,
-                             "ignore": ['fieldmaps', 'slicetiming', 'sbref'],
-                             "longitudinal": bool,
-                             "t2s-coreg": bool,
-                             "output-spaces": str,
-                             "bold2t1w-dof": [6, 9, 12],
-                             "force-bbr": bool,
-                             "force-no-bbr": bool,
-                             "medial-surface-nan": bool,
-                             "dummyscans": int,
-                             "aroma-melodic-dimensionality": int,
-                             "return-all-components": bool,
-                             "fd-spike-threshold": [float, int],
-                             "dvars-spike-threshold": [float, int],
-                             "skull-strip-template": str,
-                             "skull-strip-fixed-seed": str,
-                             "fmap-bspline": bool,
-                             "fmap-no-demean": bool,
-                             "use-syn-sdc": bool,
-                             "force-syn": bool,
-                             "fs-license-file": str,
-                             "no-submm-recon": bool,
-                             "cifti-output": bool,
-                             "fs-no-reconall": bool,
-                             "w": str,
-                             "resource-monitor": bool,
-                             "reports-only": bool,
-                             "run-uuid": str,
-                             "write-graph": bool,
-                             "stop-on-first-crash": bool,
-                             "notrack": bool,
-                             "sloppy": bool})
+                                "version": bool,
+                                "skip_bids_validation": bool,
+                                "participant_label": str,
+                                "t": str,
+                                "echoidx": str,
+                                "nthreads": int,
+                                "omp-nthreads": int,
+                                "mem-mb": float,
+                                "low-mem": bool,
+                                "use-plugin": bool,
+                                "anat-only": bool,
+                                "boilerplate": bool,
+                                "error-on-aroma-warnings": bool,
+                                "v": bool,
+                                "ignore": ['fieldmaps', 'slicetiming', 'sbref'],
+                                "longitudinal": bool,
+                                "t2s-coreg": bool,
+                                "output-spaces": str,
+                                "bold2t1w-dof": [6, 9, 12],
+                                "force-bbr": bool,
+                                "force-no-bbr": bool,
+                                "medial-surface-nan": bool,
+                                "dummyscans": int,
+                                "aroma-melodic-dimensionality": int,
+                                "return-all-components": bool,
+                                "fd-spike-threshold": [float, int],
+                                "dvars-spike-threshold": [float, int],
+                                "skull-strip-template": str,
+                                "skull-strip-fixed-seed": str,
+                                "fmap-bspline": bool,
+                                "fmap-no-demean": bool,
+                                "use-syn-sdc": bool,
+                                "force-syn": bool,
+                                "fs-license-file": str,
+                                "no-submm-recon": bool,
+                                "cifti-output": bool,
+                                "fs-no-reconall": bool,
+                                "w": str,
+                                "resource-monitor": bool,
+                                "reports-only": bool,
+                                "run-uuid": str,
+                                "write-graph": bool,
+                                "stop-on-first-crash": bool,
+                                "notrack": bool,
+                                "sloppy": bool})
+
 
 def str_2_num(string):
-
-    log=logging.getLogger()
+    log = logging.getLogger()
 
     try:
         if string.find('.'):
@@ -76,9 +75,8 @@ def str_2_num(string):
     return num
 
 
-def check_type(val,expected):
-
-    log=logging.getLogger()
+def check_type(val, expected):
+    log = logging.getLogger()
 
     # if the expected value is a type (int, bool, etc)
     if type(expected) == type:
@@ -90,19 +88,20 @@ def check_type(val,expected):
             if expected == str:
 
                 # Warn the user that we're typecasting
-                log.warning('VALUE {} IS EXPECTED TO BE OF TYPE {}, BUT IS TYPE {}.  CONVERTING.').format(val,expected,type(val))
+                log.warning('VALUE {} IS EXPECTED TO BE OF TYPE {}, BUT IS TYPE {}.  CONVERTING.').format(val, expected,
+                                                                                                          type(val))
 
                 # And try to typecast, but don't fail if it doesn't work.  Pass it out and see what happens:
                 try:
                     val = '{}'.format(val)
                 except:
-                    log.warning('WARNING, TYPCASTING {} to {} FAILED'.format(val,expected))
+                    log.warning('WARNING, TYPCASTING {} to {} FAILED'.format(val, expected))
 
             # If the expected value is a bool
             elif expected == bool:
 
                 # If the input value is a string
-                if isinstance(val,str):
+                if isinstance(val, str):
 
                     # If it's the string "true"
                     if val.lower() == 'true':
@@ -127,20 +126,16 @@ def check_type(val,expected):
                 val = str_2_num(val)
 
                 # We're only really concerned if a type "int" is a "float":
-                if expected == int and isinstance(val,float):
-                    log.warning('VALUE {} IS {} WHEN EXPECTED {}'.format(val,float,int))
+                if expected == int and isinstance(val, float):
+                    log.warning('VALUE {} IS {} WHEN EXPECTED {}'.format(val, float, int))
 
             else:
-                log.warning('UNKNOWN TYPE {} WITH VAL'.format(expected,val))
+                log.warning('UNKNOWN TYPE {} WITH VAL'.format(expected, val))
 
         # Otherwise we're comparing a value, not a type
         else:
             if type(expected):
                 pass
-
-
-
-
 
 
 def validate(context):
@@ -192,22 +187,29 @@ def validate(context):
     #                             'Unable to convert {}: {} needs to be type {}'.format(key, context.config[key],
     #                                                                                   fmriprep_options['key']))
 
-
     pass
 
 
 def create_command(context):
-
     # Extract some input settings that are inputs
     try:
         cmd = ['/usr/local/miniconda/bin/fmriprep']
         paramlist = OrderedDict()
         for key in fmriprep_options:
             if key in context.config:
+                context.log.info('{}: == str: {}'.format(key, context.config[key]==str))
+                context.log.info('{}: {}'.format(key, context.config[key]))
+                context.log.info('{} == "": {}'.format(key, context.config[key] == ""))
+                context.log.info('{} is None: {}\n'.format(key, context.config[key] is None))
+
+                if context.config[key] == "" or context.config[key] is None:
+                    context.log.info('Skipping {}\n'.format(key))
+                    continue
+
                 paramlist[key] = context.config[key]
 
-
-        command = cm.build_command_list(cmd,paramlist)
+        command = cm.build_command_list(cmd, paramlist)
+        command.append('--fs-license-file={}'.format(context.get_input_path('freesurfer-license')))
 
         command.append(context.custom_dict['bidsdir'])
         command.append(context.custom_dict['fmriprep_output'])
@@ -218,10 +220,9 @@ def create_command(context):
     return command
 
 
-def run_command(context,command):
-
+def run_command(context, command):
     try:
-        cm.exec_command(context,command)
+        cm.exec_command(context, command)
     except:
         raise Exception('Unable to run command')
 

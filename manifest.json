@@ -7,13 +7,18 @@
   "maintainer": "Flywheel <support@flywheel.io>",
   "source": "https://github.com/flywheel-apps/fmriprep",
   "url": "https://fmriprep.readthedocs.io/en/1.5.0/",
-  "version": "5.7.1_1.5.0",
+  "version": "5.7.2_1.5.0_dev30",
   "custom": {
-    "docker-image": "flywheel/fmriprep:5.7.1_1.5.0"
+    "docker-image": "flywheel/fmriprep:5.7.2_1.5.0",
+    "gear-builder": {
+      "category": "analysis",
+      "image": "flywheel/fmriprep:5.7.2_1.5.0"
+    }
   },
+
   "license": "Other",
   "inputs": {
-    "api-key": {
+    "api_key": {
       "base": "api-key"
     },
     "t1w-anatomy": {
@@ -40,15 +45,8 @@
       "description": "FreeSurfer license file, provided during registration with FreeSurfer. This file will by copied to the $FSHOME directory and used during execution of the Gear.",
       "base": "file",
       "optional": true
-    },
-
-    "skull-strip-template": {
-      "description": "select a template for skull-stripping with antsBrainExtraction",
-      "base": "file",
-      "enum": [
-        "nifti"
-      ]
     }
+
   },
   "config": {
     "skip-bids-validation": {
@@ -167,6 +165,17 @@
       "type": "boolean",
       "default": false
     },
+
+    "skull-strip-template": {
+      "description": "select a template for skull-stripping with antsBrainExtraction",
+      "type": "string",
+      "enum": [
+        "",
+        "OASIS30ANTs",
+        "NKI"
+      ],
+      "default": ""
+    },
     "fmap-bspline": {
       "description": "fit a B-Spline field using least-squares (experimental)",
       "type": "boolean",
@@ -251,6 +260,18 @@
       "description": "Use low-quality tools for speed - TESTING ONLY",
       "type": "boolean",
       "default": true
+    },
+    "gear-log-level": {
+      "default": "INFO",
+      "description": "Gear Log verbosity level (ERROR|WARNING|INFO|DEBUG)",
+      "type": "string",
+      "enum": [
+        "ERROR",
+        "WARNING",
+        "INFO",
+        "DEBUG"
+      ]
     }
-  }
+  },
+   "command": "/usr/local/miniconda/bin/python3.7 /flywheel/v0/run.py"
 }
