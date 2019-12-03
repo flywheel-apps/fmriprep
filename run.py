@@ -1,16 +1,15 @@
-#!/usr/bin/env /usr/local/miniconda/bin/python3.7
+#!/usr/bin/env python3
 
-
-
-import os, os.path as op
 import json
-import flywheel
-import utils.common as cm
-import logging
-from collections import OrderedDict
-import utils.fmriprep as fp
+import os, os.path as op
+import subprocess as sp
+import sys
 import shutil
-import utils.freesurfer as fs
+
+import flywheel
+from utils import args
+from utils.bids.download_bids import *
+from utils.bids.validate_bids import *
 from utils.fly.custom_log import *
 from utils.fly.load_manifest_json import *
 from utils.fly.make_file_name_safe import *
@@ -20,7 +19,9 @@ from utils.results.zip_output import zip_output
 from utils.results.zip_intermediate import zip_all_intermediate_output
 from utils.results.zip_intermediate import zip_intermediate_selected
 from utils.results.zip_intermediate import zip_intermediate_selected
-
+import utils.dry_run
+import utils.fmriprep as fp
+import utils.freesurfer as fs
 
 
 flywheelv0 = '/flywheel/v0'
@@ -141,13 +142,291 @@ def cleanup(context):
 
 
 def list_files(startpath):
+    log=logging.getLogger()
     for root, dirs, files in os.walk(startpath):
         level = root.replace(startpath, '').count(os.sep)
         indent = ' ' * 4 * (level)
-        print('{}{}/'.format(indent, os.path.basename(root)))
+        log.info('{}{}/'.format(indent, os.path.basename(root)))
         subindent = ' ' * 4 * (level + 1)
         for f in files:
-            print('{}{}'.format(subindent, f))
+            log.info('{}{}'.format(subindent, f))
+
+
+
+
+def initialize(context):
+    # Add manifest.json as the manifest_json attribute
+    setattr(context, 'manifest_json', load_manifest_json())
+
+    log = custom_log(context)
+
+    # Find Freesurfer License
+    fs.find_freesurfer_license(context, context.get_input_path('freesurfer-license'))
+
+
+    context.log_config() # not configuring the log but logging the config
+
+    # Instantiate custom gear dictionary to hold "gear global" info
+    context.gear_dict = {}
+
+    # The main command line command to be run:
+    context.gear_dict['COMMAND'] = 'fmriprep'
+
+    # Keep a list of errors and warning to print all in one place at end of log
+    # Any errors will prevent the command from running and will cause exit(1)
+    context.gear_dict['errors'] = []
+    context.gear_dict['warnings'] = []
+
+    # Get level of run from destination's parent: subject or session
+    fw = context.client
+    dest_container = fw.get(context.destination['id'])
+    context.gear_dict['run_level'] = dest_container.parent.type
+
+    project_id = dest_container.parents.project
+    context.gear_dict['project_id'] = project_id
+    if project_id:
+        project = fw.get(project_id)
+        context.gear_dict['project_label'] = project.label
+        context.gear_dict['project_label_safe'] = \
+            make_file_name_safe(project.label, '_')
+    else:
+        context.gear_dict['project_label'] = 'unknown_project'
+        context.gear_dict['project_label_safe'] = 'unknown_project'
+        log.warning('Project label is ' + context.gear_dict['project_label'])
+
+    subject_id = dest_container.parents.subject
+    context.gear_dict['subject_id'] = subject_id
+    if subject_id:
+        subject = fw.get(subject_id)
+        context.gear_dict['subject_code'] = subject.code
+        context.gear_dict['subject_code_safe'] = \
+            make_file_name_safe(subject.code, '_')
+    else:
+        context.gear_dict['subject_code'] = 'unknown_subject'
+        context.gear_dict['subject_code_safe'] = 'unknown_subject'
+        log.warning('Subject code is ' + context.gear_dict['subject_code'])
+
+    session_id = dest_container.parents.session
+    context.gear_dict['session_id'] = session_id
+    if session_id:
+        session = fw.get(session_id)
+        context.gear_dict['session_label'] = session.label
+        context.gear_dict['session_label_safe'] = \
+            make_file_name_safe(session.label, '_')
+    else:
+        context.gear_dict['session_label'] = 'unknown_session'
+        context.gear_dict['session_label_safe'] = 'unknown_session'
+        log.warning('Session label is ' + context.gear_dict['session_label'])
+
+    # Set first part of result zip file names based on the above file safe names
+    set_zip_head(context)
+
+    # the usual BIDS path:
+    bids_path = os.path.join(context.work_dir, 'bids')
+    context.gear_dict['bids_path'] = bids_path
+
+    # in the output/ directory, add extra analysis_id directory name for easy
+    #  zipping of final outputs to return.
+    context.gear_dict['output_analysisid_dir'] = \
+        context.output_dir + '/' + context.destination['id']
+
+    set_environment()
+
+    return log
+
+
+def create_command(context, log):
+
+    # Create the command and validate the given arguments
+    try:
+
+        # Set the actual gear command:
+        command = [context.gear_dict['COMMAND']]
+
+        # 3 positional args: bids path, output dir, 'participant'
+        # This should be done here in case there are nargs='*' arguments
+        # These follow the BIDS Apps definition (https://github.com/BIDS-Apps)
+        command.append(context.gear_dict['bids_path'])
+        command.append(context.gear_dict['output_analysisid_dir'])
+        command.append('participant')
+
+        # Put command into gear_dict so arguments can be added in args.
+        context.gear_dict['command'] = command
+
+        # Generate Command Call
+        log.info('generating fmriprep command call')
+        command = fp.create_command(context)
+        context.log.info('Done')
+        context.gear_dict['command'] = command
+        log.info(command)
+
+
+    except Exception as e:
+        context.gear_dict['errors'].append(e)
+        log.critical(e)
+        log.exception('Error in creating and validating command.',)
+
+    pass
+
+
+
+def set_up_data(context, log):
+    # Set up and validate data to be used by command
+    try:
+
+        # Download bids for the current session
+        # editme: add kwargs to limit what is downloaded
+        # bool src_data: Whether or not to include src data (e.g. dicoms) default: False
+        # list subjects: The list of subjects to include (via subject code) otherwise all subjects
+        # list sessions: The list of sessions to include (via session label) otherwise all sessions
+        # list folders: The list of folders to include (otherwise all folders) e.g. ['anat', 'func']
+        # **kwargs: Additional arguments to pass to download_bids_dir
+
+        #folders_to_load = ['anat', 'func', 'fmap']
+        folders_to_load = []  # leave empty to download all folders
+
+        if context.gear_dict['run_level'] == 'project':
+
+            log.info('Downloading BIDS for project "' +
+                     context.gear_dict['project_label'] + '"')
+
+            # don't filter by subject or session, grab all
+            download_bids(context, folders=folders_to_load)
+
+        elif context.gear_dict['run_level'] == 'subject':
+
+            log.info('Downloading BIDS for subject "' +
+                     context.gear_dict['subject_code'] + '"')
+
+            # filter by subject
+            download_bids(context,
+                      subjects = [context.gear_dict['subject_code']],
+                      folders=folders_to_load)
+
+        elif context.gear_dict['run_level'] == 'session':
+
+            log.info('Downloading BIDS for session "' +
+                     context.gear_dict['session_label'] + '"')
+
+            # filter by session
+            download_bids(context,
+                      sessions = [context.gear_dict['session_label']],
+                      folders=folders_to_load)
+
+        else:
+            msg = 'This job is not being run at the project subject or session level'
+            raise TypeError(msg)
+
+        # Validate Bids file heirarchy
+        # Bids validation on a phantom tree may be occuring soon
+        validate_bids(context)
+
+    except Exception as e:
+        context.gear_dict['errors'].append(e)
+        log.critical(e)
+        log.exception('Error in BIDS download and validation.',)
+
+
+def execute(context, log):
+    try:
+
+        log.info('Command: ' + ' '.join(context.gear_dict['command']))
+
+        # Don't run if there were errors or if this is a dry run
+        ok_to_run = True
+
+        if len(context.gear_dict['errors']) > 0:
+            ok_to_run = False
+            result = sp.CompletedProcess
+            result.returncode = 1
+            log.info('Command was NOT run because of previous errors.')
+
+        if context.config['gear-dry-run']:
+            ok_to_run = False
+            result = sp.CompletedProcess
+            result.returncode = 0
+            e = 'gear-dry-run is set: Command was NOT run.'
+            log.warning(e)
+            context.gear_dict['warnings'].append(e)
+            utils.dry_run.pretend_it_ran(context)
+
+        if ok_to_run:
+            # Run the actual command this gear was created for
+            result = sp.run(context.gear_dict['command'],
+                        env = context.gear_dict['environ'])
+            log.debug(repr(result))
+
+        log.info('Return code: ' + str(result.returncode))
+
+        if result.returncode == 0:
+            log.info('Command successfully executed!')
+
+        else:
+            log.info('Command failed.')
+
+    except Exception as e:
+        context.gear_dict['errors'].append(e)
+        log.critical(e)
+        log.exception('Unable to execute command.')
+
+    finally:
+
+        # Make archives for result *.html files for easy display on platform
+        path = context.gear_dict['output_analysisid_dir'] + \
+                                 '/' + context.gear_dict['COMMAND']
+        zip_htmls(context, path)
+
+        zip_output(context)
+
+        # possibly save ALL intermediate output
+        if context.config['gear-save-intermediate-output']:
+            zip_all_intermediate_output(context)
+
+        # possibly save intermediate files and folders
+        zip_intermediate_selected(context)
+
+        # clean up: remove output that was zipped
+        if os.path.exists(context.gear_dict['output_analysisid_dir']):
+            if not context.config['gear-keep-output']:
+
+                shutil.rmtree(context.gear_dict['output_analysisid_dir'])
+                log.debug('removing output directory "' +
+                          context.gear_dict['output_analysisid_dir'] + '"')
+
+            else:
+                log.info('NOT removing output directory "' +
+                          context.gear_dict['output_analysisid_dir'] + '"')
+
+        else:
+            log.info('Output directory does not exist so it cannot be removed')
+
+        ret = result.returncode
+
+        if len(context.gear_dict['warnings']) > 0 :
+            msg = 'Previous warnings:\n'
+            for err in context.gear_dict['warnings']:
+                if str(type(err)).split("'")[1] == 'str':
+                    # show string
+                    msg += '  Warning: ' + str(err) + '\n'
+                else:  # show type (of warning) and warning message
+                    msg += '  ' + str(type(err)).split("'")[1] + ': ' + str(err) + '\n'
+            log.info(msg)
+
+        if len(context.gear_dict['errors']) > 0 :
+            msg = 'Previous errors:\n'
+            for err in context.gear_dict['errors']:
+                if str(type(err)).split("'")[1] == 'str':
+                    # show string
+                    msg += '  Error msg: ' + str(err) + '\n'
+                else:  # show type (of error) and error message
+                    msg += '  ' + str(type(err)).split("'")[1] + ': ' + str(err) + '\n'
+            log.info(msg)
+            ret = 1
+
+        log.info('BIDS App Gear is done.  Returning '+str(ret))
+        os.sys.exit(ret)
+
+
 
 
 def main():
@@ -165,144 +444,18 @@ def main():
     with flywheel.gear_context.GearContext() as context:
         try:
 
+            log = initialize(context)
+
+            create_command(context,log)
+
+            set_up_data(context,log)
+
+            execute(context,log)
+
             list_files('/flywheel/v0')
-
-            fw = context.client
-
-            # Start logging
-            setup_logger(context)
-            log = context.log
-
-            # Setup environment
-            set_environment()
-
-            context.log.info('Setting Gear Dict')
-            context.gear_dict = {}
-
-            # Find Freesurfer License
-            fs.find_freesurfer_license(context, context.get_input_path('freesurfer-license'))
-
-            # Create Custom Dict
-            context.custom_dict = {}
-
-            context.gear_dict['COMMAND'] = 'fmriprep'
-
-
-            # First set up some directories:
-            analysis_id = context.destination.get('id')
-            context.log.info('Analysis_id: {}'.format(analysis_id))
-
-            # Get the session run type
-            dest_container = fw.get(context.destination['id'])
-            context.gear_dict['run_level'] = dest_container.parent.type
-
-            project_id = dest_container.parents.project
-            context.gear_dict['project_id'] = project_id
-            if project_id:
-                project = fw.get(project_id)
-                context.gear_dict['project_label'] = project.label
-                context.gear_dict['project_label_safe'] = \
-                    make_file_name_safe(project.label, '_')
-            else:
-                context.gear_dict['project_label'] = 'unknown_project'
-                context.gear_dict['project_label_safe'] = 'unknown_project'
-                log.warning('Project label is ' + context.gear_dict['project_label'])
-
-            subject_id = dest_container.parents.subject
-            context.gear_dict['subject_id'] = subject_id
-            if subject_id:
-                subject = fw.get(subject_id)
-                context.gear_dict['subject_code'] = subject.code
-                context.gear_dict['subject_code_safe'] = \
-                    make_file_name_safe(subject.code, '_')
-            else:
-                context.gear_dict['subject_code'] = 'unknown_subject'
-                context.gear_dict['subject_code_safe'] = 'unknown_subject'
-                log.warning('Subject code is ' + context.gear_dict['subject_code'])
-
-            session_id = dest_container.parents.session
-            context.gear_dict['session_id'] = session_id
-            if session_id:
-                session = fw.get(session_id)
-                context.gear_dict['session_label'] = session.label
-                context.gear_dict['session_label_safe'] = \
-                    make_file_name_safe(session.label, '_')
-            else:
-                context.gear_dict['session_label'] = 'unknown_session'
-                context.gear_dict['session_label_safe'] = 'unknown_session'
-                log.warning('Session label is ' + context.gear_dict['session_label'])
-
-
-            # Designated locations for "fmriprep" output and working directory
-            # fmriprep_output = context.gear_dict['output_analysisid_dir'] in bids_fmriprep
-
-            fmriprep_output = op.join(context.output_dir, '{}'.format(analysis_id))
-            working_dir = op.join(context.output_dir, '{}_work'.format(analysis_id))
-            context.gear_dict['output_analysisid_dir'] = fmriprep_output
-
-            # Store these values in our custom dict
-            context.custom_dict['fmriprep_output'] = fmriprep_output
-            # The working directory is actually past into the command
-            context.config['w'] = working_dir
-            context.gear_dict={'dry-run':False}
-
-
-            # Generate the BIDS directory
-            context.log.info('starting create_bids_dictionary')
-            bidsdir = create_bids_directory(context)
-            context.log.info('exiting create_bids_dictionary')
-            context.custom_dict['bidsdir'] = bidsdir
-
-            # Generate Command Call
-            context.log.info('generating fmriprep command call')
-            command = fp.create_command(context)
-            context.log.info('Done')
-
-            # Run the call
-            context.log.info('Calling fmriprep command call')
-            fp.run_command(context, command)
-
-
-
-
-
         except Exception as e:
-            context.log.exception(e)
-
-        finally:
-            list_files('/flywheel/v0')
-            set_zip_head(context)
-
-            path = os.path.join(fmriprep_output, context.gear_dict['COMMAND'])
-
-            zip_htmls(context, path)
-            zip_output(context)
-        # possibly save ALL intermediate output
-        if context.config['save-intermediate-output']:
-            zip_all_intermediate_output(context)
-
-        # possibly save intermediate files and folders
-        zip_intermediate_selected(context)
-
-        # clean up: remove output that was zipped
-        if os.path.exists(fmriprep_output):
-
-            shutil.rmtree(fmriprep_output)
-            log.debug('removing output directory "' +
-                      context.gear_dict['output_analysisid_dir'] + '"')
-
-        else:
-            log.info('Output directory does not exist so it cannot be removed')
-
-
-
+            log.exception(e)
         log.info('BIDS App Gear is done.')
-
-
-
-
-
-
 
 
 
