@@ -211,8 +211,8 @@ def create_command(context):
         command = cm.build_command_list(cmd, paramlist)
         command.append('--fs-license-file={}'.format(context.get_input_path('freesurfer-license')))
 
-        command.append(context.custom_dict['bidsdir'])
-        command.append(context.custom_dict['fmriprep_output'])
+        command.append(context.gear_dict['bids_path'])
+        command.append(context.gear_dict['output_analysisid_dir'])
         command.append('participant')
     except:
         raise Exception('Unable to generate command list')

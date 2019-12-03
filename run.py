@@ -94,7 +94,7 @@ def cleanup(context):
     zip_output(context)
 
     # possibly save ALL intermediate output
-    if context.config['gear-save-intermediate-output']:
+    if context.config['save-intermediate-work']:
         zip_all_intermediate_output(context)
 
     # possibly save intermediate files and folders
@@ -102,7 +102,7 @@ def cleanup(context):
 
     # clean up: remove output that was zipped
     if os.path.exists(context.gear_dict['output_analysisid_dir']):
-        if not context.config['gear-keep-output']:
+        if not context.config['save-outputs']:
 
             shutil.rmtree(context.gear_dict['output_analysisid_dir'])
             log.debug('removing output directory "' +
@@ -161,9 +161,9 @@ def initialize(context):
     log = custom_log(context)
 
     # Find Freesurfer License
-    fs.find_freesurfer_license(context, context.get_input_path('freesurfer-license'))
+    # fs.find_freesurfer_license(context, context.get_input_path('freesurfer-license'))
 
-
+    context.gear_dict = {}
     context.log_config() # not configuring the log but logging the config
 
     # Instantiate custom gear dictionary to hold "gear global" info
@@ -229,6 +229,17 @@ def initialize(context):
     #  zipping of final outputs to return.
     context.gear_dict['output_analysisid_dir'] = \
         context.output_dir + '/' + context.destination['id']
+
+    # grab environment for gear
+    with open('/tmp/gear_environ.json', 'r') as f:
+        environ = json.load(f)
+        context.gear_dict['environ'] = environ
+
+        # Add environment to log if debugging
+        kv = ''
+        for k, v in environ.items():
+            kv += k + '=' + v + ' '
+        log.debug('Environment: ' + kv)
 
     set_environment()
 
@@ -345,7 +356,7 @@ def execute(context, log):
             ok_to_run = False
             result = sp.CompletedProcess
             result.returncode = 0
-            e = 'gear-dry-run is set: Command was NOT run.'
+            e = 'dry-run is set: Command was NOT run.'
             log.warning(e)
             context.gear_dict['warnings'].append(e)
             utils.dry_run.pretend_it_ran(context)
@@ -379,7 +390,7 @@ def execute(context, log):
         zip_output(context)
 
         # possibly save ALL intermediate output
-        if context.config['gear-save-intermediate-output']:
+        if context.config['save-intermediate-work']:
             zip_all_intermediate_output(context)
 
         # possibly save intermediate files and folders
@@ -387,7 +398,7 @@ def execute(context, log):
 
         # clean up: remove output that was zipped
         if os.path.exists(context.gear_dict['output_analysisid_dir']):
-            if not context.config['gear-keep-output']:
+            if not context.config['save-outputs']:
 
                 shutil.rmtree(context.gear_dict['output_analysisid_dir'])
                 log.debug('removing output directory "' +
