@@ -25,7 +25,7 @@ def generate_license(args):
         license_info = ' '.join(config['config']['FREESURFER_LICENSE'].split()).replace(" ", "\n")
         print('\t-->Generating FREESURFER LICENSE file from Gear Configuration.')
 
-    # OPTION 2: Parse config for license elements
+    # OPTION 2: Parse config info for license elements
     if not license_info:
         print('\tChecking for license in project info (project.info.FREESURFER_LICENSE)...')
         fw = flywheel.Flywheel(config['inputs']['api_key']['key'])
