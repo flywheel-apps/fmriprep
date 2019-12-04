@@ -190,20 +190,20 @@ def validate(context):
     pass
 
 
-def create_command(context):
+def create_command(context,log):
     # Extract some input settings that are inputs
     try:
         cmd = ['/usr/local/miniconda/bin/fmriprep']
         paramlist = OrderedDict()
         for key in fmriprep_options:
             if key in context.config:
-                context.log.info('{}: == str: {}'.format(key, context.config[key]==str))
-                context.log.info('{}: {}'.format(key, context.config[key]))
-                context.log.info('{} == "": {}'.format(key, context.config[key] == ""))
-                context.log.info('{} is None: {}\n'.format(key, context.config[key] is None))
+                log.info('{}: == str: {}'.format(key, context.config[key]==str))
+                log.info('{}: {}'.format(key, context.config[key]))
+                log.info('{} == "": {}'.format(key, context.config[key] == ""))
+                log.info('{} is None: {}\n'.format(key, context.config[key] is None))
 
                 if context.config[key] == "" or context.config[key] is None:
-                    context.log.info('Skipping {}\n'.format(key))
+                    log.info('Skipping {}\n'.format(key))
                     continue
 
                 paramlist[key] = context.config[key]

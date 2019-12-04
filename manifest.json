@@ -7,7 +7,7 @@
   "maintainer": "Flywheel <support@flywheel.io>",
   "source": "https://github.com/flywheel-apps/fmriprep",
   "url": "https://fmriprep.readthedocs.io/en/1.5.2/",
-  "version": "5.7.2_1.5.2_dev7",
+  "version": "5.7.2_1.5.2_dev9-b",
   "custom": {
     "docker-image": "flywheel/fmriprep:5.7.2_1.5.2",
     "gear-builder": {
@@ -108,10 +108,11 @@
     "output-spaces": {
       "description": "Standard and non-standard spaces to resample anatomical and functional images to. Standard spaces may be specified by the form <TEMPLATE>[:res-<resolution>][:cohort-<label>][...], where <TEMPLATE> is a keyword (valid keywords: “MNI152Lin”, “MNI152NLin2009cAsym”, “MNI152NLin6Asym”, “MNI152NLin6Sym”, “MNIInfant”, “MNIPediatricAsym”, “NKI”, “OASIS30ANTs”, “PNC”, “fsLR”, “fsaverage”) or path pointing to a user-supplied template, and may be followed by optional, colon-separated parameters. Non-standard spaces (valid keywords: anat, T1w, run, func, sbref, fsnative) imply specific orientations and sampling grids. Important to note, the res-* modifier does not define the resolution used for the spatial normalization. For further details, please check out https://fmriprep.readthedocs.io/en/1.5.0/spaces.html",
       "type": "string",
-      "default": "OASIS30ANTs",
+      "default": "MNI152NLin2009cAsym",
       "enum": [
         "OASIS30ANTs",
-        "NKI"
+        "NKI",
+        "MNI152NLin2009cAsym"
       ]
     },
     "force-bbr": {
@@ -178,7 +179,7 @@
         "OASIS30ANTs",
         "NKI"
       ],
-      "default": ""
+      "default": "OASIS30ANTs"
     },
     "fmap-bspline": {
       "description": "fit a B-Spline field using least-squares (experimental)",
@@ -233,7 +234,7 @@
     "save-intermediate-work": {
       "description": "Zip and save working directory with intermediate files. [default=false]",
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "intermediate-files": {
       "description": "Space separated list of FILES to retain from the intermediate work directory.",

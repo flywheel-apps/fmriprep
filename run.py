@@ -22,6 +22,7 @@ from utils.results.zip_intermediate import zip_intermediate_selected
 import utils.dry_run
 import utils.fmriprep as fp
 import utils.freesurfer as fs
+import create_archive
 
 
 flywheelv0 = '/flywheel/v0'
@@ -266,7 +267,7 @@ def create_command(context, log):
 
         # Generate Command Call
         log.info('generating fmriprep command call')
-        command = fp.create_command(context)
+        command = fp.create_command(context,log)
         context.log.info('Done')
         context.gear_dict['command'] = command
         log.info(command)
@@ -293,40 +294,7 @@ def set_up_data(context, log):
         # list folders: The list of folders to include (otherwise all folders) e.g. ['anat', 'func']
         # **kwargs: Additional arguments to pass to download_bids_dir
 
-        #folders_to_load = ['anat', 'func', 'fmap']
-        folders_to_load = []  # leave empty to download all folders
-
-        if context.gear_dict['run_level'] == 'project':
-
-            log.info('Downloading BIDS for project "' +
-                     context.gear_dict['project_label'] + '"')
-
-            # don't filter by subject or session, grab all
-            download_bids(context, folders=folders_to_load)
-
-        elif context.gear_dict['run_level'] == 'subject':
-
-            log.info('Downloading BIDS for subject "' +
-                     context.gear_dict['subject_code'] + '"')
-
-            # filter by subject
-            download_bids(context,
-                      subjects = [context.gear_dict['subject_code']],
-                      folders=folders_to_load)
-
-        elif context.gear_dict['run_level'] == 'session':
-
-            log.info('Downloading BIDS for session "' +
-                     context.gear_dict['session_label'] + '"')
-
-            # filter by session
-            download_bids(context,
-                      sessions = [context.gear_dict['session_label']],
-                      folders=folders_to_load)
-
-        else:
-            msg = 'This job is not being run at the project subject or session level'
-            raise TypeError(msg)
+        create_archive()
 
         # Validate Bids file heirarchy
         # Bids validation on a phantom tree may be occuring soon
