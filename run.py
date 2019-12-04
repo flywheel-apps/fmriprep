@@ -294,7 +294,7 @@ def set_up_data(context, log):
         # list folders: The list of folders to include (otherwise all folders) e.g. ['anat', 'func']
         # **kwargs: Additional arguments to pass to download_bids_dir
 
-        create_archive()
+        create_archive.main()
 
         # Validate Bids file heirarchy
         # Bids validation on a phantom tree may be occuring soon
