@@ -575,8 +575,8 @@ def create_bids_hierarchy(flywheel_hierarchy, fieldmap_intendedfor):
                         for flyfile, bidsfile in files_lookup:
                             if flyfile == fff:
                                 part, ses, subdir, fname = bidsfile.split('/')
-                                # Append filename to th elist
-                                funcs_b.append(os.path.join(subdir,fname))
+                                # Append filename to the list
+                                funcs_b.append(os.path.join(part,ses,subdir,fname))
                     info['IntendedFor'] = funcs_b
                 except KeyError:
                     pass

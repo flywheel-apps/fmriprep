@@ -5,7 +5,7 @@ import os, os.path as op
 import subprocess as sp
 import sys
 import shutil
-
+import flywheel_bids
 import flywheel
 from utils import args
 from utils.bids.download_bids import *
@@ -315,9 +315,11 @@ def create_command(context, log):
 
 
 def create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id):
+    log=logging.getLogger()
     ## Create flywheel hierarchy
     print("Create Flywheel Hierarchy")
     flywheel_hierarchy = get_flywheel_hierarchy(fw, analysis_id)
+    log.debug(flywheel_hierarchy)
     #pprint.pprint(flywheel_hierarchy)
 
     # Determine what fieldmaps and functionals are connected...
@@ -335,11 +337,11 @@ def create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id):
     # Make sure to create all directories within bids hierarchy
     print("Download files into BIDS hierarchy")
     for sub_dir in bids_hierarchy.keys():
-        os.mkdir(os.path.join(rootdir, sub_dir))
+        os.makedirs(os.path.join(rootdir, sub_dir))
         for ses_dir in bids_hierarchy[sub_dir].keys():
-            os.mkdir(os.path.join(rootdir, sub_dir, ses_dir))
+            os.makedirs(os.path.join(rootdir, sub_dir, ses_dir))
             for desc_dir in bids_hierarchy[sub_dir][ses_dir].keys():
-                os.mkdir(os.path.join(rootdir, sub_dir, ses_dir, desc_dir))
+                os.makedirs(os.path.join(rootdir, sub_dir, ses_dir, desc_dir))
 
     # Now iterate over all flywheel files and download to correct bids filename
     for flywheel_file, bids_file in files_lookup:
@@ -370,8 +372,8 @@ def set_up_data(context, log):
         # **kwargs: Additional arguments to pass to download_bids_dir
 
         #folders_to_load = ['anat', 'func', 'fmap']
-        fw = context.client()
-        analysis_id = str(context.destination()['id'])
+        fw = context.client
+        analysis_id = str(context.destination['id'])
 
         # Get analysis
         analysis = fw.get_analysis(analysis_id)
@@ -390,11 +392,11 @@ def set_up_data(context, log):
 
             project = fw.get_project(container_id)
             BIDS_metadata = project.get('info', {}).get('BIDS')
-
-            if BIDS_metadata:
+            print(BIDS_metadata)
+            try:
                 # don't filter by subject or session, grab all
                 download_bids(context, folders=folders_to_load)
-            else:
+            except flywheel_bids.supporting_files.errors.BIDSExportError:
                 create_and_download_bids(fw, context.gear_dict['bids_path'], '/flywheel/v0', analysis_id)
 
 
@@ -408,14 +410,15 @@ def set_up_data(context, log):
             project = fw.get_project(session.project)
 
             BIDS_metadata = subject.get('info', {}).get('BIDS')
+            print(BIDS_metadata)
 
-            if BIDS_metadata:
+            try:
                 # filter by subject
                 download_bids(context,
                           subjects = [context.gear_dict['subject_code']],
                           folders=folders_to_load)
 
-            else:
+            except flywheel_bids.supporting_files.errors.BIDSExportError:
                 create_and_download_bids(fw, context.gear_dict['bids_path'], '/flywheel/v0', analysis_id)
 
 
@@ -426,14 +429,13 @@ def set_up_data(context, log):
             session = fw.get_session(container_id)
             project = fw.get_project(session.project)
             BIDS_metadata = session.get('info', {}).get('BIDS')
-
-            if BIDS_metadata:
-                # filter by session
+            # filter by session
+            try:
                 download_bids(context,
                           sessions = [context.gear_dict['session_label']],
                           folders=folders_to_load)
 
-            else:
+            except flywheel_bids.supporting_files.errors.BIDSExportError:
                 create_and_download_bids(fw, context.gear_dict['bids_path'], '/flywheel/v0', analysis_id)
 
             download_optional_inputs('/flywheel/v0', "sub-{}".format(BIDS_metadata.get('Subject')),
