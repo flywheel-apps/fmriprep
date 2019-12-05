@@ -22,12 +22,45 @@ from utils.results.zip_intermediate import zip_intermediate_selected
 import utils.dry_run
 import utils.fmriprep as fp
 import utils.freesurfer as fs
-import create_archive
-
+from create_archive_funcs import get_flywheel_hierarchy, determine_fmap_intendedfor, create_bids_hierarchy
 
 flywheelv0 = '/flywheel/v0'
 environ_json = '/tmp/gear_environ.json'
 
+def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir, rootdir):
+    """
+    Use manifest-defined anatomical files if they were provided
+    """
+    print('Looking for manifest-defined anatomical files')
+    t1_anat_dir = os.path.join(flywheel_basedir, 'input', 't1w_anatomy')
+    if os.path.isdir(t1_anat_dir):
+        t1_file = os.listdir(t1_anat_dir)
+        if t1_file:
+            t1_file = os.path.join(t1_anat_dir, t1_file[0])
+            anat_dir = os.path.join(rootdir, sub_dir, ses_dir, 'anat')
+            if not os.path.isdir(anat_dir):
+                os.mkdir(anat_dir)
+            dest_file = os.path.join(anat_dir, sub_dir + '_' + ses_dir + '_T1w.nii.gz')
+            if os.path.exists(dest_file):
+                print('Found downloaded T1 file - overwriting!')
+                os.remove(dest_file)
+                os.remove(dest_file.replace('.nii.gz', '.json'))
+            shutil.copyfile(t1_file, dest_file)
+
+    t2_anat_dir = os.path.join(flywheel_basedir, 'input', 't2w_anatomy')
+    if os.path.isdir(t2_anat_dir):
+        t2_file = os.listdir(t2_anat_dir)
+        if t2_file:
+            anat_dir = os.path.join(rootdir, sub_dir, ses_dir, 'anat')
+            if not os.path.isdir(anat_dir):
+                os.mkdir(anat_dir)
+            t2_file = os.path.join(t2_anat_dir, t2_file[0])
+            dest_file = os.path.join(anat_dir, sub_dir + '_' + ses_dir + '_T2w.nii.gz')
+            if os.path.exists(dest_file):
+                print('Found downloaded T2 file - overwriting!')
+                os.remove(dest_file)
+                os.remove(dest_file.replace('.nii.gz', '.json'))
+            shutil.copyfile(t2_file, dest_file)
 
 def setup_logger(gear_context):
     """
@@ -66,22 +99,22 @@ def set_environment():
     return environ
 
 
-def create_bids_directory(context):
-
-    try:
-        bidsdir = op.join(context.work_dir, 'bids')
-        bidsdir = op.join('/flywheel/v0','input','bids_dataset')
-
-        if not op.exists(bidsdir):
-            #   Use Python SDK to accomplish this task
-            cmd = ['/usr/local/miniconda/bin/python', '{}/create_archive.py'.format(flywheelv0)]
-            cm.exec_command(context, cmd)
-        else:
-            context.log.warning('Found Existing data in {}'.format(bidsdir))
-    except:
-        raise Exception('Unable to generate BIDS directory')
-
-    return bidsdir
+# def create_bids_directory(context):
+#
+#     try:
+#         bidsdir = op.join(context.work_dir, 'bids')
+#         bidsdir = op.join('/flywheel/v0','input','bids_dataset')
+#
+#         if not op.exists(bidsdir):
+#             #   Use Python SDK to accomplish this task
+#             cmd = ['/usr/local/miniconda/bin/python', '{}/create_archive.py'.format(flywheelv0)]
+#             cm.exec_command(context, cmd)
+#         else:
+#             context.log.warning('Found Existing data in {}'.format(bidsdir))
+#     except:
+#         raise Exception('Unable to generate BIDS directory')
+#
+#     return bidsdir
 
 
 def cleanup(context):
@@ -267,7 +300,7 @@ def create_command(context, log):
 
         # Generate Command Call
         log.info('generating fmriprep command call')
-        command = fp.create_command(context,log)
+        command = fp.create_command(context)
         context.log.info('Done')
         context.gear_dict['command'] = command
         log.info(command)
@@ -280,6 +313,48 @@ def create_command(context, log):
 
     pass
 
+
+def create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id):
+    ## Create flywheel hierarchy
+    print("Create Flywheel Hierarchy")
+    flywheel_hierarchy = get_flywheel_hierarchy(fw, analysis_id)
+    #pprint.pprint(flywheel_hierarchy)
+
+    # Determine what fieldmaps and functionals are connected...
+    print("Determine fmap intendedfor")
+    fmaps_intendedfor = determine_fmap_intendedfor(flywheel_hierarchy)
+    print(fmaps_intendedfor)
+
+    ### Create bids hierarchy
+    print("Create BIDS Hierarchy")
+    bids_hierarchy, files_lookup = create_bids_hierarchy(flywheel_hierarchy, fmaps_intendedfor)
+    # Print out BIDS hierarchy (for logs)
+    pprint.pprint(bids_hierarchy)
+
+    ### Download flywheel files into the bids hierarchy within the ROOTDIR defined above
+    # Make sure to create all directories within bids hierarchy
+    print("Download files into BIDS hierarchy")
+    for sub_dir in bids_hierarchy.keys():
+        os.mkdir(os.path.join(rootdir, sub_dir))
+        for ses_dir in bids_hierarchy[sub_dir].keys():
+            os.mkdir(os.path.join(rootdir, sub_dir, ses_dir))
+            for desc_dir in bids_hierarchy[sub_dir][ses_dir].keys():
+                os.mkdir(os.path.join(rootdir, sub_dir, ses_dir, desc_dir))
+
+    # Now iterate over all flywheel files and download to correct bids filename
+    for flywheel_file, bids_file in files_lookup:
+        # Create JSON file
+        if type(flywheel_file) is dict:
+            with open(os.path.join(rootdir, bids_file), 'w') as fp:
+                json.dump(flywheel_file, fp)
+        # OR Download flywheel file
+        else:
+            # Get flywheel info in order to download file
+            project_id, session_id, acq_id, filename = flywheel_file.split('/')
+            # Download file
+            fw.download_file_from_acquisition(acq_id, filename, os.path.join(rootdir, bids_file))
+
+    download_optional_inputs(flywheel_basedir, sub_dir, ses_dir, rootdir)
 
 
 def set_up_data(context, log):
@@ -294,7 +369,85 @@ def set_up_data(context, log):
         # list folders: The list of folders to include (otherwise all folders) e.g. ['anat', 'func']
         # **kwargs: Additional arguments to pass to download_bids_dir
 
-        create_archive.main()
+        #folders_to_load = ['anat', 'func', 'fmap']
+        fw = context.client()
+        analysis_id = str(context.destination()['id'])
+
+        # Get analysis
+        analysis = fw.get_analysis(analysis_id)
+        # Get container type and id from
+        container_type = analysis['parent']['type']
+        container_id = analysis['parent']['id']
+
+
+
+        folders_to_load = []  # leave empty to download all folders
+
+        if context.gear_dict['run_level'] == 'project':
+
+            log.info('Downloading BIDS for project "' +
+                     context.gear_dict['project_label'] + '"')
+
+            project = fw.get_project(container_id)
+            BIDS_metadata = project.get('info', {}).get('BIDS')
+
+            if BIDS_metadata:
+                # don't filter by subject or session, grab all
+                download_bids(context, folders=folders_to_load)
+            else:
+                create_and_download_bids(fw, context.gear_dict['bids_path'], '/flywheel/v0', analysis_id)
+
+
+        elif context.gear_dict['run_level'] == 'subject':
+
+            log.info('Downloading BIDS for subject "' +
+                     context.gear_dict['subject_code'] + '"')
+
+            subject = fw.get_subject(container_id)
+            session = fw.get_session(subject.session)
+            project = fw.get_project(session.project)
+
+            BIDS_metadata = subject.get('info', {}).get('BIDS')
+
+            if BIDS_metadata:
+                # filter by subject
+                download_bids(context,
+                          subjects = [context.gear_dict['subject_code']],
+                          folders=folders_to_load)
+
+            else:
+                create_and_download_bids(fw, context.gear_dict['bids_path'], '/flywheel/v0', analysis_id)
+
+
+        elif context.gear_dict['run_level'] == 'session':
+
+            log.info('Downloading BIDS for session "' +
+                     context.gear_dict['session_label'] + '"')
+            session = fw.get_session(container_id)
+            project = fw.get_project(session.project)
+            BIDS_metadata = session.get('info', {}).get('BIDS')
+
+            if BIDS_metadata:
+                # filter by session
+                download_bids(context,
+                          sessions = [context.gear_dict['session_label']],
+                          folders=folders_to_load)
+
+            else:
+                create_and_download_bids(fw, context.gear_dict['bids_path'], '/flywheel/v0', analysis_id)
+
+            download_optional_inputs('/flywheel/v0', "sub-{}".format(BIDS_metadata.get('Subject')),
+                                     "ses-{}".format(BIDS_metadata.get('Label')), context.gear_dict['bids_path'])
+
+        else:
+            msg = 'This job is not being run at the project subject or session level'
+            raise TypeError(msg)
+
+
+
+
+
+
 
         # Validate Bids file heirarchy
         # Bids validation on a phantom tree may be occuring soon
