@@ -356,6 +356,13 @@ def check_time(t, fmt):
 
 def create_bids_hierarchy(flywheel_hierarchy, fieldmap_intendedfor):
     """
+
+    Args:
+        flywheel_hierarchy ():
+        fieldmap_intendedfor ():
+
+    Returns:
+
     """
 
     # Keep track of what file within the Flywheel hierarchy goes with what file within BIDS hierarchy
@@ -576,7 +583,7 @@ def create_bids_hierarchy(flywheel_hierarchy, fieldmap_intendedfor):
                             if flyfile == fff:
                                 part, ses, subdir, fname = bidsfile.split('/')
                                 # Append filename to the list
-                                funcs_b.append(os.path.join(part,ses,subdir,fname))
+                                funcs_b.append(os.path.join(ses,subdir,fname))
                     info['IntendedFor'] = funcs_b
                 except KeyError:
                     pass
