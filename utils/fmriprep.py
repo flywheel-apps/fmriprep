@@ -1,17 +1,12 @@
 #!/usr/bin/env python3
-import os, os.path as op
-import json
-import flywheel
+
 import utils.common as cm
 import logging
 from collections import OrderedDict
-import glob
-import utils.zip_utils as zp
-import shutil
-from zipfile import ZipFile, ZIP_DEFLATED
+
+log = logging.getLogger(__name__)
 
 container = '[flywheel/fmriprep]'
-
 fmriprep_options = OrderedDict({"h": bool,
                                 "version": bool,
                                 "skip_bids_validation": bool,
@@ -61,7 +56,6 @@ fmriprep_options = OrderedDict({"h": bool,
 
 
 def str_2_num(string):
-    log = logging.getLogger()
 
     try:
         if string.find('.'):
@@ -76,7 +70,7 @@ def str_2_num(string):
 
 
 def check_type(val, expected):
-    log = logging.getLogger()
+    
 
     # if the expected value is a type (int, bool, etc)
     if type(expected) == type:
@@ -138,72 +132,19 @@ def check_type(val, expected):
                 pass
 
 
-def validate(context):
-    # log = context.log
-    # for key in fmriprep_options:
-    #     expected = fmriprep_options[key]
-    #     if key in context.config:
-    #         if isinstance(key,list):
-    #
-    #         if type(key) == type:
-    #             if not isinstance(context.config[key],expected):
-    #                 if key == str:
-    #                     try:
-    #                         log.warning('Config option {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))
-    #                         log.info('Attempting to convert')
-    #                         context.config[key]='{}'.format(context.config[key])
-    #                     except:
-    #                         raise Exception('Unable to convert {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))')
-    #
-    #                 elif key == bool:
-    #                     try:
-    #                         log.warning('Config option {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))
-    #                         log.info('Attempting to convert')
-    #                         if context.config[key]=='true':
-    #                             context.config[key] == True
-    #                         elif context.config[key]=='false':
-    #                             context.config[key] == False
-    #                     except:
-    #                         raise Exception('Unable to convert {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))')
-    #
-    #                 elif key == int:
-    #                     try:
-    #                         log.warning('Config option {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))
-    #                         log.info('Attempting to convert')
-    #                         context.config[key] = int(context.config[key])
-    #
-    #                     except:
-    #                         raise Exception('Unable to convert {}: {} needs to be type {}'.format(key,context.config[key],fmriprep_options['key']))')
-    #
-    #                 elif key == int:
-    #                     try:
-    #                         log.warning('Config option {}: {} needs to be type {}'.format(key, context.config[key],
-    #                                                                                       fmriprep_options['key']))
-    #                         log.info('Attempting to convert')
-    #                         context.config[key] = int(context.config[key])
-    #
-    #                     except:
-    #                         raise Exception(
-    #                             'Unable to convert {}: {} needs to be type {}'.format(key, context.config[key],
-    #                                                                                   fmriprep_options['key']))
-
-    pass
 
 
-def create_command(context,log):
+def create_command(context):
     # Extract some input settings that are inputs
     try:
         cmd = ['/usr/local/miniconda/bin/fmriprep']
         paramlist = OrderedDict()
         for key in fmriprep_options:
             if key in context.config:
-                log.info('{}: == str: {}'.format(key, context.config[key]==str))
-                log.info('{}: {}'.format(key, context.config[key]))
-                log.info('{} == "": {}'.format(key, context.config[key] == ""))
-                log.info('{} is None: {}\n'.format(key, context.config[key] is None))
+                log.debug('{}: {}'.format(key, context.config[key]))
 
                 if context.config[key] == "" or context.config[key] is None:
-                    log.info('Skipping {}\n'.format(key))
+                    log.debug('Skipping {}\n'.format(key))
                     continue
 
                 paramlist[key] = context.config[key]
@@ -229,135 +170,4 @@ def run_command(context, command):
     pass
 
 
-def cleanup_output(context):
-    pass
-#     log = logging.getLogger()
-#
-#     # Look for the output html file
-#     html_file = glob.glob(op.join(context.custom_dict['fmriprep_output'],'fmriprep','sub-*.html'))
-#
-#     # If it's not there, error out
-#     if len(html_file)==0:
-#         log.error('NO FMRIPREP OUTPUT FOUND')
-#         raise Exception('No fmriprep output found')
-#
-#     # Otherwise take the file and extract the subject ID
-#     html_file = html_file[0]
-#     html_dir, html_base = os.path.split(html_file)
-#     sub_id = os.path.splitext(html_base)[0]
-#     analysis_id = context.destination.get('id')
-#
-#     # Get the html report and zip the folder
-#     log.info("{}  Converting output html report...".format(container))
-#     output_html_file = os.path.join(context.output_dir,'{}_{}.html.zip'.format(sub_id,analysis_id))
-#     figure_dir = os.path.join(html_dir,sub_id,'figures')
-#
-#     index = os.path.join(html_dir,'index.html')
-#     shutil.copy(html_file, index)
-#     outzip = ZipFile(output_html_file, 'w', ZIP_DEFLATED)
-#     # for root, _, files in os.walk(figure_dir):
-#     #     for fl in files:
-#     #         fl_path = op.join(root, fl)
-#     #         # only if the file is not to be excluded from output
-#     #         if fl_path not in exclude_from_output:
-#     #             outzip.write(fl_path)
-#     outzip.write(index)
-#     outzip.write(figure_dir)
-#     outzip.close()
-#
-#     log.info("{}  HTML report converted.".format(container))
-#
-#
-#     # Look for files/folders to preserve from the working DIRECTORY
-#     work_file_zip = os.path.join(context.output_dir,'fmriprep_work_selected_{}_{}.zip'.format(sub_id,analysis_id))
-#
-#     if context.config['intermediate-files']:
-#         log.info("{}  Archiving selected intermediate files...".format(container))
-#
-#         outzip = ZipFile(work_file_zip,'w', ZIP_DEFLATED)
-#         int_files = context.config['intermediate-files'].split()
-#         for file in int_files:
-#             path = os.path.join(context.config['w'],file)
-#             if os.path.exists(path):
-#                 outzip.write(path)
-#
-# zip $work_file_zip
-# `find. - type
-# f - name
-# "$f"
-# `
-# done
-# fi
-#
-# if [[-n "$config_intermediate_folders"]]; then
-# echo
-# "$CONTAINER  Archiving selected intermediate folders..."
-# cd
-# "$WORKING_DIR"
-# for f in $config_intermediate_folders; do
-# zip $work_file_zip
-# `find. - type
-# d - name
-# "$f"
-# `
-# done
-# fi
-#
-# # Generate zipped output of fmriprep
-# cd
-# "$GEAR_OUTPUT_DIR"
-# echo
-# "$CONTAINER  generating zip archive from outputs..."
-# time
-# zip - q - r
-# "$GEAR_OUTPUT_DIR" / fmriprep_
-# "$SUB_ID"
-# _
-# "$ANALYSIS_ID" $(basename "$FMRIPREP_OUTPUT_DIR")
-#
-# if [[ $config_save_intermediate_work == 'true']]; then
-# echo
-# "$CONTAINER  generating zip archive from intermediate work files..."
-# cd
-# "$GEAR_OUTPUT_DIR"
-# time
-# zip - q - r
-# "$GEAR_OUTPUT_DIR" / fmriprep_work_
-# "$SUB_ID"
-# _
-# "$ANALYSIS_ID" $(basename "$WORKING_DIR")
-# fi
-# chmod - R
-# 777 $GEAR_OUTPUT_DIR
-#
-# elif [[ $config_save_outputs == 'true']]; then
-# echo
-# "$CONTAINER  Error occurred. Config 'save_outputs' set to true. Zipping up outputs."
-# cd
-# "$GEAR_OUTPUT_DIR"
-# time
-# zip - q - r
-# "$GEAR_OUTPUT_DIR" / debug_fmriprep_
-# "$ANALYSIS_ID"  $(basename "$FMRIPREP_OUTPUT_DIR")
-# time
-# zip - q - r
-# "$GEAR_OUTPUT_DIR" / debug_fmriprep_work_
-# "$ANALYSIS_ID" $(basename "$WORKING_DIR")
-# chmod - R
-# 777 $GEAR_OUTPUT_DIR
-#
-# else
-# echo
-# "$CONTAINER  Errors encountered during execution. Save outputs config not set. Cleaning up and exiting."
-# fi
-#
-# # Clean up
-# rm - rf
-# "$WORKING_DIR"
-# rm - rf
-# "$FMRIPREP_OUTPUT_DIR"
-#
-# echo - e
-# "Wrote: `ls -lh $GEAR_OUTPUT_DIR`"
-#
-# exit $FMRIPREP_EXITSTATUS
+

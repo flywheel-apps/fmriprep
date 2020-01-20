@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 
-import json
-import os, os.path as op
-import subprocess as sp
-import sys
+
 import shutil
 import flywheel_bids
 import flywheel
-from utils import args
 from utils.bids.download_bids import *
 from utils.bids.validate_bids import *
 from utils.fly.custom_log import *
@@ -18,14 +14,14 @@ from utils.results.zip_htmls import zip_htmls
 from utils.results.zip_output import zip_output
 from utils.results.zip_intermediate import zip_all_intermediate_output
 from utils.results.zip_intermediate import zip_intermediate_selected
-from utils.results.zip_intermediate import zip_intermediate_selected
 import utils.dry_run
 import utils.fmriprep as fp
-import utils.freesurfer as fs
 from create_archive_funcs import get_flywheel_hierarchy, determine_fmap_intendedfor, create_bids_hierarchy
 
 flywheelv0 = '/flywheel/v0'
 environ_json = '/tmp/gear_environ.json'
+
+
 
 def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir, rootdir):
     """
@@ -62,24 +58,9 @@ def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir, rootdir):
                 os.remove(dest_file.replace('.nii.gz', '.json'))
             shutil.copyfile(t2_file, dest_file)
 
-def setup_logger(gear_context):
-    """
-    This function simply sets up the gear logger to Flywheel SSE best practices
-    :param gear_context: the gear context
-    :type gear_context: class: `flywheel.gear_context.GearContext`
-    """
-
-    # Setup logging as per SSE best practices
-    fmt = '%(asctime)s %(levelname)8s %(name)-8s %(funcName)s - %(message)s'
-    logging.basicConfig(level=gear_context.config['gear-log-level'], format=fmt)
-    gear_context.log = logging.getLogger('[flywheel/extract-cmrr-physio]')
-    gear_context.log.info('log level is ' + gear_context.config['gear-log-level'])
-    gear_context.log_config()  # not configuring the log but logging the config
-
 
 def set_environment():
 
-    log = logging.getLogger()
     # Let's ensure that we have our environment .json file and load it up
     if op.exists(environ_json):
 
@@ -99,22 +80,6 @@ def set_environment():
     return environ
 
 
-# def create_bids_directory(context):
-#
-#     try:
-#         bidsdir = op.join(context.work_dir, 'bids')
-#         bidsdir = op.join('/flywheel/v0','input','bids_dataset')
-#
-#         if not op.exists(bidsdir):
-#             #   Use Python SDK to accomplish this task
-#             cmd = ['/usr/local/miniconda/bin/python', '{}/create_archive.py'.format(flywheelv0)]
-#             cm.exec_command(context, cmd)
-#         else:
-#             context.log.warning('Found Existing data in {}'.format(bidsdir))
-#     except:
-#         raise Exception('Unable to generate BIDS directory')
-#
-#     return bidsdir
 
 
 def cleanup(context):
@@ -176,14 +141,13 @@ def cleanup(context):
 
 
 def list_files(startpath):
-    log=logging.getLogger()
     for root, dirs, files in os.walk(startpath):
         level = root.replace(startpath, '').count(os.sep)
         indent = ' ' * 4 * (level)
-        log.info('{}{}/'.format(indent, os.path.basename(root)))
+        log.debug('{}{}/'.format(indent, os.path.basename(root)))
         subindent = ' ' * 4 * (level + 1)
         for f in files:
-            log.info('{}{}'.format(subindent, f))
+            log.debug('{}{}'.format(subindent, f))
 
 
 
@@ -280,7 +244,7 @@ def initialize(context):
     return log
 
 
-def create_command(context, log):
+def create_command(context,log):
 
     # Create the command and validate the given arguments
     try:
@@ -315,7 +279,6 @@ def create_command(context, log):
 
 
 def create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id):
-    log=logging.getLogger()
     ## Create flywheel hierarchy
     print("Create Flywheel Hierarchy")
     flywheel_hierarchy = get_flywheel_hierarchy(fw, analysis_id)
@@ -461,7 +424,7 @@ def set_up_data(context, log):
         log.exception('Error in BIDS download and validation.',)
 
 
-def execute(context, log):
+def execute(context,log):
     try:
 
         log.info('Command: ' + ' '.join(context.gear_dict['command']))
