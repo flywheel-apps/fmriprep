@@ -6,13 +6,13 @@
   "cite": "Esteban O, Markiewicz CJ, Blair RW, Moodie CA, Isik AI, Erramuzpe A, Kent JD, Goncalves M, DuPre E, Snyder M, Oya H, Ghosh SS, Wright J, Durnez J, Poldrack RA, Gorgolewski KJ. fMRIPrep: a robust preprocessing pipeline for functional MRI. Nat Meth. 2018; doi:10.1038/s41592-018-0235-4. FOR MORE INFORMATION SEE: http://fmriprep.readthedocs.io/en/stable/citing.html.",
   "maintainer": "Flywheel <support@flywheel.io>",
   "source": "https://github.com/flywheel-apps/fmriprep",
-  "url": "https://fmriprep.readthedocs.io/en/1.5.4/",
-  "version": "5.7.2_1.5.4",
+  "url": "https://fmriprep.readthedocs.io/en/1.5.5/",
+  "version": "5.7.2_1.5.5",
   "custom": {
-    "docker-image": "flywheel/fmriprep:5.7.2_1.5.4",
+    "docker-image": "flywheel/fmriprep:5.7.2_1.5.5",
     "gear-builder": {
       "category": "analysis",
-      "image": "flywheel/fmriprep:5.7.2_1.5.4"
+      "image": "flywheel/fmriprep:5.7.2_1.5.5"
     }
   },
 
