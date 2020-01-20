@@ -234,7 +234,7 @@
     "save-intermediate-work": {
       "description": "Zip and save working directory with intermediate files. [default=false]",
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "intermediate-files": {
       "description": "Space separated list of FILES to retain from the intermediate work directory.",
@@ -264,7 +264,7 @@
     "sloppy": {
       "description": "Use low-quality tools for speed - TESTING ONLY",
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "gear-log-level": {
       "default": "INFO",
