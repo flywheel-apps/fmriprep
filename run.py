@@ -80,78 +80,6 @@ def set_environment():
     return environ
 
 
-
-
-def cleanup(context):
-
-
-    # Make archives for result *.html files for easy display on platform
-    path = context.gear_dict['output_analysisid_dir'] + \
-                             '/' + context.gear_dict['COMMAND']
-    zip_htmls(context, path)
-
-    zip_output(context)
-
-    # possibly save ALL intermediate output
-    if context.config['save-intermediate-work']:
-        zip_all_intermediate_output(context)
-
-    # possibly save intermediate files and folders
-    zip_intermediate_selected(context)
-
-    # clean up: remove output that was zipped
-    if os.path.exists(context.gear_dict['output_analysisid_dir']):
-        if not context.config['save-outputs']:
-
-            shutil.rmtree(context.gear_dict['output_analysisid_dir'])
-            log.debug('removing output directory "' +
-                      context.gear_dict['output_analysisid_dir'] + '"')
-
-        else:
-            log.info('NOT removing output directory "' +
-                      context.gear_dict['output_analysisid_dir'] + '"')
-
-    else:
-        log.info('Output directory does not exist so it cannot be removed')
-
-
-    if len(context.gear_dict['warnings']) > 0 :
-        msg = 'Previous warnings:\n'
-        for err in context.gear_dict['warnings']:
-            if str(type(err)).split("'")[1] == 'str':
-                # show string
-                msg += '  Warning: ' + str(err) + '\n'
-            else:  # show type (of warning) and warning message
-                msg += '  ' + str(type(err)).split("'")[1] + ': ' + str(err) + '\n'
-        log.info(msg)
-
-    if len(context.gear_dict['errors']) > 0 :
-        msg = 'Previous errors:\n'
-        for err in context.gear_dict['errors']:
-            if str(type(err)).split("'")[1] == 'str':
-                # show string
-                msg += '  Error msg: ' + str(err) + '\n'
-            else:  # show type (of error) and error message
-                msg += '  ' + str(type(err)).split("'")[1] + ': ' + str(err) + '\n'
-        log.info(msg)
-        ret = 1
-
-    log.info('BIDS App Gear is done.  Returning '+str(ret))
-    os.sys.exit(ret)
-
-
-def list_files(startpath):
-    for root, dirs, files in os.walk(startpath):
-        level = root.replace(startpath, '').count(os.sep)
-        indent = ' ' * 4 * (level)
-        log.debug('{}{}/'.format(indent, os.path.basename(root)))
-        subindent = ' ' * 4 * (level + 1)
-        for f in files:
-            log.debug('{}{}'.format(subindent, f))
-
-
-
-
 def initialize(context):
     # Add manifest.json as the manifest_json attribute
     setattr(context, 'manifest_json', load_manifest_json())
@@ -395,8 +323,9 @@ def set_up_data(context, log):
             # filter by session
             try:
                 download_bids(context,
-                          sessions = [context.gear_dict['session_label']],
-                          folders=folders_to_load)
+                        subjects = [context.gear_dict['subjct_code']],
+                        sessions = [context.gear_dict['session_label']],
+                        folders=folders_to_load)
 
             except flywheel_bids.supporting_files.errors.BIDSExportError:
                 create_and_download_bids(fw, context.gear_dict['bids_path'], '/flywheel/v0', analysis_id)
@@ -546,10 +475,11 @@ def main():
             create_command(context,log)
 
             set_up_data(context,log)
-
+            
+            # Execute now contains cleanup functions
             execute(context,log)
 
-            list_files('/flywheel/v0')
+
         except Exception as e:
             log.exception(e)
         log.info('BIDS App Gear is done.')

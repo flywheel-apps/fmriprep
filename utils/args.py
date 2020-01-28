@@ -1,4 +1,3 @@
-# If you edit this file, please consider updating bids-app-template
 
 import subprocess as sp
 import os, os.path as op

@@ -53,7 +53,7 @@ def create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id):
 
     download_optional_inputs(flywheel_basedir, sub_dir, ses_dir,rootdir)
 
-def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir):
+def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir, rootdir):
     """
     Use manifest-defined anatomical files if they were provided
     """

@@ -321,7 +321,7 @@ def determine_fmap_intendedfor(flywheel_hierarchy):
                 else:
                     pass
 
-            ###f
+            
             # Determine which fieldmaps go with which functional datasets
             if funcs:
                 # Initialize a dictionary with empty lists
