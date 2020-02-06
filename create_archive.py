@@ -51,9 +51,9 @@ def create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id):
             # Download file
             fw.download_file_from_acquisition(acq_id, filename, os.path.join(rootdir, bids_file))
 
-    download_optional_inputs(flywheel_basedir, sub_dir, ses_dir)
+    download_optional_inputs(flywheel_basedir, sub_dir, ses_dir,rootdir)
 
-def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir):
+def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir, rootdir):
     """
     Use manifest-defined anatomical files if they were provided
     """
@@ -89,7 +89,7 @@ def download_optional_inputs(flywheel_basedir, sub_dir, ses_dir):
             shutil.copyfile(t2_file, dest_file)
 
 
-if __name__ == '__main__':
+def main():
     ### SETUP
     # Define variables
     flywheel_basedir = os.environ['FLYWHEEL']
@@ -147,3 +147,8 @@ if __name__ == '__main__':
             create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id)
     else:
         create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id)
+
+if __name__ == '__main__':
+
+    main()
+

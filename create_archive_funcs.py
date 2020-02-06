@@ -321,7 +321,7 @@ def determine_fmap_intendedfor(flywheel_hierarchy):
                 else:
                     pass
 
-            ###
+            
             # Determine which fieldmaps go with which functional datasets
             if funcs:
                 # Initialize a dictionary with empty lists
@@ -356,6 +356,13 @@ def check_time(t, fmt):
 
 def create_bids_hierarchy(flywheel_hierarchy, fieldmap_intendedfor):
     """
+
+    Args:
+        flywheel_hierarchy ():
+        fieldmap_intendedfor ():
+
+    Returns:
+
     """
 
     # Keep track of what file within the Flywheel hierarchy goes with what file within BIDS hierarchy
@@ -575,8 +582,8 @@ def create_bids_hierarchy(flywheel_hierarchy, fieldmap_intendedfor):
                         for flyfile, bidsfile in files_lookup:
                             if flyfile == fff:
                                 part, ses, subdir, fname = bidsfile.split('/')
-                                # Append filename to th elist
-                                funcs_b.append(os.path.join(subdir,fname))
+                                # Append filename to the list
+                                funcs_b.append(os.path.join(ses,subdir,fname))
                     info['IntendedFor'] = funcs_b
                 except KeyError:
                     pass
