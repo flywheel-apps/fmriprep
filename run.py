@@ -192,7 +192,7 @@ def create_command(context,log):
 
         # Generate Command Call
         log.info('generating fmriprep command call')
-        command = fp.create_command(context,log)
+        command = fp.create_command(context)
         context.log.info('Done')
         context.gear_dict['command'] = command
         log.info(command)
