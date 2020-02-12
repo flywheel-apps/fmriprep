@@ -192,7 +192,7 @@ def create_command(context,log):
 
         # Generate Command Call
         log.info('generating fmriprep command call')
-        command = fp.create_command(context,log)
+        command = fp.create_command(context)
         context.log.info('Done')
         context.gear_dict['command'] = command
         log.info(command)
@@ -323,7 +323,7 @@ def set_up_data(context, log):
             # filter by session
             try:
                 download_bids(context,
-                        subjects = [context.gear_dict['subjct_code']],
+                        subjects = [context.gear_dict['subject_code']],
                         sessions = [context.gear_dict['session_label']],
                         folders=folders_to_load)
 

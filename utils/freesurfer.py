@@ -21,7 +21,6 @@ def find_freesurfer_license(context, fs_license_path):
     # as an input file.
     fs_license_file = context.get_input_path('freesurfer_license')
     if fs_license_file:
-        # TODO make sure this works, it has not been tested
         # just copy the file to the right place
         fs_path_only, fs_file = os.path.split(fs_license_path)
         if fs_file != 'license.txt':
@@ -42,7 +41,6 @@ def find_freesurfer_license(context, fs_license_path):
             log.info('Using FreeSurfer license in gear argument.')
 
     if not context.gear_dict['fs_license_found']:
-        # TODO make sure this works, it has not been tested
         # see if it is in the project's info
         fw = context.client
         project_id = fw.get_analysis(context.destination.get('id')).parents.project
