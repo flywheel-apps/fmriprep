@@ -323,7 +323,7 @@ def set_up_data(context, log):
             # filter by session
             try:
                 download_bids(context,
-                        subjects = [context.gear_dict['subjct_code']],
+                        subjects = [context.gear_dict['subject_code']],
                         sessions = [context.gear_dict['session_label']],
                         folders=folders_to_load)
 

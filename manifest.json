@@ -7,7 +7,7 @@
   "maintainer": "Flywheel <support@flywheel.io>",
   "source": "https://github.com/flywheel-apps/fmriprep",
   "url": "https://fmriprep.readthedocs.io/en/1.5.5/",
-  "version": "5.7.2_1.5.5_dev2",
+  "version": "5.7.2_1.5.5",
   "custom": {
     "docker-image": "flywheel/fmriprep:5.7.2_1.5.5",
     "gear-builder": {
