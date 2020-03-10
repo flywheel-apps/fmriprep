@@ -55,6 +55,28 @@ fmriprep_options = OrderedDict({"h": bool,
                                 "sloppy": bool})
 
 
+valid_output_spaces=['MNI152Lin',
+                     'MNI152NLin2009cAsym',
+                     'MNI152NLin6Asym',
+                     'MNI152NLin6Sym',
+                     'MNIInfant',
+                     'MNIPediatricAsym',
+                     'NKI',
+                     'OASIS30ANTs',
+                     'PNC',
+                     'WHS',
+                     'fsLR',
+                     'fsaverage',
+                     'T1w',
+                     'anat',
+                     'fsnative',
+                     'func',
+                     'bold',
+                     'run',
+                     'boldref',
+                     'sbref']
+
+
 def str_2_num(string):
 
     try:
@@ -132,8 +154,26 @@ def check_type(val, expected):
                 pass
 
 
+def validate_output_spaces(output_spaces):
+    # Split output spaces by space
+    spaces = output_spaces.split()
+    
+    # Loop though
+    for space in spaces:
+        # remove any cohort and res information
+        template = space.split(':')[0]
 
-
+        log.debug('space: {}'.format(space))
+        log.debug('template: {}'.format(template))
+        
+        # Verify that the template is one that fmriprep will recognize
+        # See valid_output_spaces defined above (Possibly a better way to get this list?)
+        if template not in valid_output_spaces:
+            raise Exception('Output space {} is not a valid space.'.format(template))
+        
+        log.debug('Template is valid')
+        
+        
 def create_command(context):
     # Extract some input settings that are inputs
     try:
@@ -142,7 +182,11 @@ def create_command(context):
         for key in fmriprep_options:
             if key in context.config:
                 log.debug('{}: {}'.format(key, context.config[key]))
-
+                
+                # If key is output-spaces, we have to do some custom checks
+                if key == 'output-spaces':
+                    validate_output_spaces(context.config[key])
+                
                 if context.config[key] == "" or context.config[key] is None:
                     log.debug('Skipping {}\n'.format(key))
                     continue
