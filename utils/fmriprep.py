@@ -166,14 +166,13 @@ def validate_output_spaces(output_spaces):
         log.debug('space: {}'.format(space))
         log.debug('template: {}'.format(template))
         
-        
         # Verify that the template is one that fmriprep will recognize
         # See valid_output_spaces defined above (Possibly a better way to get this list?)
         if template not in valid_output_spaces:
-            log.debug('Template is invalid')
             raise Exception('Output space {} is not a valid space.'.format(template))
         
         log.debug('Template is valid')
+        
         
 def create_command(context):
     # Extract some input settings that are inputs
@@ -184,7 +183,7 @@ def create_command(context):
             if key in context.config:
                 log.debug('{}: {}'.format(key, context.config[key]))
                 
-                # If key is output spaces, we have to do some custom checks
+                # If key is output-spaces, we have to do some custom checks
                 if key == 'output-spaces':
                     validate_output_spaces(context.config[key])
                 
