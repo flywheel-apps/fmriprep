@@ -1,2 +1,2 @@
-flywheel-sdk==10.0.1
+flywheel-sdk<=11.0.0
 flywheel_bids==0.8.2

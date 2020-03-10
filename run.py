@@ -202,8 +202,10 @@ def create_command(context,log):
         context.gear_dict['errors'].append(e)
         log.critical(e)
         log.exception('Error in creating and validating command.',)
+        raise e
 
     pass
+
 
 
 def create_and_download_bids(fw, rootdir, flywheel_basedir, analysis_id):
