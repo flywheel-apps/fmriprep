@@ -16,6 +16,7 @@ from utils.results.zip_intermediate import zip_all_intermediate_output
 from utils.results.zip_intermediate import zip_intermediate_selected
 import utils.dry_run
 import utils.fmriprep as fp
+import utils.licenses.freesurfer as fs
 from create_archive_funcs import get_flywheel_hierarchy, determine_fmap_intendedfor, create_bids_hierarchy
 
 flywheelv0 = '/flywheel/v0'
@@ -87,7 +88,7 @@ def initialize(context):
     log = custom_log(context)
 
     # Find Freesurfer License
-    # fs.find_freesurfer_license(context, context.get_input_path('freesurfer-license'))
+    fs.find_freesurfer_license(context, context.get_input_path('freesurfer-license'))
 
     context.gear_dict = {}
     context.log_config() # not configuring the log but logging the config
