@@ -1,5 +1,9 @@
 # If you edit this file, please consider updating bids-app-template
 
+# ************************************
+# Modified to no longer use gear_Dict
+# ************************************
+
 import logging
 import os
 import shutil
@@ -13,8 +17,7 @@ def find_freesurfer_license(context, fs_license_path):
 
     log.debug('')
 
-
-    context.gear_dict['fs_license_found'] = False
+    fs_license_found = False
     license_info = ''
 
     # Check if the required FreeSurfer license file has been provided
@@ -30,18 +33,18 @@ def find_freesurfer_license(context, fs_license_path):
             os.makedirs(fs_path_only)
             log.warning('Had to make freesurfer license path: ' + fs_license_path)
         shutil.copy(fs_license_file, fs_license_path)
-        context.gear_dict['fs_license_found'] = True
+        fs_license_found = True
         log.info('Using FreeSurfer license in input file.')
 
-    if not context.gear_dict['fs_license_found']:
+    if not fs_license_found:
         # see if it was passed as a string argument
         if context.config.get('gear-FREESURFER_LICENSE'):
             fs_arg = context.config['gear-FREESURFER_LICENSE']
             license_info = '\n'.join(fs_arg.split())
-            context.gear_dict['fs_license_found'] = True
+            fs_license_found = True
             log.info('Using FreeSurfer license in gear argument.')
 
-    if not context.gear_dict['fs_license_found']:
+    if not fs_license_found:
         # TODO make sure this works, it has not been tested
         # see if it is in the project's info
         fw = context.client
@@ -49,10 +52,10 @@ def find_freesurfer_license(context, fs_license_path):
         project = fw.get_project(project_id)
         if project.info.get('FREESURFER_LICENSE'):
             license_info = '\n'.join(project.info.get('FREESURFER_LICENSE').split())
-            context.gear_dict['fs_license_found'] = True
+            fs_license_found = True
             log.info('Using FreeSurfer license in project info.')
 
-    if not context.gear_dict['fs_license_found']:
+    if not fs_license_found:
         msg = 'Could not find FreeSurfer license in project info.'
         log.exception(msg)
         os.sys.exit(1)
@@ -70,5 +73,5 @@ def find_freesurfer_license(context, fs_license_path):
             with open(fs_license_path, 'w') as lf:
                 lf.write(license_info)
 
-
+    return(fs_license_found)
 # vi:set autoindent ts=4 sw=4 expandtab : See Vim, :help 'modeline'

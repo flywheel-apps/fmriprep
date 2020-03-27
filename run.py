@@ -88,7 +88,7 @@ def initialize(context):
     log = custom_log(context)
 
     # Find Freesurfer License
-    fs.find_freesurfer_license(context, context.get_input_path('freesurfer-license'))
+    license_found = fs.find_freesurfer_license(context, context.get_input_path('freesurfer-license'))
 
     context.gear_dict = {}
     context.log_config() # not configuring the log but logging the config

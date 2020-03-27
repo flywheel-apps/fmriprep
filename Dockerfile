@@ -23,7 +23,6 @@ ENV FLYWHEEL /flywheel/v0
 RUN mkdir -p ${FLYWHEEL}
 COPY run.py ${FLYWHEEL}/run.py
 COPY manifest.json ${FLYWHEEL}/manifest.json
-COPY fs_license.py /flywheel/v0/fs_license.py
 COPY utils ${FLYWHEEL}/utils
 
 
