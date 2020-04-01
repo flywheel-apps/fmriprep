@@ -23,6 +23,7 @@ def find_freesurfer_license(context, fs_license_path):
     # Check if the required FreeSurfer license file has been provided
     # as an input file.
     fs_license_file = context.get_input_path('freesurfer_license')
+    log.info('fs_license_file: {}'.format(fs_license_file))
     if fs_license_file:
         # TODO make sure this works, it has not been tested
         # just copy the file to the right place
@@ -38,8 +39,8 @@ def find_freesurfer_license(context, fs_license_path):
 
     if not fs_license_found:
         # see if it was passed as a string argument
-        if context.config.get('gear-FREESURFER_LICENSE'):
-            fs_arg = context.config['gear-FREESURFER_LICENSE']
+        if context.config.get('FREESURFER_LICENSE'):
+            fs_arg = context.config['FREESURFER_LICENSE']
             license_info = '\n'.join(fs_arg.split())
             fs_license_found = True
             log.info('Using FreeSurfer license in gear argument.')
@@ -47,11 +48,15 @@ def find_freesurfer_license(context, fs_license_path):
     if not fs_license_found:
         # TODO make sure this works, it has not been tested
         # see if it is in the project's info
+        log.info('Looking for license in metadata')
         fw = context.client
         project_id = fw.get_analysis(context.destination.get('id')).parents.project
+        log.info('Project_id: {}'.format(project_id))
+        
         project = fw.get_project(project_id)
         if project.info.get('FREESURFER_LICENSE'):
             license_info = '\n'.join(project.info.get('FREESURFER_LICENSE').split())
+            log.info('license_info: {}'.format(license_info))
             fs_license_found = True
             log.info('Using FreeSurfer license in project info.')
 
@@ -63,6 +68,7 @@ def find_freesurfer_license(context, fs_license_path):
     else:
         # if it was passed as a string or was found in info, save
         # the Freesuefer license as a file in the right place
+        
         if license_info != '':
 
             head, tail = os.path.split(fs_license_path)
