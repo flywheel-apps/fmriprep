@@ -194,7 +194,7 @@ def create_command(context):
                 paramlist[key] = context.config[key]
 
         command = cm.build_command_list(cmd, paramlist)
-        command.append('--fs-license-file={}'.format(context.get_input_path('freesurfer-license')))
+        #command.append('--fs-license-file={}'.format(context.get_input_path('freesurfer-license')))
 
         command.append(context.gear_dict['bids_path'])
         command.append(context.gear_dict['output_analysisid_dir'])
