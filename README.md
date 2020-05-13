@@ -12,9 +12,14 @@ fMRIPrep requires that your data set include at least one T1w structural image a
 ## Setup:
 If you have not run BIDS curation on your data, you must first prepare your data with the following steps:
 1. Run the [SciTran: DICOM MR Classifier](https://github.com/scitran-apps/dicom-mr-classifier) gear on all the acquisitions in your dataset
+    * This step extracts the DICOM header info, and store it as Flywheel Metadata.
 1. Run the [DCM2NIIX: dcm2nii DICOM to NIfTI converter](https://github.com/scitran-apps/dcm2niix) gear on all the acquisitions in your dataset 
-    * These two steps can be automatically carried out as [gear rules](https://docs.flywheel.io/hc/en-us/articles/360008553133-Project-Gear-Rules).  The purpose of these two steps is to 1) extract the DICOM header info, and store it as Flywheel Metadata, and 2) Generate the Nifti files that fMRIPrep needs from the DICOMS.  These steps must be done in this order.  Nifti file headers have significantly fewer fields than the DICOM headers.  When DICOM MR Classifier is run, all the Dicom header info is placed in flywheel Metadata for the file.  When DCM2NIIx is run, the DICOM's Flywheel Metadata is coppied over to the Nifti file's Flywheel Metadata.  ***This metadata is used to aid Flywheel's fMRIPrep gear when the data has not been BIDs Curated.  Without this metadata, fMRIPrep will NOT run***
+    * This step generates the Nifti files that fMRIPrep needs from the DICOMS.  It also copies all flywheel metadata from the DICOM to the Nifti file (In this case, all the DICOM header information we extracted in step 1)
 1. Run fMRIPrep on the session, optionally specifying a structural image to use as reference.
+
+Steps 1 and 2 can be automatically carried out as [gear rules](https://docs.flywheel.io/hc/en-us/articles/360008553133-Project-Gear-Rules). 
+
+These steps MUST be done in this order.  Nifti file headers have significantly fewer fields than the DICOM headers.  ***This metadata is used to aid Flywheel's fMRIPrep gear when the data has not been BIDs Curated.  Without this metadata, fMRIPrep will NOT run***
 
 
 For more info, please refer to: http://fmriprep.readthedocs.io
