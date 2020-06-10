@@ -13,6 +13,8 @@ If you have run BIDS curation on your data, consider using the [BIDS-fmriprep ge
 
 fMRIPrep requires that your data set include at least one T1w structural image and (unless disabled with a flag) a BOLD series.  This data must have its dicoms classified with our classifier gear, and converted to nifti files with our dcm2niix gear, in that order.
 
+A freesurfer license may also be supplied in the form of a text file.  While this input is optional, a freesurfer license MUST be present, either attached to the project as a file, or as an input here. 
+
 ## Setup:
 If you have not run BIDS curation on your data, you must first prepare your data with the following steps:
 1. Run the [SciTran: DICOM MR Classifier](https://github.com/scitran-apps/dicom-mr-classifier) gear on all the acquisitions in your dataset
@@ -30,7 +32,28 @@ These steps MUST be done in this order.  Nifti file headers have significantly f
 To run the gear, select a session from the subject you wish to run fMRIprep on.
 ### Inputs:
 
-You are allowed to specify a T1 and T2 structural image to use for fMRIPREP (in the event of multiple structurals present in the dataset).
+You are allowed to specify a T1 and T2 structural image to use for fMRIPREP (in the event of multiple structurals present in the dataset).  These inputs are optional, and if omitted, the gear will attempt to locate a structural image on its own.  
+
+In addition, a freesurfer license may be uploaded as a text file.  This input is optional, however a freesufer license MUST be availible in one of three places:
+
+1. A text file as an input
+1. A text file attached to the project as a file
+1. A string (coppied from a freeserfer license text file) as a config option.
+
+### Config:
+
+Most config options are identical to those used in fmriprep, and so documentation can be found here https://fmriprep.readthedocs.io/en/stable/usage.html. 
+
+
+In addition to the usual fMRIprep options, There are several Flywheel-configuration options, which are listed here:
+1. **save-outputs:**. In the event of gear failure, Zip and save output directory contents anyway (as opposed to not saving anything on failure).  
+1. **save-intermediate-work:** Zip and save entire working directory with intermediate files. By default, this gear does not retain these files.  
+1. **intermediate-files:** Space separated list of FILES to retain from the intermediate work directory.  
+1. **intermediate-folders:** Space separated list of FOLDERS to retain from the intermediate work directory.
+1. **FREESURFER_LICENSE:** Text from license file generated during FreeSurfer registration.  Must be provided if there is no license attached at the project-level, or passed in as input.  *Entries should be space separated*",
+1. **reports-only**: only generate reports, don’t run workflows. This will only rerun report aggregation, not reportlet generation for specific nodes.
+1. **gear-log-level:** Gear Log verbosity level (ERROR|WARNING|INFO|DEBUG)",
+1. **gear-dry-run:** only generate the commands the gear calls and print them, but do not actually run them.  
 
 
 For more info, please refer to: http://fmriprep.readthedocs.io
