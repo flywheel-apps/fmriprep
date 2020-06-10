@@ -13,7 +13,8 @@ If you have run BIDS curation on your data, consider using the [BIDS-fmriprep ge
 
 fMRIPrep requires that your data set include at least one T1w structural image and (unless disabled with a flag) a BOLD series.  This data must have its dicoms classified with our classifier gear, and converted to nifti files with our dcm2niix gear, in that order.
 
-A freesurfer license may also be supplied in the form of a text file.  While this input is optional, a freesurfer license MUST be present, either attached to the project as a file, or as an input here. 
+A freesurfer license may also be supplied in the form of a text file.  While this input is optional, a freesurfer license MUST be present, either attached to the project as a file, or as an input here. [Read more about freesurfer licenses in flywheel](https://docs.flywheel.io/hc/en-us/articles/360013235453).
+
 
 ## Setup:
 If you have not run BIDS curation on your data, you must first prepare your data with the following steps:
@@ -39,6 +40,9 @@ In addition, a freesurfer license may be uploaded as a text file.  This input is
 1. A text file as an input
 1. A text file attached to the project as a file
 1. A string (coppied from a freeserfer license text file) as a config option.
+
+[Read more about how to use a freesurfer licence in flywheel here](https://docs.flywheel.io/hc/en-us/articles/360013235453).
+
 
 ### Config:
 
