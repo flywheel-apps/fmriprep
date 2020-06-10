@@ -1,7 +1,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/flywheel/fmriprep.svg)](https://hub.docker.com/r/flywheel/fmriprep/)
 [![Docker Stars](https://img.shields.io/docker/stars/flywheel/fmriprep.svg)](https://hub.docker.com/r/flywheel/fmriprep/)
 # flywheel/fmriprep for non-bids curated datasets
-Build context for a [Flywheel Gear](https://github.com/flywheel-io/gears/tree/master/spec) which runs [fMRIprep](http://fmriprep.readthedocs.io). 
+Build context for a [Flywheel Gear](https://github.com/flywheel-io/gears/tree/master/spec) which runs [fMRIprep](http://fmriprep.readthedocs.io). fMRIPrep will automatically run over all sessions for a given subject.
 
 fmriprep is a functional magnetic resonance imaging (fMRI) data preprocessing pipeline that is designed to provide an easily accessible, state-of-the-art interface that is robust to variations in scan acquisition protocols and that requires minimal user input, while providing easily interpretable and comprehensive error and output reporting. It performs basic processing steps (coregistration, normalization, unwarping, noise component extraction, segmentation, skullstripping etc.) providing outputs that can be easily submitted to a variety of group level analyses, including task-based or resting-state fMRI, graph theory measures, surface or volume-based statistics, etc.
 
@@ -24,6 +24,13 @@ If you have not run BIDS curation on your data, you must first prepare your data
 Steps 1 and 2 can be automatically carried out as [gear rules](https://docs.flywheel.io/hc/en-us/articles/360008553133-Project-Gear-Rules). 
 
 These steps MUST be done in this order.  Nifti file headers have significantly fewer fields than the DICOM headers.  ***This metadata is used to aid Flywheel's fMRIPrep gear when the data has not been BIDs Curated.  Without this metadata, fMRIPrep will NOT run***
+
+## Running:
+
+To run the gear, select a session from the subject you wish to run fMRIprep on.
+### Inputs:
+
+You are allowed to specify a T1 and T2 structural image to use for fMRIPREP (in the event of multiple structurals present in the dataset).
 
 
 For more info, please refer to: http://fmriprep.readthedocs.io
