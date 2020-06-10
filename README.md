@@ -1,13 +1,17 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/flywheel/fmriprep.svg)](https://hub.docker.com/r/flywheel/fmriprep/)
 [![Docker Stars](https://img.shields.io/docker/stars/flywheel/fmriprep.svg)](https://hub.docker.com/r/flywheel/fmriprep/)
-# flywheel/fmriprep
+# flywheel/fmriprep for non-bids curated datasets
 Build context for a [Flywheel Gear](https://github.com/flywheel-io/gears/tree/master/spec) which runs [fMRIprep](http://fmriprep.readthedocs.io). 
 
 fmriprep is a functional magnetic resonance imaging (fMRI) data preprocessing pipeline that is designed to provide an easily accessible, state-of-the-art interface that is robust to variations in scan acquisition protocols and that requires minimal user input, while providing easily interpretable and comprehensive error and output reporting. It performs basic processing steps (coregistration, normalization, unwarping, noise component extraction, segmentation, skullstripping etc.) providing outputs that can be easily submitted to a variety of group level analyses, including task-based or resting-state fMRI, graph theory measures, surface or volume-based statistics, etc.
 
 # Requirements:
 ## Files:
-fMRIPrep requires that your data set include at least one T1w structural image and (unless disabled with a flag) a BOLD series.
+This gear is intended for datasets that have not been BIDS curated.  
+
+If you have run BIDS curation on your data, consider using the [BIDS-fmriprep gear](https://github.com/flywheel-apps/bids-fmriprep).
+
+fMRIPrep requires that your data set include at least one T1w structural image and (unless disabled with a flag) a BOLD series.  This data must have its dicoms classified with our classifier gear, and converted to nifti files with our dcm2niix gear, in that order.
 
 ## Setup:
 If you have not run BIDS curation on your data, you must first prepare your data with the following steps:
