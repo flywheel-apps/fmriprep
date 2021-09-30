@@ -17,8 +17,7 @@ RUN apt-get update && \
     jq \
     tar \
     zip \
-    build-essential && \
-    apt-get dist-upgrade
+    build-essential
 
 
 ############################
