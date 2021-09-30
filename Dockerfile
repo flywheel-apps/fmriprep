@@ -13,12 +13,12 @@ RUN rm /etc/ssl/certs/ca-certificates.crt &&\
 ############################
 # Install basic dependencies
 RUN apt-get update && \
-    apt-get dist-upgrade && \
     apt-get -y install \
     jq \
     tar \
     zip \
-    build-essential
+    build-essential && \
+    apt-get dist-upgrade
 
 
 ############################
