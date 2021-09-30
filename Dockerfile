@@ -32,7 +32,7 @@ COPY utils ${FLYWHEEL}/utils
 
 
 # Add the fmriprep dockerfile to the container
-ADD https://raw.githubusercontent.com/poldracklab/fmriprep/${FMRIPREP_VERSION}/Dockerfile ${FLYWHEEL}/fmriprep_${FMRIPREP_VERSION}_Dockerfile
+ADD https://raw.githubusercontent.com/nipreps/fmriprep/${FMRIPREP_VERSION}/Dockerfile ${FLYWHEEL}/fmriprep_${FMRIPREP_VERSION}_Dockerfile
 
 
 ############################
