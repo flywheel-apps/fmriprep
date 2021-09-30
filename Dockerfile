@@ -7,8 +7,8 @@ FROM poldracklab/fmriprep:${FMRIPREP_VERSION}
 MAINTAINER Flywheel <support@flywheel.io>
 
 RUN rm /etc/ssl/certs/ca-certificates.crt
-RUN dpkg-reconfigure ca-certificates &&\
-    update-ca-certificaates
+RUN dpkg-reconfigure ca-certificates
+RUN update-ca-certificaates
 
 ############################
 # Install basic dependencies
