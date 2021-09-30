@@ -6,8 +6,8 @@ ARG FMRIPREP_VERSION=20.2.0
 FROM poldracklab/fmriprep:${FMRIPREP_VERSION}
 MAINTAINER Flywheel <support@flywheel.io>
 
-RUN rm /etc/ssl/certs/ca-certificates.crt &&\
-    dpkg-reconfigure ca-certificates && \
+# Remove expired LetsEncrypt cert
+RUN rm /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt && \
     update-ca-certificates
 
 ############################
