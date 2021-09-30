@@ -6,8 +6,8 @@ ARG FMRIPREP_VERSION=20.2.0
 FROM poldracklab/fmriprep:${FMRIPREP_VERSION}
 MAINTAINER Flywheel <support@flywheel.io>
 
-RUN rm /etc/ssl/certs/ca-certificates.crt && \
-    update-ca-certificaates && \
+RUN rm /etc/ssl/certs/ca-certificates.crt
+RUN update-ca-certificaates && \
     apt-get dist-upgrade
 
 ############################
