@@ -6,9 +6,9 @@ ARG FMRIPREP_VERSION=20.2.0
 FROM poldracklab/fmriprep:${FMRIPREP_VERSION}
 MAINTAINER Flywheel <support@flywheel.io>
 
-RUN rm /etc/ssl/certs/ca-certificates.crt
-RUN dpkg-reconfigure ca-certificates
-RUN update-ca-certificaates
+RUN rm /etc/ssl/certs/ca-certificates.crt &&\
+    dpkg-reconfigure ca-certificates && \
+    update-ca-certificates
 
 ############################
 # Install basic dependencies
