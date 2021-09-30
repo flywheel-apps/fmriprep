@@ -10,7 +10,9 @@ ENV FMRIPREP_VERSION 1.5.5
 
 ############################
 # Install basic dependencies
-RUN apt-get update && apt-get -y install \
+RUN apt-get update && \
+    apt-get dist-upgrade && \
+    apt-get -y install \
     jq \
     tar \
     zip \
