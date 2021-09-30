@@ -2,9 +2,10 @@
 
 ############################
 # Get the fmriprep algorithm from DockerHub
-ENV FMRIPREP_VERSION 20.2.0
-FROM poldracklab/fmriprep:${FMRIPREP_VERSION}
+ARG VER=20.2.0
+FROM poldracklab/fmriprep:${VER}
 MAINTAINER Flywheel <support@flywheel.io>
+ENV FMRIPREP_VERSION ${VER}
 
 # Remove expired LetsEncrypt cert
 RUN rm /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt && \
