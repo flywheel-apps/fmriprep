@@ -7,12 +7,12 @@
   "maintainer": "Flywheel <support@flywheel.io>",
   "source": "https://github.com/flywheel-apps/fmriprep",
   "url": "https://fmriprep.readthedocs.io/en/1.5.5/",
-  "version": "6.1.3_20.2.0",
+  "version": "6.1.3b_20.2.3",
   "custom": {
-    "docker-image": "flywheel/fmriprep:6.1.3_20.2.0",
+    "docker-image": "flywheel/fmriprep:6.1.3b_20.2.3",
     "gear-builder": {
       "category": "analysis",
-      "image": "flywheel/fmriprep:6.1.3_20.2.0"
+      "image": "flywheel/fmriprep:6.1.3b_20.2.3"
     }
   },
   "environment": {
