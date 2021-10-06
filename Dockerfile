@@ -2,15 +2,20 @@
 
 ############################
 # Get the fmriprep algorithm from DockerHub
-FROM poldracklab/fmriprep:1.5.5
+ARG VER=20.2.3
+FROM nipreps/fmriprep:${VER}
 MAINTAINER Flywheel <support@flywheel.io>
+ENV FMRIPREP_VERSION 20.2.3
 
-ENV FMRIPREP_VERSION 1.5.5
-
+# Remove expired LetsEncrypt cert
+RUN rm /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt && \
+    update-ca-certificates
+ENV REQUESTS_CA_BUNDLE "/etc/ssl/certs/ca-certificates.crt"
 
 ############################
 # Install basic dependencies
-RUN apt-get update && apt-get -y install \
+RUN apt-get update && \
+    apt-get -y install \
     jq \
     tar \
     zip \
@@ -28,7 +33,7 @@ COPY utils ${FLYWHEEL}/utils
 
 
 # Add the fmriprep dockerfile to the container
-ADD https://raw.githubusercontent.com/poldracklab/fmriprep/${FMRIPREP_VERSION}/Dockerfile ${FLYWHEEL}/fmriprep_${FMRIPREP_VERSION}_Dockerfile
+ADD https://raw.githubusercontent.com/nipreps/fmriprep/${FMRIPREP_VERSION}/Dockerfile ${FLYWHEEL}/fmriprep_${FMRIPREP_VERSION}_Dockerfile
 
 
 ############################
