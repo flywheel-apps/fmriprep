@@ -10,6 +10,7 @@ ENV FMRIPREP_VERSION 20.2.3
 # Remove expired LetsEncrypt cert
 RUN rm /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt && \
     update-ca-certificates
+ENV REQUESTS_CA_BUNDLE "/etc/ssl/certs/ca-certificates.crt"
 
 ############################
 # Install basic dependencies
